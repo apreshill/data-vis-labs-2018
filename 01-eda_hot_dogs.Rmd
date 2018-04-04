@@ -40,7 +40,7 @@ These are important questions, and I want you to develop (well-informed) opinion
 
 ![](https://i0.wp.com/flowingdata.com/wp-content/uploads/2009/06/hot-dogs1.gif?zoom=2&fit=900%2C423)
 
-This includes a reconstruction of [Nathan Yau's hot dog contest example](http://flowingdata.com/2009/07/02/whos-going-to-win-nathans-hot-dog-eating-contest/hot-dogs-2/), as interpreted by Jackie Wirz, and ported into R by Steven Bedrick and adapted by Alison Hill for *y'all*.
+This includes a reconstruction of [Nathan Yau's hot dog contest example](http://flowingdata.com/2009/07/02/whos-going-to-win-nathans-hot-dog-eating-contest/hot-dogs-2/), as interpreted by Jackie Wirz, ported into R and `ggplot2` by Steven Bedrick for a workshop for the [OHSU Data Science Institute](https://ohsulibrary-datascienceinstitute.github.io), and finally adapted by Alison Hill for all you intrepid Data-Viz-onauts!
 
 
 First, we load our packages: 
@@ -380,6 +380,8 @@ nathan_plot <- ggplot(hdm_affil, aes(x = year, y = num_eaten)) +
 nathan_plot
 ```
 
+Adding some plot annotations rather than having a fill legend:
+
 ```{r}
 nathan_ann <- nathan_plot +
   guides(fill = FALSE) +
@@ -407,6 +409,7 @@ nathan_ann <- nathan_plot +
 nathan_ann
 ```
 
+Finally, adding in another layer of data from female contestants:
 
 ```{r}
 hdm_females <- read_csv(here::here("data", "hot_dog_contest_with_affiliation.csv"), 
@@ -429,6 +432,7 @@ nathan_w_females
 ```
 
 And adding a final caption:
+
 ```{r}
 caption <- paste(strwrap("* From 2011 on, separate Men's and Women's prizes have been awarded. All female champions to date have been MLE/IFOCE-affiliated.", 70), collapse="\n")
 
