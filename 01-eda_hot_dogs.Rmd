@@ -1,0 +1,383 @@
+---
+title: "Nathan's Hot-Dog Eating Contest"
+author: "CS631"
+output:
+  html_document:
+    highlight: pygments
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+    code_folding: hide
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE)
+```
+
+```{r load-packages, include = FALSE}
+library(tidyverse)
+library(extrafont)
+```
+
+# Goals for Lab 01
+
+- Get your feet wet!
+- Innoculate you against `ggplot2` errors- we all get them!
+- Get exposed to the *range* of things you can do, before we go **deeep**...
+- Develop your *own* **personal** preferences for data visualizations!
+    - Do you like or hate gridlines?
+    - What fonts do you find pleasant to read?
+    - What kinds of colors do you like?
+    - Are you team `theme_gray` or `theme_bw` (or `theme_minimal`)?
+    
+These are important questions, and I want you to develop (well-informed) opinions on these matters!
+![](images/theme-team-tweets.png)
+
+
+# Nathan's Hot Dog Eating Contest
+
+![](https://i0.wp.com/flowingdata.com/wp-content/uploads/2009/06/hot-dogs1.gif?zoom=2&fit=900%2C423)
+
+This includes a reconstruction of [Nathan Yau's hot dog contest example](http://flowingdata.com/2009/07/02/whos-going-to-win-nathans-hot-dog-eating-contest/hot-dogs-2/), as interpreted by Jackie Wirz, and ported into R by Steven Bedrick and adapted by Alison Hill for *y'all*.
+
+
+First, we load our packages: 
+
+
+```{r eval=FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(extrafont)
+library(here)
+```
+
+
+# Read in and wrangle data
+
+Next, we load some data:
+
+```{r}
+hot_dogs <- read_csv(here::here("data", "hot_dog_contest.csv"), 
+    col_types = cols(
+      gender = col_factor(levels = NULL)
+    ))
+glimpse(hot_dogs)
+hot_dogs
+```
+
+We'll be wanting to somehow include information about whether a given year was before or after the incorporation of the competitive eating league, so let's add an indicator field to the data using `mutate()`. Also, the data's a little sketchy pre-1981 and for our purposes today we'll be focusing on males only, so let's do some `filter`ing too:
+
+```{r}
+hot_dogs <- hot_dogs %>% 
+  mutate(post_ifoce = year >= 1997) %>% 
+  filter(year >= 1981 & gender == 'male')
+hot_dogs
+```
+
+
+
+# Plot The Data
+
+Now let's try making a first crack at a sketchy plot:
+
+```{r}
+ggplot(hot_dogs, aes(x = year, y = num_eaten)) + 
+  geom_col()
+```
+
+Note that our data is already in "counted" form, so we're using `geom_col()` instead of `geom_bar()`.
+
+
+# Add Axis Labels And Title
+
+
+```{r}
+ggplot(hot_dogs, aes(x = year, y = num_eaten)) + 
+  geom_col() +
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017")
+```
+
+# Play With Colors
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #1:</div>
+  <div class="panel-body">
+Make 3 versions of the last plot we just made:
+
+* __In the first,__ make all the columns outlined in "white".
+* __In the second,__ make all the columns outlined in "white" and filled in "navyblue".
+* __In the third,__ make all the columns outlined in "white" and filled in according to whether or not `post_ifoce` is TRUE or FALSE (use default colors for now).
+  </div>
+</div>
+
+
+
+```{r}
+ggplot(hot_dogs, aes(x = year, y = num_eaten)) + 
+  geom_col(colour = "white") + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017")
+```
+
+```{r}
+ggplot(hot_dogs, aes(x = year, y = num_eaten)) + 
+  geom_col(colour = "white", fill = "navyblue") + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017")
+```
+
+```{r}
+ggplot(hot_dogs, aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = post_ifoce), colour = "white") + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017")
+```
+
+
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #2:</div>
+  <div class="panel-body">
+What if you want to change the legend in the last plot you made? Use google to figure out how to do the following:
+
+* Delete the legend title
+* Make the legend text either "Post-IFOCE" or "Pre-IFOCE".
+  </div>
+</div>
+
+```{r}
+ggplot(hot_dogs, aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = post_ifoce), colour = "white") + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017") +
+  scale_fill_discrete(name = "",
+                      labels=c("Pre-IFOCE", "Post-IFOCE"))
+```
+
+# Change The Dataset
+
+Now, let's change the question a little bit. This looks at the _creation_ of the IFOCE. What about the _affiliation_ of the contestants? We'll need some different data for this. Through the _Magic Of Data Science™_, we have dug that information up and put it into an expanded version of our CSV file.
+
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #3:</div>
+  <div class="panel-body">
+Let's work with this new dataset! Do the following:
+
+* Read in the "hot_dog_contest_with_affiliation.csv" data file, using `col_types` to read in `affiliated` and `gender` as factors. 
+* Within a `mutate`, create a new variable called `post_ifoce` that is TRUE if `year` is greater than or equal to 1997. 
+* Also `filter` the new data for only years 1981 and after, and only for male competitors.
+  </div>
+</div>
+
+```{r}
+hdm_affil <- read_csv(here::here("data", "hot_dog_contest_with_affiliation.csv"), 
+    col_types = cols(
+      affiliated = col_factor(levels = NULL), 
+      gender = col_factor(levels = NULL)
+      )) %>% 
+  mutate(post_ifoce = year >= 1997) %>% 
+  filter(year >= 1981 & gender == "male") 
+glimpse(hdm_affil)
+```
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #4:</div>
+  <div class="panel-body">
+Let's do some basic EDA with this new dataset! Do the following:
+
+* Use `dplyr::distinct` to figure out how many unique values there are of `affiliated`.
+* Use `dplyr::count` to count the number of rows for each unique value of `affiliated`; use `?count` to figure out how to sort the counts in descending order.
+  </div>
+</div>
+
+```{r}
+hdm_affil %>% 
+  distinct(affiliated)
+hdm_affil %>% 
+  count(affiliated, sort = TRUE)
+```
+
+
+Now let's plot this new data, and fill the columns according to our new `affiliated` column.
+
+```{r}
+ggplot(hdm_affil, aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = affiliated)) + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017")
+```
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #5:</div>
+  <div class="panel-body">
+Do the following updates to the last plot we just made:
+
+* Update the colors using hex colors: `c('#E9602B','#2277A0','#CCB683')`. 
+* Change the legend title to "IFOCE-affiliation". 
+* Save this plot object as "affil_plot".
+  </div>
+</div>
+
+```{r}
+affil_plot <- ggplot(hdm_affil, aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = affiliated)) + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017") +
+  scale_fill_manual(values = c('#E9602B','#2277A0','#CCB683'),
+                    name = "IFOCE-affiliation")
+affil_plot
+```
+
+# Play With Scales & Coordinates
+
+The spacing's a little funky down near the origin of the plot. The [documentation](http://ggplot2.tidyverse.org/reference/scale_continuous.html) tells us that the defaults are `c(0.05, 0)` for continuous variables. The first number is multiplicative and the second is additive. 
+
+The default was that 1.8 ((2017-1981)*.05+0) was added to the right and left sides of the x-axis as padding, so the effective default limits were `c(1979, 2019)`.
+
+Let's tighten that up with the `expand` property for the `scale_y_continuous` (we'll also change the breaks for y-axis tick marks here) and `scale_x_continuous` settings:
+
+```{r}
+affil_plot <- affil_plot + 
+  scale_y_continuous(expand = c(0, 0),
+                     breaks = seq(0, 70, 10)) +
+  scale_x_continuous(expand = c(0, 0))
+affil_plot
+```
+
+
+
+But now the plot looks like it is wearing tight pants.
+
+![](https://media.giphy.com/media/xT1XH07no2wZSq4mnm/giphy.gif)
+
+Let's loosen things up a bit by updating the plot coordinates. 
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #6:</div>
+  <div class="panel-body">
+Use `coord_cartesian` to:
+
+* Set the x-axis range to 1980-2018
+* Set the y-axis range to 0-80
+  </div>
+</div>
+
+Using `coord_cartesian` is the preferred layer here because "setting limits on the coordinate system will zoom the plot (like you're looking at it with a magnifying glass), and will not change the underlying data like setting `limits` on a scale will."  
+
+<div class="panel panel-info">
+  <div class="panel-heading">Lesson:</div>
+  <div class="panel-body">
+Don't change `limits` unless you really know what you are doing! Most of the time, you want to change the coordinates instead.
+  </div>
+</div>
+
+```{r}
+affil_plot <- affil_plot + 
+  coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) 
+affil_plot
+```
+
+
+# Play With Theme Settings
+
+Let's change some key theme settings:
+
+```{r}
+affil_plot +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.text = element_text(size = 12)) +
+  theme(panel.background = element_blank()) +
+  theme(axis.line.x = element_line(color = "gray80", size = 0.5)) +
+  theme(axis.ticks = element_line(color = "gray80", size = 0.5))
+```
+
+<div class="panel panel-info">
+  <div class="panel-heading">Lesson:</div>
+  <div class="panel-body">
+You can change *almost anything* that your heart desires to change! 
+  </div>
+</div>
+
+
+By default, plot titles in `ggplot2` are left-aligned. For `hjust`:
+
+- `0` == left
+- `0.5` == centered
+- `1` == right
+
+We could also save all these as a custom theme. We are not fans of the default font, so we are also going to change this. To do this, you need to install the (`extrafont` package)[https://github.com/wch/extrafont] and follow its setup instructions before doing this next step.
+
+```{r}
+hot_diggity <- theme(plot.title = element_text(hjust = 0.5),
+                     axis.text = element_text(size = 12),
+                     panel.background = element_blank(),
+                     axis.line.x = element_line(color = "gray80", size = 0.5),
+                     axis.ticks = element_line(color = "gray80", size = 0.5),
+                     text = element_text(family = "Lato") # need extrafont for this
+                     )
+```
+
+
+
+```{r}
+affil_plot + hot_diggity 
+```
+
+We could also use someone else's theme:
+
+```{r}
+library(ggthemes)
+affil_plot + theme_fivethirtyeight(base_family = "Lato")
+affil_plot + theme_tufte(base_family = "Palatino")
+```
+
+
+
+
+The final thing we have to mess with is the x-axis ticks and labels. We'll do this in two steps, then override our previous layer `scale_x_continuous`.
+
+```{r}
+years_to_label <- seq(from = 1981, to = 2017, by = 4)
+years_to_label
+hd_years <- hdm_affil %>%
+  distinct(year) %>% 
+  mutate(year_lab = ifelse(year %in% years_to_label, year, ""))
+```
+
+```{r}
+affil_plot + 
+  hot_diggity +
+  scale_x_continuous(expand = c(0, 0), 
+                     breaks = hd_years$year,
+                     labels = hd_years$year_lab)
+```
+
+# Final version
+
+Don't name your files "final" :)
+
+![](http://www.phdcomics.com/comics/archive/phd101212s.gif)
+
+All together in one chunk, here is our final (for now) plot!:
+```{r}
+nathan_plot <- ggplot(hdm_affil, aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = affiliated)) + 
+  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017") +
+  scale_fill_manual(values = c('#E9602B','#2277A0','#CCB683'),
+                    name = "IFOCE-affiliation") + 
+  hot_diggity +
+  scale_y_continuous(expand = c(0, 0),
+                     breaks = seq(0, 70, 10)) +
+  scale_x_continuous(expand = c(0, 0), 
+                     breaks = hd_years$year,
+                     labels = hd_years$year_lab) + 
+  coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) 
+nathan_plot
+```
+
+
+
