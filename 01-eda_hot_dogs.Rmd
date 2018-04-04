@@ -13,7 +13,7 @@ output:
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE)
+knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, cache = TRUE)
 ```
 
 ```{r load-packages, include = FALSE}
@@ -355,13 +355,14 @@ affil_plot +
                      labels = hd_years$year_lab)
 ```
 
-# Final version
+# Final (final, final) version
 
 Don't name your files "final" :)
 
 ![](http://www.phdcomics.com/comics/archive/phd101212s.gif)
 
-All together in one chunk, here is our final (for now) plot!:
+All together in one chunk, here is our final (for now) plot! I'm also adding some additional elements here to show you options:
+
 ```{r}
 nathan_plot <- ggplot(hdm_affil, aes(x = year, y = num_eaten)) + 
   geom_col(aes(fill = affiliated)) + 
@@ -379,5 +380,62 @@ nathan_plot <- ggplot(hdm_affil, aes(x = year, y = num_eaten)) +
 nathan_plot
 ```
 
+```{r}
+nathan_ann <- nathan_plot +
+  guides(fill = FALSE) +
+  coord_cartesian(xlim = c(1980, 2019), ylim = c(0, 85)) +
+  annotate('segment', x=1980.75, xend=2000.25, y= 30, yend=30, size=0.5, color="#CCB683") +
+  annotate('segment', x=1980.75, xend=1980.75, y= 30, yend=28, size=0.5, color="#CCB683") +
+  annotate('segment', x=2000.25, xend=2000.25, y= 30, yend=28, size=0.5, color="#CCB683") +
+  annotate('segment', x=1990, xend=1990, y= 33, yend=30, size=0.5, color="#CCB683") +
+    annotate('text', x=1990, y=36, label="No MLE/IFOCE Affiliation", color="#CCB683", family="Lato", hjust=0.5, size = 3) + 
 
+  
+  
+  annotate('segment', x=2000.75, xend=2006.25, y= 58, yend=58, size=0.5, color="#2277A0") +
+  annotate('segment', x=2000.75, xend=2000.75, y= 58, yend=56, size=0.5, color="#2277A0") +
+  annotate('segment', x=2006.25, xend=2006.25, y= 58, yend=56, size=0.5, color="#2277A0") +
+  annotate('segment', x=2003.5, xend=2003.5, y= 61, yend=58, size=0.5, color="#2277A0") +
+  annotate('text', x=2003.5, y=65, label="MLE/IFOCE\nFormer Member", color="#2277A0", family="Lato", hjust=0.5, size = 3) + 
+
+  
+  annotate('segment', x=2006.75, xend=2017.25, y= 76, yend=76, size=0.5, color="#E9602B") +
+  annotate('segment', x=2006.75, xend=2006.75, y= 76, yend=74, size=0.5, color="#E9602B") +
+  annotate('segment', x=2017.25, xend=2017.25, y= 76, yend=74, size=0.5, color="#E9602B") +
+  annotate('segment', x=2012, xend=2012, y= 79, yend=76, size=0.5, color="#E9602B") +
+  annotate('text', x=2012, y=82, label="MLE/IFOCE Current Member", color="#E9602B", family="Lato", hjust=0.5, size = 3) 
+nathan_ann
+```
+
+
+```{r}
+hdm_females <- read_csv(here::here("data", "hot_dog_contest_with_affiliation.csv"), 
+    col_types = cols(
+      affiliated = col_factor(levels = NULL), 
+      gender = col_factor(levels = NULL)
+      )) %>% 
+  mutate(post_ifoce = year >= 1997) %>% 
+  filter(year >= 1981 & gender == "female") 
+glimpse(hdm_females)
+```
+
+```{r}
+nathan_w_females <- nathan_ann +
+  # add in the female data, and manually set a fill color
+  geom_col(data = hdm_females, 
+           width = 0.75, 
+           fill = "#F68A39") 
+nathan_w_females
+```
+
+And adding a final caption:
+```{r}
+caption <- paste(strwrap("* From 2011 on, separate Men's and Women's prizes have been awarded. All female champions to date have been MLE/IFOCE-affiliated.", 70), collapse="\n")
+
+nathan_w_females +
+  # now an asterisk to set off the female scores, and a caption
+  annotate('text', x = 2018.5, y = 39, label="*", family = "Lato", size = 8) +
+  labs(caption = caption) +
+  theme(plot.caption = element_text(family = "Lato", size=8, hjust=0, margin=margin(t=15)))
+```
 
