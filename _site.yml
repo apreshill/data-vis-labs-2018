@@ -1,0 +1,19 @@
+name: "purrr-tutorial"
+output_dir: "."
+navbar:
+  title: "purrr tutorial"
+  left:
+    - text: "Lessons and examples"
+      href: index.html
+    - text: "More resources"
+      href: more-resources.html
+    - text: "Talks"
+      href: talks.html
+  right:
+    - text: "About"
+      href: about.html
+output:
+  html_document:
+    theme: flatly
+    includes:
+      after_body: footer.html
