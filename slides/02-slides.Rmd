@@ -116,7 +116,7 @@ all `ggplot2`
 
 - `aes(x = , y = )` (aesthetics)
 - `aes(x = , y = , color = )` (add color)
-- `aes(x = , y = , color = , size = )` (add size)
+- `aes(x = , y = , size = )` (add size)
 - `+ facet_wrap(~ )` (facetting)
 
 ---
@@ -218,6 +218,8 @@ ggplot(data = simple_ex, mapping = aes(x = year_created,
 
 
 ---
-# Lab 02: Challenge 3
+# Lab 02: Plotting Challenges
 
-Use `ggplot2` to make:
+Challenges 3 & 4 are in the [lab](https://apreshill.github.io/data-vis-labs-2018/02-moma.html)!
+
+https://apreshill.github.io/data-vis-labs-2018/02-moma.html

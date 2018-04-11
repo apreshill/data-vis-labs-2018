@@ -494,6 +494,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <ul>
 <li>How many distinct artists are there?</li>
 </ul>
+<p>Try <code>dplyr::distinct</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">distinct</span>(artist)</code></pre></div>
 <pre><code># A tibble: 989 x 1
@@ -517,6 +518,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <li>Which artist has the most paintings ever owned by <code>moma</code>?</li>
 <li>How many have there been?</li>
 </ul>
+<p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(artist, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code># A tibble: 989 x 2
@@ -536,6 +538,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 </div>
 <div id="in-what-year-were-the-most-paintings-acquired" class="section level2">
 <h2><span class="header-section-number">5.6</span> In what year were the most paintings acquired?</h2>
+<p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(year_acquired, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code># A tibble: 88 x 2
@@ -555,6 +558,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 </div>
 <div id="in-what-year-were-the-most-paintings-created" class="section level2">
 <h2><span class="header-section-number">5.7</span> In what year were the most paintings created?</h2>
+<p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(year_created, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code># A tibble: 139 x 2
@@ -574,6 +578,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 </div>
 <div id="what-about-first-painting-by-a-solo-female-artist" class="section level2">
 <h2><span class="header-section-number">5.8</span> What about first painting by a solo female artist?</h2>
+<p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">select</span>(title, artist, year_acquired, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -624,8 +629,7 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_fixed</span>(<span class="dt">ratio =</span> <span class="dv">1</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) </code></pre></div>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <div id="facet-by-artist-gender" class="section level2">
@@ -638,7 +642,6 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_fixed</span>(<span class="dt">ratio =</span> <span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>artist_gender)</code></pre></div>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
@@ -650,16 +653,29 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <img src="https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&amp;quality=90&amp;strip=info" />
 
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-<span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p>To recreate, some things to consider:</p>
+<ul>
+<li>Try filtering all paintings with height less than 600 cm and width less than 760 cm.</li>
+<li>If you want to add color as in the original, you’ll need to create a new variable using <code>mutate</code>.</li>
+<li>You’ll probably also want to look into <code>case_when</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_dim &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">600</span>, width_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">760</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">hw_ratio =</span> height_cm <span class="op">/</span><span class="st"> </span>width_cm,
+         <span class="dt">hw_cat =</span> <span class="kw">case_when</span>(
+           hw_ratio <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;taller than wide&quot;</span>,
+           hw_ratio <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;wider than tall&quot;</span>,
+           hw_ratio <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;perfect square&quot;</span>
+         ))
+<span class="kw">library</span>(ggthemes)
+<span class="kw">ggplot</span>(moma_dim, <span class="kw">aes</span>(<span class="dt">x =</span> width_cm, <span class="dt">y =</span> height_cm, <span class="dt">colour =</span> hw_cat)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Width&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Height&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Paintings, Tall and Wide&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>,
+                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;gray50&quot;</span>, <span class="st">&quot;#FF9900&quot;</span>, <span class="st">&quot;#B14CF0&quot;</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_fivethirtyeight</span>()</code></pre></div>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Let’s try filtering</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_for_size &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">600</span>, width_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">760</span>)
-<span class="kw">ggplot</span>(moma_for_size, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>)</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 
 <p>

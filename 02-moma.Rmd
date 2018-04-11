@@ -109,6 +109,8 @@ moma %>%
 
 - How many distinct artists are there?
 
+Try `dplyr::distinct`.
+
 ```{r}
 moma %>% 
   distinct(artist)
@@ -119,6 +121,8 @@ moma %>%
 - Which artist has the most paintings ever owned by `moma`? 
 - How many have there been?
 
+Try `dplyr::count`. Use `?count` to figure out how to sort the output.
+
 ```{r}
 moma %>% 
   count(artist, sort = TRUE)
@@ -128,6 +132,8 @@ moma %>%
 
 ## In what year were the most paintings acquired?
 
+Try `dplyr::count`. Use `?count` to figure out how to sort the output.
+
 ```{r}
 moma %>% 
   count(year_acquired, sort = TRUE)
@@ -135,12 +141,16 @@ moma %>%
 
 ## In what year were the most paintings created?
 
+Try `dplyr::count`. Use `?count` to figure out how to sort the output.
+
 ```{r}
 moma %>% 
   count(year_created, sort = TRUE)
 ```
 
 ## What about first painting by a solo female artist?
+
+Try combining three `dplyr` functions: `filter`, `select`, and `arrange`.
 
 ```{r}
 moma %>% 
@@ -179,8 +189,7 @@ ggplot(moma, aes(year_created, year_acquired)) +
   geom_point(alpha = .1) +
   geom_abline(intercept = c(0,0), colour = "red") +
   labs(x = "Year Created", y = "Year Acquired") +
-  ggtitle("MOMA Keeps Its Collection Current") +
-  coord_fixed(ratio = 1)
+  ggtitle("MOMA Keeps Its Collection Current") 
 ```
 
 ## Facet by artist gender
@@ -195,7 +204,6 @@ ggplot(moma_solo, aes(year_created, year_acquired)) +
   geom_abline(intercept = c(0,0), colour = "red") +
   labs(x = "Year Created", y = "Year Acquired") +
   ggtitle("MOMA Keeps Its Collection Current") +
-  coord_fixed(ratio = 1) +
   facet_wrap(~artist_gender)
 ```
 
@@ -206,19 +214,30 @@ Let's (somewhat) try to recreate this scatterplot from [fivethirtyeight](https:/
 
 ![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&quality=90&strip=info)
 
-```{r}
-library(ggplot2)
-ggplot(moma, aes(x = height_cm, y = width_cm)) +
-  geom_point()
-```
 
-Let's try filtering
+To recreate, some things to consider:
+
+- Try filtering all paintings with height less than 600 cm and width less than 760 cm. 
+- If you want to add color as in the original, you'll need to create a new variable using `mutate`. 
+- You'll probably also want to look into `case_when`.
 
 ```{r}
-moma_for_size <- moma %>% 
-  filter(height_cm < 600, width_cm < 760)
-ggplot(moma_for_size, aes(x = height_cm, y = width_cm)) +
-  geom_point(alpha = .1)
+moma_dim <- moma %>% 
+  filter(height_cm < 600, width_cm < 760) %>% 
+  mutate(hw_ratio = height_cm / width_cm,
+         hw_cat = case_when(
+           hw_ratio > 1 ~ "taller than wide",
+           hw_ratio < 1 ~ "wider than tall",
+           hw_ratio == 1 ~ "perfect square"
+         ))
+library(ggthemes)
+ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
+  geom_point(alpha = .5) +
+  labs(x = "Width", y = "Height") +
+  ggtitle("MOMA Paintings, Tall and Wide") +
+  scale_colour_manual(name = "",
+                      values = c("gray50", "#FF9900", "#B14CF0")) +
+  theme_fivethirtyeight()
 ```
 
 
