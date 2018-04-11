@@ -203,7 +203,7 @@ Things to consider:
 
 ```{r}
 ggplot(moma, aes(year_created, year_acquired)) +
-  geom_point(alpha = .1) +
+  geom_point(alpha = .1, na.rm = TRUE) +
   geom_abline(intercept = c(0,0), colour = "red") +
   labs(x = "Year Created", y = "Year Acquired") +
   ggtitle("MOMA Keeps Its Collection Current") 
