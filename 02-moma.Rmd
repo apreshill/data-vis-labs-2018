@@ -160,13 +160,20 @@ moma %>%
 
 ## What about first painting by a solo female artist?
 
-Try combining three `dplyr` functions: `filter`, `select`, and `arrange`.
+Try combining three `dplyr` functions: `filter`, `select`, and `arrange`. Try `year_acquired` and `year_created`!
 
 ```{r}
 moma %>% 
   filter(num_artists == 1 & n_female_artists == 1) %>% 
   select(title, artist, year_acquired, year_created) %>% 
   arrange(year_acquired)
+```
+
+```{r}
+moma %>% 
+  filter(num_artists == 1 & n_female_artists == 1) %>% 
+  select(title, artist, year_acquired, year_created) %>% 
+  arrange(year_created)
 ```
 
 ```{r eval = FALSE}
@@ -243,11 +250,12 @@ moma_dim <- moma %>%
 library(ggthemes)
 ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
   geom_point(alpha = .5) +
-  labs(x = "Width", y = "Height") +
   ggtitle("MOMA Paintings, Tall and Wide") +
   scale_colour_manual(name = "",
                       values = c("gray50", "#FF9900", "#B14CF0")) +
-  theme_fivethirtyeight()
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = "Width", y = "Height") 
 ```
 
 

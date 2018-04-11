@@ -580,7 +580,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 </div>
 <div id="what-about-first-painting-by-a-solo-female-artist" class="section level2">
 <h2><span class="header-section-number">5.8</span> What about first painting by a solo female artist?</h2>
-<p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>.</p>
+<p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>. Try <code>year_acquired</code> and <code>year_created</code>!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">select</span>(title, artist, year_acquired, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -598,6 +598,24 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
  8 Musical Squash                  Maud Morgan          1942.        1942.
  9 Desolation                      Raquel Forn…         1942.        1942.
 10 Self-Portrait with Cropped Hair Frida Kahlo          1943.        1940.
+# ... with 242 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(title, artist, year_acquired, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(year_created)</code></pre></div>
+<pre><code># A tibble: 252 x 4
+   title                          artist        year_acquired year_created
+   &lt;chr&gt;                          &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Self-Portrait with Two Flower… Paula Moders…         2017.        1907.
+ 2 Girl with Bare Shoulders       Gwen John             1958.        1909.
+ 3 Girl Reading at a Window       Gwen John             1971.        1911.
+ 4 Landscape, 47                  Natalia Gonc…         1937.        1912.
+ 5 Cubist Nude                    Alexandra Ex…         1991.        1912.
+ 6 Rayonism, Blue-Green Forest    Natalia Gonc…         1985.        1913.
+ 7 The Factory and the Bridge     Olga Rozanova         1985.        1913.
+ 8 Subject from a Dyer&#39;s Shop     Lyubov Popova         1985.        1914.
+ 9 Portuguese Market              Sonia Delaun…         1955.        1915.
+10 Girl with a Blue Scarf         Gwen John             1963.        1915.
 # ... with 242 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or, because artist_gender is missing when num_artists &gt; 1</span>
 moma <span class="op">%&gt;%</span><span class="st"> </span>
@@ -632,7 +650,7 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) </code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="facet-by-artist-gender" class="section level2">
 <h2><span class="header-section-number">7.2</span> Facet by artist gender</h2>
@@ -645,7 +663,7 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>artist_gender)</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 </div>
 <div id="challenge-4-plot-painting-dimensions" class="section level1">
@@ -672,12 +690,13 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="kw">library</span>(ggthemes)
 <span class="kw">ggplot</span>(moma_dim, <span class="kw">aes</span>(<span class="dt">x =</span> width_cm, <span class="dt">y =</span> height_cm, <span class="dt">colour =</span> hw_cat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Width&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Height&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Paintings, Tall and Wide&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>,
                       <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;gray50&quot;</span>, <span class="st">&quot;#FF9900&quot;</span>, <span class="st">&quot;#B14CF0&quot;</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_fivethirtyeight</span>()</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">theme_fivethirtyeight</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>()) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Width&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Height&quot;</span>) </code></pre></div>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 
 <p>
