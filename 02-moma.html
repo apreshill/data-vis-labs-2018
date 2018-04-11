@@ -622,7 +622,7 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_fixed</span>(<span class="dt">ratio =</span> <span class="dv">1</span>)</code></pre></div>
@@ -635,7 +635,7 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 <span class="kw">ggplot</span>(moma_solo, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_fixed</span>(<span class="dt">ratio =</span> <span class="dv">1</span>) <span class="op">+</span>
@@ -660,17 +660,6 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="kw">ggplot</span>(moma_for_size, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>)</code></pre></div>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<div id="how-many-feature-males-only" class="section level2">
-<h2><span class="header-section-number">8.1</span> How many feature males only?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_solo &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
-<span class="kw">ggplot</span>(moma_solo, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_fixed</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>artist_gender)</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-</div>
 </div>
 
 <p>

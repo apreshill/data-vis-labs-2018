@@ -18,7 +18,7 @@ output:
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
   comment = NA, dpi = 300,
-  fig.align = "center", out.width = "80%")
+  fig.align = "center", out.width = "80%", cache = FALSE)
 library(tidyverse)
 ```
 

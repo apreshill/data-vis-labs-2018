@@ -177,7 +177,7 @@ Things to consider:
 ```{r}
 ggplot(moma, aes(year_created, year_acquired)) +
   geom_point(alpha = .1) +
-  geom_abline(xintercept = 0, colour = "red") +
+  geom_abline(intercept = c(0,0), colour = "red") +
   labs(x = "Year Created", y = "Year Acquired") +
   ggtitle("MOMA Keeps Its Collection Current") +
   coord_fixed(ratio = 1)
@@ -192,7 +192,7 @@ moma_solo <- moma %>%
   filter(num_artists == 1)
 ggplot(moma_solo, aes(year_created, year_acquired)) +
   geom_point(alpha = .1) +
-  geom_abline(xintercept = 0, colour = "red") +
+  geom_abline(intercept = c(0,0), colour = "red") +
   labs(x = "Year Created", y = "Year Acquired") +
   ggtitle("MOMA Keeps Its Collection Current") +
   coord_fixed(ratio = 1) +
