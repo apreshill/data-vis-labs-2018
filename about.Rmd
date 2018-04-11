@@ -19,8 +19,8 @@ Who am I?
 
   * Alison Hill
   * <a href = "https://github.com/apreshill/"><i class="fa fa-github"> GitHub</i></a>
-  * <a href = https://twitter.com/apreshill"><i class="fa fa-twitter"> Twitter</i></a>
-  * <a href = https://alison.rbind.io"><i class="fa fa-home"> Personal Website</i></a>
+  * <a href = "https://twitter.com/apreshill"><i class="fa fa-twitter"> Twitter</i></a>
+  * <a href = "https://alison.rbind.io"><i class="fa fa-home"> Personal Website</i></a>
 
 Materials initially created for [CS631: Principles & Practice of Data Visualization (Spring 2018)](http://cslu.ohsu.edu/~bedricks/courses/cs631/).
 
