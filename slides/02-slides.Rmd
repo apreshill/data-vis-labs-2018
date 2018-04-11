@@ -1,0 +1,111 @@
+---
+title: "Lab 02: CS631"
+subtitle: "Tidyverse Basics"
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300, echo = FALSE,
+  fig.align = "center", out.width = "80%", cache = TRUE)
+library(tidyverse)
+```
+
+# Tidyverse basics
+
+In David Robinson's DataCamp course you learned:
+
+- `<-` (variable assignment)
+- `%>%` (then...)
+- `dplyr`, `ggplot2` (packages)
+  - `install.packages("dplyr")` (1x per machine)
+  - `library(dplyr)` (1x per work session)
+
+---
+class: center, middle, inverse
+
+## Let's review
+
+---
+# Data for today
+
+We'll use data from the Museum of Modern Art (MOMA)
+
+- Publicly available on [GitHub](https://github.com/MuseumofModernArt/collection)
+- As analyzed by [fivethirtyeight.com](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/)
+- And by [others](https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220)
+
+---
+# Get the data
+
+Use this code chunk to import my cleaned CSV file:
+
+```{r}
+library(here)
+library(readr)
+moma <- read_csv("http://bit.ly/cs631-moma")
+```
+
+
+---
+
+# From DataCamp Chapter 1
+
+all `dplyr`
+
+- print a tibble
+- `filter`
+- `arrange`
+- `mutate`
+
+---
+
+# From Lab 01
+
+all `dplyr`
+
+- `glimpse`
+- `distinct`
+- `count`
+
+
+---
+# Lab 02: Challenge 1
+
+- How many rows/observations are in `moma`?
+- How many variables are in `moma`?
+- What is the earliest year
+- How many distinct artists are there?
+- Which artist has the most paintings ever owned by `moma`? How many?
+
+
+---
+# From Lab 01: Challenge 1
+
+```{r}
+moma
+glimpse(moma)
+```
+
+
+---
+
+# From DataCamp Chapter 2
+
+all `ggplot2`
+
+- `aes(x = , y = )` (aesthetics)
+- `aes(x = , y = , color = )` (add color)
+- `aes(x = , y = , color = , size = )` (add size)
+- `+ facet_wrap(~ )` (facetting)

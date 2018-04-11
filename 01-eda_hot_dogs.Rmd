@@ -56,13 +56,27 @@ library(here)
 
 # Read in and wrangle data
 
-Next, we load some data:
+Next, we load some data. You can use the following chunk to load it in from a link:
+
+```{r eval = FALSE}
+hot_dogs <- read_csv("http://bit.ly/cs631-hotdog", 
+    col_types = cols(
+      gender = col_factor(levels = NULL)
+    ))
+```
+
+Or you can save the file at the link to a local CSV file. I did this and saved my file in a folder called `data`, then built up the file path to the CSV using `here`:
 
 ```{r}
 hot_dogs <- read_csv(here::here("data", "hot_dog_contest.csv"), 
     col_types = cols(
       gender = col_factor(levels = NULL)
     ))
+```
+
+Either way you do it, check it out once read in and make sure it looks like this!
+
+```{r}
 glimpse(hot_dogs)
 hot_dogs
 ```
@@ -159,7 +173,7 @@ ggplot(hot_dogs, aes(x = year, y = num_eaten)) +
 
 # Change The Dataset
 
-Now, let's change the question a little bit. This looks at the _creation_ of the IFOCE. What about the _affiliation_ of the contestants? We'll need some different data for this. Through the _Magic Of Data Science™_, we have dug that information up and put it into an expanded version of our CSV file.
+Now, let's change the question a little bit. This looks at the _creation_ of the IFOCE. What about the _affiliation_ of the contestants? We'll need some different data for this. Through the _Magic Of Data Science™_, we have dug that information up and put it into an expanded version of our CSV file available at [http://bit.ly/cs631-hotdog-affiliated](http://bit.ly/cs631-hotdog-affiliated).
 
 
 <div class="panel panel-success">
@@ -172,6 +186,17 @@ Let's work with this new dataset! Do the following:
 * Also `filter` the new data for only years 1981 and after, and only for male competitors.
   </div>
 </div>
+
+```{r eval = FALSE}
+hdm_affil <- read_csv("http://bit.ly/cs631-hotdog-affiliated", 
+    col_types = cols(
+      affiliated = col_factor(levels = NULL), 
+      gender = col_factor(levels = NULL)
+      )) %>% 
+  mutate(post_ifoce = year >= 1997) %>% 
+  filter(year >= 1981 & gender == "male") 
+```
+
 
 ```{r}
 hdm_affil <- read_csv(here::here("data", "hot_dog_contest_with_affiliation.csv"), 

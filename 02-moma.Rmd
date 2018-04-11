@@ -26,27 +26,69 @@ https://github.com/MuseumofModernArt/collection
 
 https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220
 
+# Packages needed
+
+```{r eval = FALSE}
+library(here) # to set file path if working from local file
+library(tidyverse) # readr, tidyr, ggplot2, dplyr
+```
+
+
 # Read in the data
 
 Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.
 
+I called my cleaned data `artworks-cleaned.csv`, and stored it in a folder called `data`. 
+
 ```{r}
 library(here)
 library(readr)
-library(janitor)
 library(dplyr)
 moma <- read_csv(here::here("data", "artworks-cleaned.csv"))
 ```
 
+```{r eval = FALSE}
+# or use my link
+library(readr)
+moma <- read_csv("http://bit.ly/cs631-moma")
+```
+
+
 # Explore with `dplyr`
 
 ## How many paintings?
+
+- How many rows/observations are in `moma`?
+
+- How many variables are in `moma`?
 
 ```{r}
 library(dplyr)
 moma
 glimpse(moma)
 ```
+
+
+## How many artists?
+
+- How many distinct artists are there?
+
+```{r}
+moma %>% 
+  distinct(artist)
+```
+
+## How many paintings per artist?
+
+- Which artist has the most paintings ever owned by `moma`? 
+- How many?
+
+```{r}
+moma %>% 
+  count(artist, sort = TRUE)
+```
+
+
 
 ## How many paintings by year acquired?
 ```{r}

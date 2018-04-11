@@ -321,7 +321,7 @@ div.tocify {
   <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
 </li>
 <li>
-  <a href="data-vis-talks.html">Talks &amp; Workshops</a>
+  <a href="data-vis-resources.html">Resources</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -382,12 +382,18 @@ div.tocify {
 </div>
 <div id="read-in-and-wrangle-data" class="section level1">
 <h1><span class="header-section-number">3</span> Read in and wrangle data</h1>
-<p>Next, we load some data:</p>
+<p>Next, we load some data. You can use the following chunk to load it in from a link:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hot_dogs &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;http://bit.ly/cs631-hotdog&quot;</span>, 
+    <span class="dt">col_types =</span> <span class="kw">cols</span>(
+      <span class="dt">gender =</span> <span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="ot">NULL</span>)
+    ))</code></pre></div>
+<p>Or you can save the file at the link to a local CSV file. I did this and saved my file in a folder called <code>data</code>, then built up the file path to the CSV using <code>here</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hot_dogs &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;hot_dog_contest.csv&quot;</span>), 
     <span class="dt">col_types =</span> <span class="kw">cols</span>(
       <span class="dt">gender =</span> <span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="ot">NULL</span>)
-    ))
-<span class="kw">glimpse</span>(hot_dogs)</code></pre></div>
+    ))</code></pre></div>
+<p>Either way you do it, check it out once read in and make sure it looks like this!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(hot_dogs)</code></pre></div>
 <pre><code>Observations: 49
 Variables: 4
 $ year      &lt;dbl&gt; 2017, 2017, 2016, 2016, 2015, 2015, 2014, 2014, 2013...
@@ -434,7 +440,7 @@ hot_dogs</code></pre></div>
 <p>Now let’s try making a first crack at a sketchy plot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(hot_dogs, <span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> num_eaten)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_col</span>()</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Note that our data is already in “counted” form, so we’re using <code>geom_col()</code> instead of <code>geom_bar()</code>.</p>
 </div>
 <div id="add-axis-labels-and-title" class="section level1">
@@ -443,7 +449,7 @@ hot_dogs</code></pre></div>
 <span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Hot Dogs and Buns Consumed&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="play-with-colors" class="section level1">
 <h1><span class="header-section-number">6</span> Play With Colors</h1>
@@ -464,17 +470,17 @@ Challenge #1:
 <span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Hot Dogs and Buns Consumed&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(hot_dogs, <span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> num_eaten)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;navyblue&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Hot Dogs and Buns Consumed&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(hot_dogs, <span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> num_eaten)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> post_ifoce), <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Hot Dogs and Buns Consumed&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #2:
@@ -493,11 +499,11 @@ Challenge #2:
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_fill_discrete</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>,
                       <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Pre-IFOCE&quot;</span>, <span class="st">&quot;Post-IFOCE&quot;</span>))</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="change-the-dataset" class="section level1">
 <h1><span class="header-section-number">7</span> Change The Dataset</h1>
-<p>Now, let’s change the question a little bit. This looks at the <em>creation</em> of the IFOCE. What about the <em>affiliation</em> of the contestants? We’ll need some different data for this. Through the <em>Magic Of Data Science™</em>, we have dug that information up and put it into an expanded version of our CSV file.</p>
+<p>Now, let’s change the question a little bit. This looks at the <em>creation</em> of the IFOCE. What about the <em>affiliation</em> of the contestants? We’ll need some different data for this. Through the <em>Magic Of Data Science™</em>, we have dug that information up and put it into an expanded version of our CSV file available at <a href="http://bit.ly/cs631-hotdog-affiliated" class="uri">http://bit.ly/cs631-hotdog-affiliated</a>.</p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #3:
@@ -511,6 +517,13 @@ Challenge #3:
 </div></li>
 </ul>
 </div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hdm_affil &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;http://bit.ly/cs631-hotdog-affiliated&quot;</span>, 
+    <span class="dt">col_types =</span> <span class="kw">cols</span>(
+      <span class="dt">affiliated =</span> <span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="ot">NULL</span>), 
+      <span class="dt">gender =</span> <span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="ot">NULL</span>)
+      )) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">post_ifoce =</span> year <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1997</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(year <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1981</span> <span class="op">&amp;</span><span class="st"> </span>gender <span class="op">==</span><span class="st"> &quot;male&quot;</span>) </code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hdm_affil &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;hot_dog_contest_with_affiliation.csv&quot;</span>), 
     <span class="dt">col_types =</span> <span class="kw">cols</span>(
       <span class="dt">affiliated =</span> <span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="ot">NULL</span>), 
@@ -560,7 +573,7 @@ Challenge #4:
 <span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> affiliated)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Hot Dogs and Buns Consumed&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #5:
@@ -581,7 +594,7 @@ Challenge #5:
 <span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&#39;#E9602B&#39;</span>,<span class="st">&#39;#2277A0&#39;</span>,<span class="st">&#39;#CCB683&#39;</span>),
                     <span class="dt">name =</span> <span class="st">&quot;IFOCE-affiliation&quot;</span>)
 affil_plot</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 <div id="play-with-scales-coordinates" class="section level1">
 <h1><span class="header-section-number">8</span> Play With Scales &amp; Coordinates</h1>
@@ -593,7 +606,7 @@ affil_plot</code></pre></div>
                      <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">70</span>, <span class="dv">10</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">expand =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))
 affil_plot</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>But now the plot looks like it is wearing tight pants.</p>
 <div class="figure">
 <img src="https://media.giphy.com/media/xT1XH07no2wZSq4mnm/giphy.gif" />
@@ -624,7 +637,7 @@ Don’t change <code>limits</code> unless you really know what you are doing! Mo
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">affil_plot &lt;-<span class="st"> </span>affil_plot <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">1980</span>, <span class="dv">2018</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">80</span>)) 
 affil_plot</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="play-with-theme-settings" class="section level1">
 <h1><span class="header-section-number">9</span> Play With Theme Settings</h1>
@@ -635,7 +648,7 @@ affil_plot</code></pre></div>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_blank</span>()) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x =</span> <span class="kw">element_line</span>(<span class="dt">color =</span> <span class="st">&quot;gray80&quot;</span>, <span class="dt">size =</span> <span class="fl">0.5</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.ticks =</span> <span class="kw">element_line</span>(<span class="dt">color =</span> <span class="st">&quot;gray80&quot;</span>, <span class="dt">size =</span> <span class="fl">0.5</span>))</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <div class="panel panel-info">
 <div class="panel-heading">
 Lesson:
@@ -659,13 +672,13 @@ You can change <em>almost anything</em> that your heart desires to change!
                      <span class="dt">text =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Lato&quot;</span>) <span class="co"># need extrafont for this</span>
                      )</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">affil_plot <span class="op">+</span><span class="st"> </span>hot_diggity </code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>We could also use someone else’s theme:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggthemes)
 affil_plot <span class="op">+</span><span class="st"> </span><span class="kw">theme_fivethirtyeight</span>(<span class="dt">base_family =</span> <span class="st">&quot;Lato&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">affil_plot <span class="op">+</span><span class="st"> </span><span class="kw">theme_tufte</span>(<span class="dt">base_family =</span> <span class="st">&quot;Palatino&quot;</span>)</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <p>The final thing we have to mess with is the x-axis ticks and labels. We’ll do this in two steps, then override our previous layer <code>scale_x_continuous</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">years_to_label &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1981</span>, <span class="dt">to =</span> <span class="dv">2017</span>, <span class="dt">by =</span> <span class="dv">4</span>)
 years_to_label</code></pre></div>
@@ -680,7 +693,7 @@ years_to_label</code></pre></div>
                      <span class="dt">labels =</span> hd_years<span class="op">$</span>year_lab)</code></pre></div>
 <pre><code>Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which
 will replace the existing scale.</code></pre>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 <div id="final-final-final-version" class="section level1">
 <h1><span class="header-section-number">10</span> Final (final, final) version</h1>
@@ -704,7 +717,7 @@ will replace the existing scale.</code></pre>
                      <span class="dt">labels =</span> hd_years<span class="op">$</span>year_lab) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">1980</span>, <span class="dv">2018</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">80</span>)) 
 nathan_plot</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Adding some plot annotations rather than having a fill legend:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nathan_ann &lt;-<span class="st"> </span>nathan_plot <span class="op">+</span>
 <span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
@@ -731,7 +744,7 @@ nathan_plot</code></pre></div>
 <span class="st">  </span><span class="kw">annotate</span>(<span class="st">&#39;text&#39;</span>, <span class="dt">x=</span><span class="dv">2012</span>, <span class="dt">y=</span><span class="dv">82</span>, <span class="dt">label=</span><span class="st">&quot;MLE/IFOCE Current Member&quot;</span>, <span class="dt">color=</span><span class="st">&quot;#E9602B&quot;</span>, <span class="dt">family=</span><span class="st">&quot;Lato&quot;</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">3</span>) </code></pre></div>
 <pre><code>Coordinate system already present. Adding new coordinate system, which will replace the existing one.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nathan_ann</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Finally, adding in another layer of data from female contestants:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hdm_females &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;hot_dog_contest_with_affiliation.csv&quot;</span>), 
     <span class="dt">col_types =</span> <span class="kw">cols</span>(
@@ -755,7 +768,7 @@ $ post_ifoce &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE</code></pre>
            <span class="dt">width =</span> <span class="fl">0.75</span>, 
            <span class="dt">fill =</span> <span class="st">&quot;#F68A39&quot;</span>) 
 nathan_w_females</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>And adding a final caption:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">caption &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">strwrap</span>(<span class="st">&quot;* From 2011 on, separate Men&#39;s and Women&#39;s prizes have been awarded. All female champions to date have been MLE/IFOCE-affiliated.&quot;</span>, <span class="dv">70</span>), <span class="dt">collapse=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
 
@@ -764,7 +777,7 @@ nathan_w_females <span class="op">+</span>
 <span class="st">  </span><span class="kw">annotate</span>(<span class="st">&#39;text&#39;</span>, <span class="dt">x =</span> <span class="fl">2018.5</span>, <span class="dt">y =</span> <span class="dv">39</span>, <span class="dt">label=</span><span class="st">&quot;*&quot;</span>, <span class="dt">family =</span> <span class="st">&quot;Lato&quot;</span>, <span class="dt">size =</span> <span class="dv">8</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">caption =</span> caption) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.caption =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Lato&quot;</span>, <span class="dt">size=</span><span class="dv">8</span>, <span class="dt">hjust=</span><span class="dv">0</span>, <span class="dt">margin=</span><span class="kw">margin</span>(<span class="dt">t=</span><span class="dv">15</span>)))</code></pre></div>
-<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="01-eda_hot_dogs_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 </div>
 
 <p>

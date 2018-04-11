@@ -7,8 +7,8 @@ navbar:
     href: 00-install_name_plot.html
   - text: Sakai
     href: https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18
-  - text: Talks & Workshops
-    href: data-vis-talks.html
+  - text: Resources
+    href: data-vis-resources.html
   right:
   - text: About
     href: about.html

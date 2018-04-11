@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 02: CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 02: CS631
+## Tidyverse Basics
+### Alison Hill
+
+---
+
+
+
+
+
+
+# Tidyverse basics
+
+In David Robinson's DataCamp course you learned:
+
+- What is it?
+- What is `%&gt;%`?
+- What is `dplyr`?
+- What is `ggplot2`?
+
+---
+class: center, middle, inverse
+
+## Let's review
+
+---
+# Data for today
+
+We'll use data from the Museum of Modern Art (MOMA)
+
+- Publicly available on [GitHub](https://github.com/MuseumofModernArt/collection)
+- As analyzed by [fivethirtyeight.com](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/)
+- And by [others](https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220)
+
+---
+# Get the data
+
+Use this code chunk to import my cleaned CSV file:
+
+
+
+
+---
+
+# From Chapter 1
+
+all `dplyr`
+
+
+- `filter`
+- `arrange`
+- `mutate`
+
+---
+# From Lab 01
+
+all `dplyr`
+
+- `glimpse`
+- `distinct`
+- `count`
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -321,7 +321,7 @@ div.tocify {
   <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
 </li>
 <li>
-  <a href="data-vis-talks.html">Talks &amp; Workshops</a>
+  <a href="data-vis-resources.html">Resources</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -361,13 +361,18 @@ div.tocify {
 <p><a href="https://github.com/MuseumofModernArt/collection" class="uri">https://github.com/MuseumofModernArt/collection</a></p>
 <p><a href="https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220" class="uri">https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220</a></p>
 </div>
+<div id="packages-needed" class="section level1">
+<h1><span class="header-section-number">3</span> Packages needed</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here) <span class="co"># to set file path if working from local file</span>
+<span class="kw">library</span>(tidyverse) <span class="co"># readr, tidyr, ggplot2, dplyr</span></code></pre></div>
+</div>
 <div id="read-in-the-data" class="section level1">
-<h1><span class="header-section-number">3</span> Read in the data</h1>
+<h1><span class="header-section-number">4</span> Read in the data</h1>
 <p>Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.</p>
+<p>I called my cleaned data <code>artworks-cleaned.csv</code>, and stored it in a folder called <code>data</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here)</code></pre></div>
 <pre><code>here() starts at /Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
-<span class="kw">library</span>(janitor)
 <span class="kw">library</span>(dplyr)
 moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks-cleaned.csv&quot;</span>))</code></pre></div>
 <pre><code>Parsed with column specification:
@@ -388,11 +393,18 @@ cols(
   department = col_character()
 )</code></pre>
 <pre><code>See spec(...) for full column specifications.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or use my link</span>
+<span class="kw">library</span>(readr)
+moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;http://bit.ly/cs631-moma&quot;</span>)</code></pre></div>
 </div>
 <div id="explore-with-dplyr" class="section level1">
-<h1><span class="header-section-number">4</span> Explore with <code>dplyr</code></h1>
+<h1><span class="header-section-number">5</span> Explore with <code>dplyr</code></h1>
 <div id="how-many-paintings" class="section level2">
-<h2><span class="header-section-number">4.1</span> How many paintings?</h2>
+<h2><span class="header-section-number">5.1</span> How many paintings?</h2>
+<ul>
+<li><p>How many rows/observations are in <code>moma</code>?</p></li>
+<li><p>How many variables are in <code>moma</code>?</p></li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
 moma</code></pre></div>
 <pre><code># A tibble: 2,253 x 23
@@ -441,8 +453,53 @@ $ exchange          &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FAL...
 $ classification    &lt;chr&gt; &quot;Painting&quot;, &quot;Painting&quot;, &quot;Painting&quot;, &quot;Paintin...
 $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Painting &amp; Sculptur...</code></pre>
 </div>
+<div id="how-many-artists" class="section level2">
+<h2><span class="header-section-number">5.2</span> How many artists?</h2>
+<ul>
+<li>How many distinct artists are there?</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(artist)</code></pre></div>
+<pre><code># A tibble: 989 x 1
+   artist           
+   &lt;chr&gt;            
+ 1 Joan Miró        
+ 2 Paul Klee        
+ 3 Pablo Picasso    
+ 4 Arthur Dove      
+ 5 Francis Picabia  
+ 6 Blinky Palermo   
+ 7 Pierre Roy       
+ 8 Paul Cézanne     
+ 9 Enrico Prampolini
+10 Jankel Adler     
+# ... with 979 more rows</code></pre>
+</div>
+<div id="how-many-paintings-per-artist" class="section level2">
+<h2><span class="header-section-number">5.3</span> How many paintings per artist?</h2>
+<ul>
+<li>Which artist has the most paintings ever owned by <code>moma</code>?</li>
+<li>How many?</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(artist, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code># A tibble: 989 x 2
+   artist               n
+   &lt;chr&gt;            &lt;int&gt;
+ 1 Pablo Picasso       55
+ 2 Henri Matisse       32
+ 3 On Kawara           32
+ 4 Jacob Lawrence      30
+ 5 Batiste Madalena    25
+ 6 Jean Dubuffet       25
+ 7 Odilon Redon        25
+ 8 Ben Vautier         24
+ 9 Frank Stella        23
+10 Philip Guston       23
+# ... with 979 more rows</code></pre>
+</div>
 <div id="how-many-paintings-by-year-acquired" class="section level2">
-<h2><span class="header-section-number">4.2</span> How many paintings by year acquired?</h2>
+<h2><span class="header-section-number">5.4</span> How many paintings by year acquired?</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(year_acquired, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code># A tibble: 88 x 2
@@ -461,7 +518,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 # ... with 78 more rows</code></pre>
 </div>
 <div id="how-many-paintings-by-year-created" class="section level2">
-<h2><span class="header-section-number">4.3</span> How many paintings by year created?</h2>
+<h2><span class="header-section-number">5.5</span> How many paintings by year created?</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(year_created, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code># A tibble: 139 x 2
@@ -480,7 +537,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 # ... with 129 more rows</code></pre>
 </div>
 <div id="how-many-paintings-since-2000" class="section level2">
-<h2><span class="header-section-number">4.4</span> How many paintings since 2000?</h2>
+<h2><span class="header-section-number">5.6</span> How many paintings since 2000?</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(year_acquired <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tally</span>()</code></pre></div>
@@ -490,7 +547,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 1   458</code></pre>
 </div>
 <div id="most-popular-artists" class="section level2">
-<h2><span class="header-section-number">4.5</span> Most popular artists</h2>
+<h2><span class="header-section-number">5.7</span> Most popular artists</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(artist, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code># A tibble: 989 x 2
@@ -509,29 +566,29 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 # ... with 979 more rows</code></pre>
 </div>
 <div id="what-about-dimensions" class="section level2">
-<h2><span class="header-section-number">4.6</span> What about dimensions?</h2>
+<h2><span class="header-section-number">5.8</span> What about dimensions?</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Let’s try filtering</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_for_size &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">600</span>, width_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">760</span>)
 <span class="kw">ggplot</span>(moma_for_size, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>)</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 </div>
 <div id="year-painted-vs-year-acquired" class="section level1">
-<h1><span class="header-section-number">5</span> Year painted vs year acquired</h1>
+<h1><span class="header-section-number">6</span> Year painted vs year acquired</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_fixed</span>()</code></pre></div>
 <pre><code>Warning: Removed 14 rows containing missing values (geom_point).</code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div id="how-many-feature-males-only" class="section level2">
-<h2><span class="header-section-number">5.1</span> How many feature males only?</h2>
+<h2><span class="header-section-number">6.1</span> How many feature males only?</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_solo &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 <span class="kw">ggplot</span>(moma_solo, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
@@ -540,10 +597,10 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <span class="st">  </span><span class="kw">coord_fixed</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>artist_gender)</code></pre></div>
 <pre><code>Warning: Removed 14 rows containing missing values (geom_point).</code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="how-many-feature-females-only" class="section level2">
-<h2><span class="header-section-number">5.2</span> How many feature females only?</h2>
+<h2><span class="header-section-number">6.2</span> How many feature females only?</h2>
 </div>
 </div>
 
