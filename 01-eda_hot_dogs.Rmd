@@ -4,7 +4,6 @@ subtitle: "CS631"
 author: "Alison Hill"
 output:
   html_document:
-    highlight: pygments
     theme: flatly
     toc: TRUE
     toc_float: TRUE

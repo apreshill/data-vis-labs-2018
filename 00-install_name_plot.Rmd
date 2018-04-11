@@ -3,7 +3,6 @@ title: 'Day One in R'
 author: "Alison Hill"
 output:
   html_document:
-    highlight: pygments
     theme: flatly
     toc: TRUE
     toc_float: TRUE

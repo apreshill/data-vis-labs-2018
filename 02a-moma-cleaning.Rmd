@@ -4,13 +4,8 @@ subtitle: "CS631"
 author: "Alison Hill"
 output:
   html_document:
-    highlight: pygments
+    highlight: zenburn
     theme: flatly
-    toc: TRUE
-    toc_float: TRUE
-    toc_depth: 2
-    number_sections: TRUE
-    code_folding: hide
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}

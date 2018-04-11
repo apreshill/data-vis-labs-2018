@@ -12,7 +12,7 @@
 <meta name="author" content="Alison Hill" />
 
 
-<title>Lab 02: MOMA Museum Tour</title>
+<title>Lab 02: MoMA Museum Tour</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,54 +25,25 @@
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-div.sourceCode {
-  overflow-x: visible;
-}
-</style>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
   }
 </style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
 
 
 <style type="text/css">
@@ -345,7 +316,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Lab 02: MOMA Museum Tour</h1>
+<h1 class="title toc-ignore">Lab 02: MoMA Museum Tour</h1>
 <h3 class="subtitle"><em>CS631</em></h3>
 <h4 class="author"><em>Alison Hill</em></h4>
 
@@ -354,29 +325,38 @@ div.tocify {
 
 <div id="goals-for-lab-02" class="section level1">
 <h1><span class="header-section-number">1</span> Goals for Lab 02</h1>
+<ul>
+<li>Review <code>dplyr</code> functions learned in last lab and DataCamp course</li>
+<li>Practice using <code>dplyr</code> functions to get to know a new dataset</li>
+<li>Be able to map global plot aesthetics to variables in <code>ggplot2</code></li>
+<li>Be able to create facetted plots with <code>ggplot2</code></li>
+</ul>
 </div>
 <div id="inspiration-data" class="section level1">
 <h1><span class="header-section-number">2</span> Inspiration + data</h1>
-<p><a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/" class="uri">https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/</a></p>
-<p><a href="https://github.com/MuseumofModernArt/collection" class="uri">https://github.com/MuseumofModernArt/collection</a></p>
-<p><a href="https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220" class="uri">https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220</a></p>
+<p>We’ll use data from the Museum of Modern Art (MOMA)</p>
+<ul>
+<li>Publicly available on <a href="https://github.com/MuseumofModernArt/collection">GitHub</a></li>
+<li>As analyzed by <a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/">fivethirtyeight.com</a></li>
+<li>And by <a href="https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220">others</a></li>
+</ul>
 </div>
 <div id="packages-needed" class="section level1">
 <h1><span class="header-section-number">3</span> Packages needed</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here) <span class="co"># to set file path if working from local file</span>
-<span class="kw">library</span>(tidyverse) <span class="co"># readr, tidyr, ggplot2, dplyr</span></code></pre></div>
+<pre class="r"><code>library(here) # to set file path if working from local file
+library(tidyverse) # readr, tidyr, ggplot2, dplyr</code></pre>
 </div>
 <div id="read-in-the-data" class="section level1">
 <h1><span class="header-section-number">4</span> Read in the data</h1>
 <p>Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.</p>
 <p>Use this code chunk to read in the data available at <a href="http://bit.ly/cs631-moma" class="uri">http://bit.ly/cs631-moma</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
-moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;http://bit.ly/cs631-moma&quot;</span>)</code></pre></div>
+<pre class="r"><code>library(readr)
+moma &lt;- read_csv(&quot;http://bit.ly/cs631-moma&quot;)</code></pre>
 <p>I called my cleaned data <code>artworks-cleaned.csv</code>, and stored it in a folder called <code>data</code>. You can use this code if you want to read in the local CSV file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here)
-<span class="kw">library</span>(readr)
-<span class="kw">library</span>(dplyr)
-moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks-cleaned.csv&quot;</span>))</code></pre></div>
+<pre class="r"><code>library(here)
+library(readr)
+library(dplyr)
+moma &lt;- read_csv(here::here(&quot;data&quot;, &quot;artworks-cleaned.csv&quot;))</code></pre>
 </div>
 <div id="challenge-1-know-your-data" class="section level1">
 <h1><span class="header-section-number">5</span> Challenge 1: Know your data</h1>
@@ -386,9 +366,9 @@ moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span cl
 <li>How many rows/observations are in <code>moma</code>?</li>
 <li>How many variables are in <code>moma</code>?</li>
 </ul>
-<p>These questions can be answered using the <code>dplyr</code> function <code>glimpse</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-moma</code></pre></div>
+<p>These questions can be answered using the <code>dplyr</code> function <code>glimpse</code>. There are 2253 paintings in <code>moma</code>.</p>
+<pre class="r"><code>library(dplyr)
+moma</code></pre>
 <pre><code># A tibble: 2,253 x 23
    title  artist  artist_bio artist_birth_ye… artist_death_ye… num_artists
    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;                 &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;
@@ -408,7 +388,7 @@ moma</code></pre></div>
 #   diameter_cm &lt;lgl&gt;, height_cm &lt;dbl&gt;, length_cm &lt;lgl&gt;, width_cm &lt;dbl&gt;,
 #   seat_height_cm &lt;lgl&gt;, purchase &lt;lgl&gt;, gift &lt;lgl&gt;, exchange &lt;lgl&gt;,
 #   classification &lt;chr&gt;, department &lt;chr&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(moma)</code></pre></div>
+<pre class="r"><code>glimpse(moma)</code></pre>
 <pre><code>Observations: 2,253
 Variables: 23
 $ title             &lt;chr&gt; &quot;Rope and People, I&quot;, &quot;Fire in the Evening&quot;,...
@@ -434,20 +414,19 @@ $ gift              &lt;lgl&gt; TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE,...
 $ exchange          &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FAL...
 $ classification    &lt;chr&gt; &quot;Painting&quot;, &quot;Painting&quot;, &quot;Painting&quot;, &quot;Paintin...
 $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Painting &amp; Sculptur...</code></pre>
-<p>There are 2253 paintings in <code>moma</code>.</p>
 </div>
-<div id="what-is-the-earliest-painting-acquired" class="section level2">
-<h2><span class="header-section-number">5.2</span> What is the earliest painting acquired?</h2>
+<div id="what-is-the-first-painting-acquired" class="section level2">
+<h2><span class="header-section-number">5.2</span> What is the first painting acquired?</h2>
 <ul>
-<li>What is the earliest painting ever acquired by MOMA?</li>
-<li>Which year?</li>
+<li>What is the first painting acquired by MoMA (since they started tracking)?</li>
+<li>What year was it acquired?</li>
 <li>Which artist?</li>
 <li>What title?</li>
 </ul>
 <p>These questions can be answered by combining two <code>dplyr</code> functions: <code>select</code> and <code>arrange</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(artist, title, year_acquired) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(year_acquired)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  select(artist, title, year_acquired) %&gt;% 
+  arrange(year_acquired)</code></pre>
 <pre><code># A tibble: 2,253 x 3
    artist            title                                   year_acquired
    &lt;chr&gt;             &lt;chr&gt;                                           &lt;dbl&gt;
@@ -463,18 +442,18 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 10 Arthur B. Davies  Italian Landscape                               1934.
 # ... with 2,243 more rows</code></pre>
 </div>
-<div id="what-is-the-earliest-painting-created-oldest" class="section level2">
-<h2><span class="header-section-number">5.3</span> What is the earliest painting created (oldest)?</h2>
+<div id="what-is-the-oldest-painting-in-the-moma-collection" class="section level2">
+<h2><span class="header-section-number">5.3</span> What is the oldest painting in the MoMA collection?</h2>
 <ul>
-<li>What is the earliest painting ever created in the MOMA collection historically (oldest painting)?</li>
-<li>Which year?</li>
+<li>What is the oldest painting in the MoMA collection historically (since they started tracking)?</li>
+<li>What year was it created?</li>
 <li>Which artist?</li>
 <li>What title?</li>
 </ul>
 <p>These questions can be answered by combining two <code>dplyr</code> functions: <code>select</code> and <code>arrange</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(artist, title, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(year_created)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  select(artist, title, year_created) %&gt;% 
+  arrange(year_created)</code></pre>
 <pre><code># A tibble: 2,253 x 3
    artist       title                                    year_created
    &lt;chr&gt;        &lt;chr&gt;                                           &lt;dbl&gt;
@@ -497,8 +476,8 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <li>How many distinct artists are there?</li>
 </ul>
 <p>Try <code>dplyr::distinct</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">distinct</span>(artist)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  distinct(artist)</code></pre>
 <pre><code># A tibble: 989 x 1
    artist           
    &lt;chr&gt;            
@@ -518,11 +497,11 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <h2><span class="header-section-number">5.5</span> How many paintings per artist?</h2>
 <ul>
 <li>Which artist has the most paintings ever owned by <code>moma</code>?</li>
-<li>How many were there by that artist?</li>
+<li>How many paintings in the MoMA collection by that artist?</li>
 </ul>
 <p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(artist, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  count(artist, sort = TRUE)</code></pre>
 <pre><code># A tibble: 989 x 2
    artist               n
    &lt;chr&gt;            &lt;int&gt;
@@ -538,11 +517,11 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 10 Philip Guston       23
 # ... with 979 more rows</code></pre>
 </div>
-<div id="in-what-year-were-the-most-paintings-acquired" class="section level2">
-<h2><span class="header-section-number">5.6</span> In what year were the most paintings acquired?</h2>
+<div id="when-were-the-most-paintings-in-the-collection-acquired" class="section level2">
+<h2><span class="header-section-number">5.6</span> When were the most paintings in the collection acquired?</h2>
 <p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(year_acquired, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  count(year_acquired, sort = TRUE)</code></pre>
 <pre><code># A tibble: 88 x 2
    year_acquired     n
            &lt;dbl&gt; &lt;int&gt;
@@ -558,11 +537,11 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 10         1956.    42
 # ... with 78 more rows</code></pre>
 </div>
-<div id="in-what-year-were-the-most-paintings-created" class="section level2">
-<h2><span class="header-section-number">5.7</span> In what year were the most paintings created?</h2>
+<div id="when-were-the-most-paintings-in-the-collection-created" class="section level2">
+<h2><span class="header-section-number">5.7</span> When were the most paintings in the collection created?</h2>
 <p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(year_created, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  count(year_created, sort = TRUE)</code></pre>
 <pre><code># A tibble: 139 x 2
    year_created     n
           &lt;dbl&gt; &lt;int&gt;
@@ -578,13 +557,14 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 10        1914.    37
 # ... with 129 more rows</code></pre>
 </div>
-<div id="what-about-first-painting-by-a-solo-female-artist" class="section level2">
-<h2><span class="header-section-number">5.8</span> What about first painting by a solo female artist?</h2>
-<p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>. Try <code>year_acquired</code> and <code>year_created</code>!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(title, artist, year_acquired, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(year_acquired)</code></pre></div>
+<div id="what-about-the-first-painting-by-a-solo-female-artist" class="section level2">
+<h2><span class="header-section-number">5.8</span> What about the first painting by a solo female artist?</h2>
+<p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>.</p>
+<p>Try <code>year_acquired</code> and <code>year_created</code>!</p>
+<pre class="r"><code>moma %&gt;% 
+  filter(num_artists == 1 &amp; n_female_artists == 1) %&gt;% 
+  select(title, artist, year_acquired, year_created) %&gt;% 
+  arrange(year_acquired)</code></pre>
 <pre><code># A tibble: 252 x 4
    title                           artist       year_acquired year_created
    &lt;chr&gt;                           &lt;chr&gt;                &lt;dbl&gt;        &lt;dbl&gt;
@@ -599,10 +579,10 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
  9 Desolation                      Raquel Forn…         1942.        1942.
 10 Self-Portrait with Cropped Hair Frida Kahlo          1943.        1940.
 # ... with 242 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(title, artist, year_acquired, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(year_created)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  filter(num_artists == 1 &amp; n_female_artists == 1) %&gt;% 
+  select(title, artist, year_acquired, year_created) %&gt;% 
+  arrange(year_created)</code></pre>
 <pre><code># A tibble: 252 x 4
    title                          artist        year_acquired year_created
    &lt;chr&gt;                          &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;
@@ -617,15 +597,16 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
  9 Portuguese Market              Sonia Delaun…         1955.        1915.
 10 Girl with a Blue Scarf         Gwen John             1963.        1915.
 # ... with 242 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or, because artist_gender is missing when num_artists &gt; 1</span>
-moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(artist_gender <span class="op">==</span><span class="st"> &quot;Female&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(title, artist, year_acquired, year_created) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(year_acquired)</code></pre></div>
+<pre class="r"><code># or, because artist_gender is missing when num_artists &gt; 1
+moma %&gt;% 
+  filter(artist_gender == &quot;Female&quot;) %&gt;% 
+  select(title, artist, year_acquired, year_created) %&gt;% 
+  arrange(year_acquired)</code></pre>
 </div>
 </div>
-<div id="challenge-2-on-paper-first" class="section level1">
-<h1><span class="header-section-number">6</span> Challenge 2: On paper first!</h1>
+<div id="challenge-2-on-paper" class="section level1">
+<h1><span class="header-section-number">6</span> Challenge 2: On paper</h1>
+<p>We’ll do this together: see <a href="https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html">slides</a></p>
 </div>
 <div id="challenge-3-plot-your-data" class="section level1">
 <h1><span class="header-section-number">7</span> Challenge 3: Plot your data</h1>
@@ -639,31 +620,52 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <p>Things to consider:</p>
 <ul>
 <li>You’ll want to play around with setting an <code>alpha</code> value here- keep in mind that <code>0</code> is totally transparent and <code>1</code> is opaque.</li>
-<li>Try using <code>geom_abline()</code> to add the line in red.</li>
+<li>Try using <code>geom_abline()</code> to add the line in red (use the default intercept value of 0). The actual red line is difficult to recreate- here is what the authors say: “The red regression line shows the “modernizing” of MoMA’s collection — how quickly the museum has moved toward acquiring recent paintings.”</li>
 <li>Go back to <a href="https://apreshill.github.io/data-vis-labs-2018/01-eda_hot_dogs.html">Lab 01</a> to review how to do the following:
 <ul>
 <li>Change the x- and y-axis labels and the plot title to match the plot above</li>
 </ul></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) </code></pre></div>
+<pre class="r"><code>ggplot(moma, aes(year_created, year_acquired)) +
+  geom_point(alpha = .1, na.rm = TRUE) +
+  geom_abline(intercept = c(0,0), colour = &quot;red&quot;) +
+  labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
+  ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) </code></pre>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>fit &lt;- lm(year_acquired ~ year_created, data = moma)
+summary(fit)</code></pre>
+<pre><code>
+Call:
+lm(formula = year_acquired ~ year_created, data = moma)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-34.093 -16.229  -1.962  12.667  63.176 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1063.6754    28.7140   37.04   &lt;2e-16 ***
+year_created    0.4668     0.0147   31.76   &lt;2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 19.42 on 2237 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.3108,    Adjusted R-squared:  0.3105 
+F-statistic:  1009 on 1 and 2237 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div id="facet-by-artist-gender" class="section level2">
 <h2><span class="header-section-number">7.2</span> Facet by artist gender</h2>
 <p>Can you make the same plot above, but facet by artist gender? For this to make sense, you probably want to do some filtering to select only those paintings where there was one “solo” artist.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_solo &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
-<span class="kw">ggplot</span>(moma_solo, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Year Created&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Year Acquired&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Keeps Its Collection Current&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>artist_gender)</code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>moma_solo &lt;- moma %&gt;% 
+  filter(num_artists == 1)
+ggplot(moma_solo, aes(year_created, year_acquired)) +
+  geom_point(alpha = .1) +
+  geom_abline(intercept = c(0,0), colour = &quot;red&quot;) +
+  labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
+  ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) +
+  facet_wrap(~artist_gender)</code></pre>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
 <div id="challenge-4-plot-painting-dimensions" class="section level1">
@@ -679,24 +681,56 @@ moma <span class="op">%&gt;%</span><span class="st"> </span>
 <li>If you want to add color as in the original, you’ll need to create a new variable using <code>mutate</code>.</li>
 <li>You’ll probably also want to look into <code>case_when</code>.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_dim &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">600</span>, width_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">760</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">hw_ratio =</span> height_cm <span class="op">/</span><span class="st"> </span>width_cm,
-         <span class="dt">hw_cat =</span> <span class="kw">case_when</span>(
-           hw_ratio <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;taller than wide&quot;</span>,
-           hw_ratio <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;wider than tall&quot;</span>,
-           hw_ratio <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;perfect square&quot;</span>
+<pre class="r"><code>moma_dim &lt;- moma %&gt;% 
+  filter(height_cm &lt; 600, width_cm &lt; 760) %&gt;% 
+  mutate(hw_ratio = height_cm / width_cm,
+         hw_cat = case_when(
+           hw_ratio &gt; 1 ~ &quot;taller than wide&quot;,
+           hw_ratio &lt; 1 ~ &quot;wider than tall&quot;,
+           hw_ratio == 1 ~ &quot;perfect square&quot;
          ))
-<span class="kw">library</span>(ggthemes)
-<span class="kw">ggplot</span>(moma_dim, <span class="kw">aes</span>(<span class="dt">x =</span> width_cm, <span class="dt">y =</span> height_cm, <span class="dt">colour =</span> hw_cat)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MOMA Paintings, Tall and Wide&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>,
-                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;gray50&quot;</span>, <span class="st">&quot;#FF9900&quot;</span>, <span class="st">&quot;#B14CF0&quot;</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_fivethirtyeight</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>()) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Width&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Height&quot;</span>) </code></pre></div>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+library(ggthemes)
+ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
+  geom_point(alpha = .5) +
+  ggtitle(&quot;MoMA Paintings, Tall and Wide&quot;) +
+  scale_colour_manual(name = &quot;&quot;,
+                      values = c(&quot;gray50&quot;, &quot;#FF9900&quot;, &quot;#B14CF0&quot;)) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = &quot;Width&quot;, y = &quot;Height&quot;) </code></pre>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Because Grace is right, we can do better with colors!</p>
+<pre class="r"><code>library(ggthemes)
+ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
+  geom_point(alpha = .5) +
+  ggtitle(&quot;MoMA Paintings, Tall and Wide&quot;) +
+  scale_colour_manual(name = &quot;&quot;,
+                      values = c(&quot;gray50&quot;, &quot;#ee5863&quot;, &quot;#6999cd&quot;)) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = &quot;Width&quot;, y = &quot;Height&quot;) </code></pre>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>We could also do away with the legend and use <code>geom_annotate</code> instead.</p>
+<pre class="r"><code>library(ggthemes)
+ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
+  geom_point(alpha = .5, show.legend = FALSE) +
+  ggtitle(&quot;MoMA Paintings, Tall and Wide&quot;) +
+  scale_colour_manual(name = &quot;&quot;,
+                      values = c(&quot;gray50&quot;, &quot;#ee5863&quot;, &quot;#6999cd&quot;)) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = &quot;Width&quot;, y = &quot;Height&quot;) +
+  annotate(x = 200, y = 380, geom = &quot;text&quot;, 
+           label = &quot;Taller than\nWide&quot;, color = &quot;#ee5863&quot;, 
+           size = 5, family = &quot;Lato&quot;, hjust = 1, fontface = 2) +
+    annotate(x = 375, y = 100, geom = &quot;text&quot;, 
+             label = &quot;Wider than\nTall&quot;, color = &quot;#6999cd&quot;, 
+             size = 5, family = &quot;Lato&quot;, hjust = 0, fontface = 2)</code></pre>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="challenge-5-plot-something-new-different" class="section level1">
+<h1><span class="header-section-number">9</span> Challenge 5: Plot something new &amp; different!</h1>
+<p>It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are that you make one new plot that is original, and you <em>must</em> be able to write 1-2 sentences to present the plot and why it makes sense. It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.</p>
 </div>
 
 <p>

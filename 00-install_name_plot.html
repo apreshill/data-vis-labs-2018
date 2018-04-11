@@ -24,51 +24,25 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-</style>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
   }
 </style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
 
 
 <style type="text/css">
@@ -392,9 +366,9 @@ div.tocify {
 <li>They may be carefully curated by CRAN (which involves a thorough submission and review process), and thus are easy install using <code>install.packages(&quot;name_of_package&quot;, dependencies = TRUE)</code>.</li>
 <li>Alternatively, they may be available via GitHub. To download these packages, you first need to install the <code>devtools</code> package.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
-<span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="st">&quot;name_of_package&quot;</span>)</code></pre></div>
+<pre class="r"><code>install.packages(&quot;devtools&quot;)
+library(devtools)
+install_github(&quot;name_of_package&quot;)</code></pre>
 <p>Place your cursor in the console again (where you last typed <code>x</code> and <code>[4]</code> printed on the screen). You can use the first method to install the following packages directly from CRAN, all of which we will use:</p>
 <ul>
 <li><a href="http://dplyr.tidyverse.org"><code>dplyr</code>,</a></li>
@@ -402,14 +376,14 @@ div.tocify {
 <li><a href="https://github.com/hadley/babynames"><code>babynames</code></a></li>
 </ul>
 <p>You can download all of these at once, too:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;babynames&quot;</span>), 
-                 <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="r"><code>install.packages(c(&quot;dplyr&quot;, &quot;ggplot2&quot;, &quot;babynames&quot;), 
+                 dependencies = TRUE)</code></pre>
 <p class="text-info">
 <strong>Heads up:</strong> We should formally introduce the combine command, <a href="http://stat.ethz.ch/R-manual/R-patched/library/base/html/c.html"><code>c()</code></a>, used above. You will use this often- any time you want to combine things into a vector.
 </p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">&quot;hello&quot;</span>, <span class="st">&quot;my&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;is&quot;</span>, <span class="st">&quot;alison&quot;</span>)</code></pre></div>
+<pre class="r"><code>c(&quot;hello&quot;, &quot;my&quot;, &quot;name&quot;, &quot;is&quot;, &quot;alison&quot;)</code></pre>
 <pre><code>[1] &quot;hello&quot;  &quot;my&quot;     &quot;name&quot;   &quot;is&quot;     &quot;alison&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">20</span>, <span class="dv">50</span>)</code></pre></div>
+<pre class="r"><code>c(1:3, 20, 50)</code></pre>
 <pre><code>[1]  1  2  3 20 50</code></pre>
 <p>Mind your use of quotes carefully with packages.</p>
 <ul>
@@ -418,10 +392,10 @@ div.tocify {
 <li>If you want <em>help</em>, no quotes are needed: <code>help(name_of_package)</code> or <code>?name_of_package</code>.</li>
 <li>If you want the <em>citation</em> for a package (and you should give credit where credit is due), ask R as in <code>citation(&quot;name_of_package&quot;)</code>.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
-<span class="kw">library</span>(dplyr)
-<span class="kw">help</span>(<span class="st">&quot;dplyr&quot;</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">citation</span>(<span class="st">&quot;ggplot2&quot;</span>)</code></pre></div>
+<pre class="r"><code>install.packages(&quot;dplyr&quot;, dependencies = TRUE)
+library(dplyr)
+help(&quot;dplyr&quot;)</code></pre>
+<pre class="r"><code>citation(&quot;ggplot2&quot;)</code></pre>
 <pre><code>
 To cite ggplot2 in publications, please use:
 
@@ -446,11 +420,11 @@ A BibTeX entry for LaTeX users is
 <h1><span class="header-section-number">5</span> Make a name plot</h1>
 <p>Open a new R script in RStudio by going to <code>File --&gt; New File --&gt; R Script</code>. For this first foray into R, I’ll give you the code, so sit back and relax and feel free to copy and paste my code with some small tweaks.</p>
 <p>First load the packages:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(babynames) <span class="co"># contains the actual data</span>
-<span class="kw">library</span>(dplyr) <span class="co"># for manipulating data</span>
-<span class="kw">library</span>(ggplot2) <span class="co"># for plotting data</span></code></pre></div>
+<pre class="r"><code>library(babynames) # contains the actual data
+library(dplyr) # for manipulating data
+library(ggplot2) # for plotting data</code></pre>
 <p>Next, we’ll follow <a href="https://cran.r-project.org/doc/contrib/de_Jonge+van_der_Loo-Introduction_to_data_cleaning_with_R.pdf">best practices for inspecting a freshly read dataset</a>. Also, see <a href="http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/">“What I do when I get a new data set as told through tweets”</a> for more ideas about exploring a new dataset. Here are some critical commands to obtain a high-level overview (HLO) of your freshly read dataset in R. We’ll call it saying hello to your dataset:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(babynames) <span class="co"># dplyr</span></code></pre></div>
+<pre class="r"><code>glimpse(babynames) # dplyr</code></pre>
 <pre><code>Observations: 1,858,689
 Variables: 5
 $ year &lt;dbl&gt; 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 188...
@@ -458,7 +432,7 @@ $ sex  &lt;chr&gt; &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &
 $ name &lt;chr&gt; &quot;Mary&quot;, &quot;Anna&quot;, &quot;Emma&quot;, &quot;Elizabeth&quot;, &quot;Minnie&quot;, &quot;Margaret&quot;...
 $ n    &lt;int&gt; 7065, 2604, 2003, 1939, 1746, 1578, 1472, 1414, 1320, 128...
 $ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(babynames) <span class="co"># base R</span></code></pre></div>
+<pre class="r"><code>head(babynames) # base R</code></pre>
 <pre><code># A tibble: 6 x 5
    year sex   name          n   prop
   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;
@@ -468,7 +442,7 @@ $ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...<
 4 1880. F     Elizabeth  1939 0.0199
 5 1880. F     Minnie     1746 0.0179
 6 1880. F     Margaret   1578 0.0162</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(babynames) <span class="co"># same</span></code></pre></div>
+<pre class="r"><code>tail(babynames) # same</code></pre>
 <pre><code># A tibble: 6 x 5
    year sex   name       n       prop
   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;int&gt;      &lt;dbl&gt;
@@ -478,19 +452,19 @@ $ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...<
 4 2015. M     Zykir      5 0.00000247
 5 2015. M     Zyrus      5 0.00000247
 6 2015. M     Zyus       5 0.00000247</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(babynames) <span class="co"># same</span></code></pre></div>
+<pre class="r"><code>names(babynames) # same</code></pre>
 <pre><code>[1] &quot;year&quot; &quot;sex&quot;  &quot;name&quot; &quot;n&quot;    &quot;prop&quot;</code></pre>
 <p>If you have done the above and produced sane-looking output, you are ready for the next bit. Use the code below to create a new data frame called <code>alison</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alison &lt;-<span class="st"> </span>babynames <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(name <span class="op">==</span><span class="st"> &quot;Alison&quot;</span> <span class="op">|</span><span class="st"> </span>name <span class="op">==</span><span class="st"> &quot;Allison&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>) </code></pre></div>
+<pre class="r"><code>alison &lt;- babynames %&gt;%
+  filter(name == &quot;Alison&quot; | name == &quot;Allison&quot;) %&gt;% 
+  filter(sex == &quot;F&quot;) </code></pre>
 <ul>
 <li><p>The first bit makes a new dataset called <code>alison</code> that is a copy of the <code>babynames</code> dataset- the <code>%&gt;%</code> tells you we are doing some other stuff to it later.</p></li>
 <li><p>The second bit <code>filters</code> our <code>babynames</code> to only keep rows where the <code>name</code> is either Alison or Allison (read <code>|</code> as <em>“or”</em>.)</p></li>
 <li><p>The third bit applies another <code>filter</code> to keep only those where sex is female.</p></li>
 </ul>
 <p>Let’s check out the data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alison</code></pre></div>
+<pre class="r"><code>alison</code></pre>
 <pre><code># A tibble: 214 x 5
     year sex   name        n      prop
    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;     &lt;dbl&gt;
@@ -505,7 +479,7 @@ $ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...<
  9 1913. F     Alison     12 0.0000183
 10 1913. F     Allison     7 0.0000107
 # ... with 204 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(alison)</code></pre></div>
+<pre class="r"><code>glimpse(alison)</code></pre>
 <pre><code>Observations: 214
 Variables: 5
 $ year &lt;dbl&gt; 1905, 1907, 1908, 1910, 1910, 1911, 1912, 1912, 1913, 191...
@@ -514,13 +488,13 @@ $ name &lt;chr&gt; &quot;Alison&quot;, &quot;Alison&quot;, &quot;Allison&quot;, 
 $ n    &lt;int&gt; 7, 5, 6, 5, 5, 9, 12, 9, 12, 7, 22, 11, 16, 13, 24, 15, 2...
 $ prop &lt;dbl&gt; 2.259012e-05, 1.481776e-05, 1.692367e-05, 1.191821e-05, 1...</code></pre>
 <p>Again, if you have sane-looking output here, move along to plotting the data!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(alison, <span class="kw">aes</span>(<span class="dt">x =</span> year, 
-                           <span class="dt">y =</span> prop,  
-                           <span class="dt">group =</span> name, 
-                           <span class="dt">color =</span> name)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_line</span>()  </code></pre></div>
+<pre class="r"><code>plot &lt;- ggplot(alison, aes(x = year, 
+                           y = prop,  
+                           group = name, 
+                           color = name)) + 
+  geom_line()  </code></pre>
 <p>Now if you did this right, you will not see your plot! Because we saved the <code>ggplot</code> with a name (<code>plot</code>), R just saved the object for you. But check out the top right pane in RStudio again: under <code>Values</code> you should see <code>plot</code>, so it is there, you just have to ask for it. Here’s how:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plot </code></pre></div>
+<pre class="r"><code>plot </code></pre>
 <p><img src="00-install_name_plot_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="make-a-new-name-plot" class="section level1">
@@ -529,8 +503,8 @@ $ prop &lt;dbl&gt; 2.259012e-05, 1.481776e-05, 1.692367e-05, 1.191821e-05, 1...<
 <div id="save-and-share" class="section level2">
 <h2><span class="header-section-number">6.1</span> Save and share</h2>
 <p>Save your work so you can share your favorite plot with us. You will not like the looks of your plot if you mouse over to <code>Export</code> and save it. Instead, use <code>ggplot2</code>’s command for saving a plot with sensible defaults:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">help</span>(ggsave)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;alison_hill.pdf&quot;</span>, plot) <span class="co"># please make the filename unique!</span></code></pre></div>
+<pre class="r"><code>help(ggsave)</code></pre>
+<pre class="r"><code>ggsave(&quot;alison_hill.pdf&quot;, plot) # please make the filename unique!</code></pre>
 <p>Upload this exported plot to Sakai before Wednesday at noon.</p>
 </div>
 </div>

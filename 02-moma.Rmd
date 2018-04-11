@@ -1,10 +1,9 @@
 ---
-title: "Lab 02: MOMA Museum Tour"
+title: "Lab 02: MoMA Museum Tour"
 subtitle: "CS631"
 author: "Alison Hill"
 output:
   html_document:
-    highlight: pygments
     theme: flatly
     toc: TRUE
     toc_float: TRUE
@@ -18,13 +17,19 @@ knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALS
 
 # Goals for Lab 02
 
+- Review `dplyr` functions learned in last lab and DataCamp course
+- Practice using `dplyr` functions to get to know a new dataset
+- Be able to map global plot aesthetics to variables in `ggplot2`
+- Be able to create facetted plots with `ggplot2`
+
+
 # Inspiration + data
 
-https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/
+We'll use data from the Museum of Modern Art (MOMA)
 
-https://github.com/MuseumofModernArt/collection
-
-https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220
+- Publicly available on [GitHub](https://github.com/MuseumofModernArt/collection)
+- As analyzed by [fivethirtyeight.com](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/)
+- And by [others](https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220)
 
 # Packages needed
 
@@ -64,7 +69,7 @@ moma <- read_csv(here::here("data", "artworks-cleaned.csv"))
 - How many rows/observations are in `moma`?
 - How many variables are in `moma`?
 
-These questions can be answered using the `dplyr` function `glimpse`.
+These questions can be answered using the `dplyr` function `glimpse`. There are `r nrow(moma)` paintings in `moma`.
 
 ```{r}
 library(dplyr)
@@ -72,13 +77,13 @@ moma
 glimpse(moma)
 ```
 
-There are `r nrow(moma)` paintings in `moma`.
-
-## What is the earliest painting acquired?
 
 
-- What is the earliest painting ever acquired by MOMA? 
-- Which year?
+## What is the first painting acquired?
+
+
+- What is the first painting acquired by MoMA (since they started tracking)? 
+- What year was it acquired?
 - Which artist?
 - What title?
 
@@ -90,11 +95,11 @@ moma %>%
   arrange(year_acquired)
 ```
 
-## What is the earliest painting created (oldest)?
+## What is the oldest painting in the MoMA collection?
 
 
-- What is the earliest painting ever created in the MOMA collection historically (oldest painting)? 
-- Which year?
+- What is the oldest painting in the MoMA collection historically (since they started tracking)? 
+- What year was it created?
 - Which artist?
 - What title?
 
@@ -129,7 +134,7 @@ moma %>%
 ## How many paintings per artist?
 
 - Which artist has the most paintings ever owned by `moma`? 
-- How many were there by that artist?
+- How many paintings in the MoMA collection by that artist?
 
 Try `dplyr::count`. Use `?count` to figure out how to sort the output.
 
@@ -140,7 +145,7 @@ moma %>%
 
 
 
-## In what year were the most paintings acquired?
+## When were the most paintings in the collection acquired?
 
 Try `dplyr::count`. Use `?count` to figure out how to sort the output.
 
@@ -149,7 +154,7 @@ moma %>%
   count(year_acquired, sort = TRUE)
 ```
 
-## In what year were the most paintings created?
+## When were the most paintings in the collection created?
 
 Try `dplyr::count`. Use `?count` to figure out how to sort the output.
 
@@ -158,9 +163,11 @@ moma %>%
   count(year_created, sort = TRUE)
 ```
 
-## What about first painting by a solo female artist?
+## What about the first painting by a solo female artist?
 
-Try combining three `dplyr` functions: `filter`, `select`, and `arrange`. Try `year_acquired` and `year_created`!
+Try combining three `dplyr` functions: `filter`, `select`, and `arrange`. 
+
+Try `year_acquired` and `year_created`!
 
 ```{r}
 moma %>% 
@@ -184,7 +191,9 @@ moma %>%
   arrange(year_acquired)
 ```
 
-# Challenge 2: On paper first!
+# Challenge 2: On paper
+
+We'll do this together: see [slides](https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html)
 
 # Challenge 3: Plot your data
 
@@ -197,16 +206,22 @@ From [fivethirtyeight](https://fivethirtyeight.com/features/a-nerds-guide-to-the
 Things to consider:
 
 - You'll want to play around with setting an `alpha` value here- keep in mind that `0` is totally transparent and `1` is opaque. 
-- Try using `geom_abline()` to add the line in red.
+- Try using `geom_abline()` to add the line in red (use the default intercept value of 0). The actual red line is difficult to recreate- here is what the authors say: "The red regression line shows the “modernizing” of MoMA’s collection — how quickly the museum has moved toward acquiring recent paintings."
 - Go back to [Lab 01](https://apreshill.github.io/data-vis-labs-2018/01-eda_hot_dogs.html) to review how to do the following:
     - Change the x- and y-axis labels and the plot title to match the plot above
+
 
 ```{r}
 ggplot(moma, aes(year_created, year_acquired)) +
   geom_point(alpha = .1, na.rm = TRUE) +
   geom_abline(intercept = c(0,0), colour = "red") +
-  labs(x = "Year Created", y = "Year Acquired") +
-  ggtitle("MOMA Keeps Its Collection Current") 
+  labs(x = "Year Painted", y = "Year Acquired") +
+  ggtitle("MoMA Keeps Its Collection Current") 
+```
+
+```{r}
+fit <- lm(year_acquired ~ year_created, data = moma)
+summary(fit)
 ```
 
 ## Facet by artist gender
@@ -219,8 +234,8 @@ moma_solo <- moma %>%
 ggplot(moma_solo, aes(year_created, year_acquired)) +
   geom_point(alpha = .1) +
   geom_abline(intercept = c(0,0), colour = "red") +
-  labs(x = "Year Created", y = "Year Acquired") +
-  ggtitle("MOMA Keeps Its Collection Current") +
+  labs(x = "Year Painted", y = "Year Acquired") +
+  ggtitle("MoMA Keeps Its Collection Current") +
   facet_wrap(~artist_gender)
 ```
 
@@ -250,13 +265,52 @@ moma_dim <- moma %>%
 library(ggthemes)
 ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
   geom_point(alpha = .5) +
-  ggtitle("MOMA Paintings, Tall and Wide") +
+  ggtitle("MoMA Paintings, Tall and Wide") +
   scale_colour_manual(name = "",
                       values = c("gray50", "#FF9900", "#B14CF0")) +
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
   labs(x = "Width", y = "Height") 
 ```
+
+
+Because Grace is right, we can do better with colors!
+
+```{r}
+library(ggthemes)
+ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
+  geom_point(alpha = .5) +
+  ggtitle("MoMA Paintings, Tall and Wide") +
+  scale_colour_manual(name = "",
+                      values = c("gray50", "#ee5863", "#6999cd")) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = "Width", y = "Height") 
+```
+
+We could also do away with the legend and use `geom_annotate` instead.
+
+```{r}
+library(ggthemes)
+ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
+  geom_point(alpha = .5, show.legend = FALSE) +
+  ggtitle("MoMA Paintings, Tall and Wide") +
+  scale_colour_manual(name = "",
+                      values = c("gray50", "#ee5863", "#6999cd")) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = "Width", y = "Height") +
+  annotate(x = 200, y = 380, geom = "text", 
+           label = "Taller than\nWide", color = "#ee5863", 
+           size = 5, family = "Lato", hjust = 1, fontface = 2) +
+    annotate(x = 375, y = 100, geom = "text", 
+             label = "Wider than\nTall", color = "#6999cd", 
+             size = 5, family = "Lato", hjust = 0, fontface = 2)
+```
+
+# Challenge 5: Plot something new & different!
+
+It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are that you make one new plot that is original, and you *must* be able to write 1-2 sentences to present the plot and why it makes sense. It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.
 
 
 
