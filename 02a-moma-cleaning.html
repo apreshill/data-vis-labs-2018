@@ -21,52 +21,25 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
-td.sourceCode { padding-left: 5px; }
-pre, code { color: #cccccc; background-color: #303030; }
-code > span.kw { color: #f0dfaf; } /* Keyword */
-code > span.dt { color: #dfdfbf; } /* DataType */
-code > span.dv { color: #dcdccc; } /* DecVal */
-code > span.bn { color: #dca3a3; } /* BaseN */
-code > span.fl { color: #c0bed1; } /* Float */
-code > span.ch { color: #dca3a3; } /* Char */
-code > span.st { color: #cc9393; } /* String */
-code > span.co { color: #7f9f7f; } /* Comment */
-code > span.ot { color: #efef8f; } /* Other */
-code > span.al { color: #ffcfaf; } /* Alert */
-code > span.fu { color: #efef8f; } /* Function */
-code > span.er { color: #c3bf9f; } /* Error */
-code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
-code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code > span.sc { color: #dca3a3; } /* SpecialChar */
-code > span.vs { color: #cc9393; } /* VerbatimString */
-code > span.ss { color: #cc9393; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #f0dfaf; } /* ControlFlow */
-code > span.op { color: #f0efd0; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code > span.at { } /* Attribute */
-code > span.do { color: #7f9f7f; } /* Documentation */
-code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
-</style>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
   }
 </style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
 
 
 <style type="text/css">
@@ -237,30 +210,21 @@ $(document).ready(function () {
 
 <div id="load-the-moma-data" class="section level1">
 <h1>Load the MOMA data</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here)
-<span class="kw">library</span>(readr)
-<span class="kw">library</span>(janitor)
-<span class="kw">library</span>(dplyr)
-moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks.csv&quot;</span>),
-                 <span class="dt">col_types =</span> <span class="kw">cols</span>(
-                   <span class="dt">BeginDate =</span> <span class="kw">col_number</span>(),
-                   <span class="dt">EndDate =</span> <span class="kw">col_number</span>(),
-                   <span class="st">`</span><span class="dt">Length (cm)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>(),
-                   <span class="st">`</span><span class="dt">Circumference (cm)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>(),
-                   <span class="st">`</span><span class="dt">Duration (sec.)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>(),
-                   <span class="st">`</span><span class="dt">Diameter (cm)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>()
-                 )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">clean_names</span>()</code></pre></div>
-<pre><code>Warning: 8 parsing failures.
-   row          col   expected  actual                                                                                file
-103824 DateAcquired date like  1998-04 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
-128673 DateAcquired date like  1977-08 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
-131406 DateAcquired date like  1998-04 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
-131785 DateAcquired date like  1975-01 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
-132165 DateAcquired date like  1998-04 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
-...... ............ .......... ....... ...................................................................................
-See problems(...) for more details.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">problems</span>(moma)</code></pre></div>
+<pre class="r"><code>library(here)
+library(readr)
+library(janitor)
+library(dplyr)
+moma &lt;- read_csv(here::here(&quot;data&quot;, &quot;artworks.csv&quot;),
+                 col_types = cols(
+                   BeginDate = col_number(),
+                   EndDate = col_number(),
+                   `Length (cm)` = col_number(),
+                   `Circumference (cm)` = col_number(),
+                   `Duration (sec.)` = col_number(),
+                   `Diameter (cm)` = col_number()
+                 )) %&gt;% 
+  clean_names()
+problems(moma)</code></pre>
 <pre><code># A tibble: 8 x 5
      row col          expected     actual  file                           
    &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;                          
@@ -273,25 +237,25 @@ See problems(...) for more details.</code></pre>
 7 132167 DateAcquired &quot;date like &quot; 1995    &#39;/Users/hillali/Documents/Proj…
 8 132169 DateAcquired &quot;date like &quot; 1998-04 &#39;/Users/hillali/Documents/Proj…</code></pre>
 <p>Basic cleaning with <code>stringr</code> of <code>gender</code> variable, which refers to the gender of the artist (a <code>()</code> is used a placeholder for “various artists”)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(stringr)
-moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender =</span> <span class="kw">str_replace_all</span>(gender, <span class="kw">fixed</span>(<span class="st">&quot;(female)&quot;</span>, 
-                                                    <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>), <span class="st">&quot;F&quot;</span>),
-         <span class="dt">gender =</span> <span class="kw">str_replace_all</span>(gender, <span class="kw">fixed</span>(<span class="st">&quot;(male)&quot;</span>, 
-                                                    <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>), <span class="st">&quot;M&quot;</span>),
-         <span class="dt">num_artists =</span> <span class="kw">str_count</span>(gender, <span class="st">&quot;[:alpha:]&quot;</span>),
-         <span class="dt">num_artists =</span> <span class="kw">na_if</span>(num_artists, <span class="dv">0</span>),
-         <span class="dt">n_female_artists =</span> <span class="kw">str_count</span>(gender, <span class="st">&quot;F&quot;</span>),
-         <span class="dt">n_male_artists =</span> <span class="kw">str_count</span>(gender, <span class="st">&quot;M&quot;</span>),
-         <span class="dt">artist_gender =</span> <span class="kw">case_when</span>(
-           num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;Female&quot;</span>,
-           num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_male_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;Male&quot;</span>
-         ))</code></pre></div>
+<pre class="r"><code>library(stringr)
+moma &lt;- moma %&gt;% 
+  mutate(gender = str_replace_all(gender, fixed(&quot;(female)&quot;, 
+                                                    ignore_case = TRUE), &quot;F&quot;),
+         gender = str_replace_all(gender, fixed(&quot;(male)&quot;, 
+                                                    ignore_case = TRUE), &quot;M&quot;),
+         num_artists = str_count(gender, &quot;[:alpha:]&quot;),
+         num_artists = na_if(num_artists, 0),
+         n_female_artists = str_count(gender, &quot;F&quot;),
+         n_male_artists = str_count(gender, &quot;M&quot;),
+         artist_gender = case_when(
+           num_artists == 1 &amp; n_female_artists == 1 ~ &quot;Female&quot;,
+           num_artists == 1 &amp; n_male_artists == 1 ~ &quot;Male&quot;
+         ))</code></pre>
 <p>Let’s also do some detecting of strings in the <code>credit_line</code> variable.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">purchase =</span> <span class="kw">str_detect</span>(credit_line, <span class="kw">fixed</span>(<span class="st">&quot;purchase&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)),
-         <span class="dt">gift =</span> <span class="kw">str_detect</span>(credit_line, <span class="kw">fixed</span>(<span class="st">&quot;gift&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)),
-         <span class="dt">exchange =</span> <span class="kw">str_detect</span>(credit_line, <span class="kw">fixed</span>(<span class="st">&quot;exchange&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)))</code></pre></div>
+<pre class="r"><code>moma &lt;- moma %&gt;% 
+  mutate(purchase = str_detect(credit_line, fixed(&quot;purchase&quot;, ignore_case = TRUE)),
+         gift = str_detect(credit_line, fixed(&quot;gift&quot;, ignore_case = TRUE)),
+         exchange = str_detect(credit_line, fixed(&quot;exchange&quot;, ignore_case = TRUE)))</code></pre>
 <p>According to <a href="https://www.moma.org/momaorg/shared/pdfs/docs/explore/CollectionsMgmtPolicyMoMA_Oct10.pdf">MOMA</a>: Acquisitions to the Collection may be made by purchase, gift, fractional interest gift, bequest, or exchange.</p>
 <p>Let’s clean up some dates:</p>
 <ul>
@@ -299,26 +263,17 @@ moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span clas
 <li>We’ll rename two date variables that are the artist birth/death year, but aren’t labelled clearly.</li>
 <li>We’ll do a very rough estimate of the date each piece was created, using <code>stringr::str_extract()</code></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre></div>
-<pre><code>Warning: package &#39;lubridate&#39; was built under R version 3.4.3</code></pre>
-<pre><code>
-Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:here&#39;:
-
-    here</code></pre>
-<pre><code>The following object is masked from &#39;package:base&#39;:
-
-    date</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year_acquired =</span> <span class="kw">year</span>(date_acquired)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">rename</span>(<span class="dt">artist_birth_year =</span> begin_date, <span class="dt">artist_death_year =</span> end_date) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year_created =</span> <span class="kw">str_extract</span>(date, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">d{4}&quot;</span>),
-         <span class="dt">artist_birth_year =</span> <span class="kw">na_if</span>(artist_birth_year, <span class="dv">0</span>),
-         <span class="dt">artist_death_year =</span> <span class="kw">na_if</span>(artist_death_year, <span class="dv">0</span>))</code></pre></div>
+<pre class="r"><code>library(lubridate)
+moma &lt;- moma %&gt;% 
+  mutate(year_acquired = year(date_acquired)) %&gt;% 
+  rename(artist_birth_year = begin_date, artist_death_year = end_date) %&gt;% 
+  mutate(year_created = str_extract(date, &quot;\\d{4}&quot;),
+         artist_birth_year = na_if(artist_birth_year, 0),
+         artist_death_year = na_if(artist_death_year, 0))</code></pre>
 <p>What different kinds of art classifications are available?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">distinct</span>(classification) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="ot">Inf</span>)</code></pre></div>
+<pre class="r"><code>moma %&gt;% 
+  distinct(classification) %&gt;% 
+  print(n = Inf)</code></pre>
 <pre><code># A tibble: 31 x 1
    classification                
    &lt;chr&gt;                         
@@ -358,17 +313,17 @@ Attaching package: &#39;lubridate&#39;</code></pre>
 <li>Filter based on classification</li>
 <li>Drop all pieces of art that have either missing (<code>NA</code>) height or width measurements, or who have <code>0</code> for either height or width.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
-moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(classification <span class="op">==</span><span class="st"> &quot;Painting&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">drop_na</span>(height_cm, width_cm) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>width_cm <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<pre class="r"><code>library(tidyr)
+moma &lt;- moma %&gt;% 
+  filter(classification == &quot;Painting&quot;) %&gt;% 
+  drop_na(height_cm, width_cm) %&gt;% 
+  filter(height_cm &gt; 0 &amp; width_cm &gt; 0)</code></pre>
 <p>We’ll select those columns we want to keep:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(title, <span class="kw">contains</span>(<span class="st">&quot;artist&quot;</span>), <span class="kw">contains</span>(<span class="st">&quot;year&quot;</span>), <span class="kw">contains</span>(<span class="st">&quot;_cm&quot;</span>),
-         purchase, gift, exchange, classification, department)</code></pre></div>
+<pre class="r"><code>moma &lt;- moma %&gt;% 
+  select(title, contains(&quot;artist&quot;), contains(&quot;year&quot;), contains(&quot;_cm&quot;),
+         purchase, gift, exchange, classification, department)</code></pre>
 <p>Now let’s export this data frame for the lab.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_csv</span>(moma, here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks-cleaned.csv&quot;</span>))</code></pre></div>
+<pre class="r"><code>write_csv(moma, here::here(&quot;data&quot;, &quot;artworks-cleaned.csv&quot;))</code></pre>
 </div>
 
 <p>

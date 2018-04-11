@@ -4,12 +4,11 @@ subtitle: "CS631"
 author: "Alison Hill"
 output:
   html_document:
-    highlight: zenburn
     theme: flatly
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, cache = FALSE)
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
 ```
 
 ```{r load-packages, include = FALSE}
