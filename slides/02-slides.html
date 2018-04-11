@@ -27,10 +27,11 @@ class: center, middle, inverse, title-slide
 
 In David Robinson's DataCamp course you learned:
 
-- What is it?
-- What is `%&gt;%`?
-- What is `dplyr`?
-- What is `ggplot2`?
+- `&lt;-` (variable assignment)
+- `%&gt;%` (then...)
+- `dplyr`, `ggplot2` (packages)
+  - `install.packages("dplyr")` (1x per machine)
+  - `library(dplyr)` (1x per work session)
 
 ---
 class: center, middle, inverse
@@ -52,27 +53,167 @@ We'll use data from the Museum of Modern Art (MOMA)
 Use this code chunk to import my cleaned CSV file:
 
 
+```r
+library(readr)
+moma &lt;- read_csv("http://bit.ly/cs631-moma")
+```
 
 
 ---
 
-# From Chapter 1
+# Data wrangling so far
 
-all `dplyr`
+All functions from `dplyr` package
 
+.pull-left[
+From DataCamp Chapter 1
+
+- print a tibble
 
 - `filter`
+
 - `arrange`
+
 - `mutate`
+]
 
----
-# From Lab 01
+--
 
-all `dplyr`
+.pull-right[
+From Lab 01
+
 
 - `glimpse`
+
 - `distinct`
+
 - `count`
+]
+
+---
+# Lab 02: Challenge 1
+
+Use all the `dplyr` functions you have learned to answer the following questions:
+
+1. How many rows/observations are in `moma`?
+1. How many variables are in `moma`?
+1. What is the earliest painting ever acquired by MOMA? Which year? Which artist? What title?
+    - *Hint: you may want to look into `select` + `arrange`*
+1. What is the earliest painting ever created in the collection? Which year? Which artist? What title?
+    - *Hint: you may want to look into `select` + `arrange`*
+1. How many distinct artists are there?
+1. Which artist has the most paintings ever owned by MOMA? How many?
+
+If you want more:
+1. In what year were the most paintings acquired? Created?
+1. In what year was the first painting by a (solo) female artist acquired? When was that painting created? Which artist? What title? 
+
+
+
+---
+
+# From DataCamp Chapter 2
+
+all `ggplot2`
+
+- `aes(x = , y = )` (aesthetics)
+- `aes(x = , y = , color = )` (add color)
+- `aes(x = , y = , color = , size = )` (add size)
+- `+ facet_wrap(~ )` (facetting)
+
+---
+# Old School (Challenge 2)&lt;sup&gt;1&lt;/sup&gt;
+
+- Sketch the graphics below on paper, where the `x`-axis is variable `year_created` and the `y`-axis is variable `year_acquired`
+
+
+```
+# A tibble: 4 x 4
+  year_created year_acquired area_cmsq artist_gender
+         &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        
+1        1980.         1985.        3. male         
+2        1990.         1995.        2. male         
+3        2000.         2005.        1. female       
+4        2010.         2015.        2. female       
+```
+
+&lt;!-- Copy to chalkboard/whiteboard --&gt;
+
+1. A scatter plot
+1. A scatter plot where the `color` of the points corresponds to `artist_gender`
+1. A scatter plot where the `size` of the points corresponds to `area_cmsq`
+
+.footnote[
+[1] Shamelessly borrowed with much appreciation to [Chester Ismay](https://ismayc.github.io/talks/ness-infer/slide_deck.html)
+]
+
+---
+
+# 1. A scatterplot
+
+
+```r
+library(ggplot2)
+ggplot(data = simple_ex, mapping = aes(x = year_created, 
+                                       y = year_acquired)) + 
+  geom_point()
+```
+--
+
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+# 2. `color` points by `D`
+
+
+```r
+library(ggplot2)
+ggplot(data = simple_ex, mapping = aes(x = year_created, 
+                                       y = year_acquired)) + 
+  geom_point(mapping = aes(color = artist_gender))
+```
+--
+
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# 3. `size` points by `C`
+
+
+```r
+library(ggplot2)
+ggplot(data = simple_ex, mapping = aes(x = year_created, 
+                                       y = year_acquired, 
+                                       size = artist_gender)) + 
+  geom_point()
+```
+--
+
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# [The Five-Named Graphs](http://moderndive.com/3-viz.html#FiveNG)
+
+
+- Scatterplot: `geom_point()`
+- Line graph: `geom_line()`
+- Histogram: `geom_histogram()`
+- Boxplot: `geom_boxplot()`
+- Bar graph: `geom_bar()`
+
+
+---
+
+---
+# Lab 02: Challenge 3
+
+Use `ggplot2` to make:
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

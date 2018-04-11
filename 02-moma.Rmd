@@ -1,5 +1,5 @@
 ---
-title: "Lab 02: A Data Scientist's MOMA Tour"
+title: "Lab 02: MOMA Museum Tour"
 subtitle: "CS631"
 author: "Alison Hill"
 output:
@@ -13,7 +13,7 @@ output:
     code_folding: hide
 ---
 ```{r setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, cache = FALSE)
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
 ```
 
 # Goals for Lab 02
@@ -28,7 +28,7 @@ https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far
 
 # Packages needed
 
-```{r eval = FALSE}
+```{r}
 library(here) # to set file path if working from local file
 library(tidyverse) # readr, tidyr, ggplot2, dplyr
 ```
@@ -38,7 +38,14 @@ library(tidyverse) # readr, tidyr, ggplot2, dplyr
 
 Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.
 
-I called my cleaned data `artworks-cleaned.csv`, and stored it in a folder called `data`. 
+Use this code chunk to read in the data available at [http://bit.ly/cs631-moma](http://bit.ly/cs631-moma):
+
+```{r eval = FALSE}
+library(readr)
+moma <- read_csv("http://bit.ly/cs631-moma")
+```
+
+I called my cleaned data `artworks-cleaned.csv`, and stored it in a folder called `data`. You can use this code if you want to read in the local CSV file.
 
 ```{r}
 library(here)
@@ -47,25 +54,54 @@ library(dplyr)
 moma <- read_csv(here::here("data", "artworks-cleaned.csv"))
 ```
 
-```{r eval = FALSE}
-# or use my link
-library(readr)
-moma <- read_csv("http://bit.ly/cs631-moma")
-```
 
 
-# Explore with `dplyr`
+
+# Challenge 1: Know your data
 
 ## How many paintings?
 
 - How many rows/observations are in `moma`?
-
 - How many variables are in `moma`?
+
+These questions can be answered using the `dplyr` function `glimpse`.
 
 ```{r}
 library(dplyr)
 moma
 glimpse(moma)
+```
+
+## What is the earliest painting acquired?
+
+
+- What is the earliest painting ever acquired by MOMA? 
+- Which year?
+- Which artist?
+- What title?
+
+These questions can be answered by combining two `dplyr` functions: `select` and `arrange`.
+
+```{r}
+moma %>% 
+  select(artist, title, year_acquired) %>% 
+  arrange(year_acquired)
+```
+
+## What is the earliest painting created?
+
+
+- What is the earliest painting ever created in the MOMA collection historically? 
+- Which year?
+- Which artist?
+- What title?
+
+These questions can be answered by combining two `dplyr` functions: `select` and `arrange`.
+
+```{r}
+moma %>% 
+  select(artist, title, year_created) %>% 
+  arrange(year_created)
 ```
 
 
@@ -81,7 +117,7 @@ moma %>%
 ## How many paintings per artist?
 
 - Which artist has the most paintings ever owned by `moma`? 
-- How many?
+- How many have there been?
 
 ```{r}
 moma %>% 
@@ -90,37 +126,85 @@ moma %>%
 
 
 
-## How many paintings by year acquired?
+## In what year were the most paintings acquired?
+
 ```{r}
 moma %>% 
   count(year_acquired, sort = TRUE)
 ```
 
-## How many paintings by year created?
+## In what year were the most paintings created?
 
 ```{r}
 moma %>% 
   count(year_created, sort = TRUE)
 ```
 
-## How many paintings since 2000?
+## What about first painting by a solo female artist?
 
 ```{r}
 moma %>% 
-  filter(year_acquired >= 2000) %>% 
-  tally()
+  filter(num_artists == 1 & n_female_artists == 1) %>% 
+  select(title, artist, year_acquired, year_created) %>% 
+  arrange(year_acquired)
 ```
 
+```{r eval = FALSE}
+# or, because artist_gender is missing when num_artists > 1
+moma %>% 
+  filter(artist_gender == "Female") %>% 
+  select(title, artist, year_acquired, year_created) %>% 
+  arrange(year_acquired)
+```
 
-## Most popular artists
+# Challenge 2: On paper first!
+
+# Challenge 3: Plot your data
+
+From [fivethirtyeight](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/). Let's recreate this plot (mostly)!
+
+![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-1.png?w=1150&quality=90&strip=info)
+
+## Plot year painted vs year acquired
+
+Things to consider:
+
+- You'll want to play around with setting an `alpha` value here- keep in mind that `0` is totally transparent and `1` is opaque. 
+- Try using `geom_abline()` to add the line in red.
+- Go back to [Lab 01](https://apreshill.github.io/data-vis-labs-2018/01-eda_hot_dogs.html) to review how to do the following:
+    - Change the x- and y-axis labels and the plot title to match the plot above
 
 ```{r}
-moma %>% 
-  count(artist, sort = TRUE)
+ggplot(moma, aes(year_created, year_acquired)) +
+  geom_point(alpha = .1) +
+  geom_abline(xintercept = 0, colour = "red") +
+  labs(x = "Year Created", y = "Year Acquired") +
+  ggtitle("MOMA Keeps Its Collection Current") +
+  coord_fixed(ratio = 1)
+```
+
+## Facet by artist gender
+
+Can you make the same plot above, but facet by artist gender? For this to make sense, you probably want to do some filtering to select only those paintings where there was one "solo" artist. 
+
+```{r}
+moma_solo <- moma %>% 
+  filter(num_artists == 1)
+ggplot(moma_solo, aes(year_created, year_acquired)) +
+  geom_point(alpha = .1) +
+  geom_abline(xintercept = 0, colour = "red") +
+  labs(x = "Year Created", y = "Year Acquired") +
+  ggtitle("MOMA Keeps Its Collection Current") +
+  coord_fixed(ratio = 1) +
+  facet_wrap(~artist_gender)
 ```
 
 
-## What about dimensions?
+# Challenge 4: Plot painting dimensions
+
+Let's (somewhat) try to recreate this scatterplot from [fivethirtyeight](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/). 
+
+![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&quality=90&strip=info)
 
 ```{r}
 library(ggplot2)
@@ -138,29 +222,4 @@ ggplot(moma_for_size, aes(x = height_cm, y = width_cm)) +
 ```
 
 
-# Year painted vs year acquired
 
-```{r}
-ggplot(moma, aes(year_created, year_acquired)) +
-  geom_point(alpha = .1) +
-  geom_abline(intercept = 0, colour = "red") +
-  coord_fixed()
-```
-
-
-
-## How many feature males only?
-
-```{r}
-moma_solo <- moma %>% 
-  filter(num_artists == 1)
-ggplot(moma_solo, aes(year_created, year_acquired)) +
-  geom_point(alpha = .1) +
-  geom_abline(intercept = 0, colour = "red") +
-  coord_fixed() +
-  facet_wrap(~artist_gender)
-```
-
-
-
-## How many feature females only?
