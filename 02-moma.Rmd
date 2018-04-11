@@ -219,10 +219,7 @@ ggplot(moma, aes(year_created, year_acquired)) +
   ggtitle("MoMA Keeps Its Collection Current") 
 ```
 
-```{r}
-fit <- lm(year_acquired ~ year_created, data = moma)
-summary(fit)
-```
+
 
 ## Facet by artist gender
 

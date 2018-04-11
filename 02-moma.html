@@ -632,27 +632,6 @@ moma %&gt;%
   labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
   ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) </code></pre>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>fit &lt;- lm(year_acquired ~ year_created, data = moma)
-summary(fit)</code></pre>
-<pre><code>
-Call:
-lm(formula = year_acquired ~ year_created, data = moma)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--34.093 -16.229  -1.962  12.667  63.176 
-
-Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  1063.6754    28.7140   37.04   &lt;2e-16 ***
-year_created    0.4668     0.0147   31.76   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 19.42 on 2237 degrees of freedom
-  (14 observations deleted due to missingness)
-Multiple R-squared:  0.3108,    Adjusted R-squared:  0.3105 
-F-statistic:  1009 on 1 and 2237 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div id="facet-by-artist-gender" class="section level2">
 <h2><span class="header-section-number">7.2</span> Facet by artist gender</h2>
@@ -665,7 +644,7 @@ ggplot(moma_solo, aes(year_created, year_acquired)) +
   labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
   ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) +
   facet_wrap(~artist_gender)</code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 </div>
 <div id="challenge-4-plot-painting-dimensions" class="section level1">
@@ -698,7 +677,7 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
   labs(x = &quot;Width&quot;, y = &quot;Height&quot;) </code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Because Grace is right, we can do better with colors!</p>
 <pre class="r"><code>library(ggthemes)
 ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
@@ -709,7 +688,7 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
   labs(x = &quot;Width&quot;, y = &quot;Height&quot;) </code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>We could also do away with the legend and use <code>geom_annotate</code> instead.</p>
 <pre class="r"><code>library(ggthemes)
 ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
@@ -726,7 +705,7 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
     annotate(x = 375, y = 100, geom = &quot;text&quot;, 
              label = &quot;Wider than\nTall&quot;, color = &quot;#6999cd&quot;, 
              size = 5, family = &quot;Lato&quot;, hjust = 0, fontface = 2)</code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="challenge-5-plot-something-new-different" class="section level1">
 <h1><span class="header-section-number">9</span> Challenge 5: Plot something new &amp; different!</h1>
