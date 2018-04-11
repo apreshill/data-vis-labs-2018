@@ -100,7 +100,7 @@ Use all the `dplyr` functions you have learned to answer the following questions
 1. What is the earliest painting ever created in the collection? Which year? Which artist? What title?
     - *Hint: you may want to look into `select` + `arrange`*
 1. How many distinct artists are there?
-1. Which artist has the most paintings ever owned by MOMA? How many?
+1. Which artist has the most paintings ever owned by MOMA? How many paintings are by this artist?
 
 If you want more:
 1. In what year were the most paintings acquired? Created?
