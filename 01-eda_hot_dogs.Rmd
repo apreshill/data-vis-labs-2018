@@ -1,6 +1,7 @@
 ---
-title: "Nathan's Hot-Dog Eating Contest"
-author: "CS631"
+title: "Lab 01: Nathan's Hot-Dog Eating Contest"
+subtitle: "CS631"
+author: "Alison Hill"
 output:
   html_document:
     highlight: pygments

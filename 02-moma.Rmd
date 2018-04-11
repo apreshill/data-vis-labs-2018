@@ -1,0 +1,124 @@
+---
+title: "Lab 02: A Data Scientist's MOMA Tour"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    highlight: pygments
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+    code_folding: hide
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+# Goals for Lab 02
+
+# Inspiration + data
+
+https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/
+
+https://github.com/MuseumofModernArt/collection
+
+https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220
+
+# Read in the data
+
+Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.
+
+```{r}
+library(here)
+library(readr)
+library(janitor)
+library(dplyr)
+moma <- read_csv(here::here("data", "artworks-cleaned.csv"))
+```
+
+# Explore with `dplyr`
+
+## How many paintings?
+
+```{r}
+library(dplyr)
+moma
+glimpse(moma)
+```
+
+## How many paintings by year acquired?
+```{r}
+moma %>% 
+  count(year_acquired, sort = TRUE)
+```
+
+## How many paintings by year created?
+
+```{r}
+moma %>% 
+  count(year_created, sort = TRUE)
+```
+
+## How many paintings since 2000?
+
+```{r}
+moma %>% 
+  filter(year_acquired >= 2000) %>% 
+  tally()
+```
+
+
+## Most popular artists
+
+```{r}
+moma %>% 
+  count(artist, sort = TRUE)
+```
+
+
+## What about dimensions?
+
+```{r}
+library(ggplot2)
+ggplot(moma, aes(x = height_cm, y = width_cm)) +
+  geom_point()
+```
+
+Let's try filtering
+
+```{r}
+moma_for_size <- moma %>% 
+  filter(height_cm < 600, width_cm < 760)
+ggplot(moma_for_size, aes(x = height_cm, y = width_cm)) +
+  geom_point(alpha = .1)
+```
+
+
+# Year painted vs year acquired
+
+```{r}
+ggplot(moma, aes(year_created, year_acquired)) +
+  geom_point(alpha = .1) +
+  geom_abline(intercept = 0, colour = "red") +
+  coord_fixed()
+```
+
+
+
+## How many feature males only?
+
+```{r}
+moma_solo <- moma %>% 
+  filter(num_artists == 1)
+ggplot(moma_solo, aes(year_created, year_acquired)) +
+  geom_point(alpha = .1) +
+  geom_abline(intercept = 0, colour = "red") +
+  coord_fixed() +
+  facet_wrap(~artist_gender)
+```
+
+
+
+## How many feature females only?

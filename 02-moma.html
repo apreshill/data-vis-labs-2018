@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 02: A Data Scientist’s MOMA Tour</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="00-install_name_plot.html">Day One in R</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+<li>
+  <a href="data-vis-talks.html">Talks &amp; Workshops</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Lab 02: A Data Scientist’s MOMA Tour</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="goals-for-lab-02" class="section level1">
+<h1><span class="header-section-number">1</span> Goals for Lab 02</h1>
+</div>
+<div id="inspiration-data" class="section level1">
+<h1><span class="header-section-number">2</span> Inspiration + data</h1>
+<p><a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/" class="uri">https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/</a></p>
+<p><a href="https://github.com/MuseumofModernArt/collection" class="uri">https://github.com/MuseumofModernArt/collection</a></p>
+<p><a href="https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220" class="uri">https://medium.com/@foe/here-s-a-roundup-of-how-people-have-used-our-data-so-far-80862e4ce220</a></p>
+</div>
+<div id="read-in-the-data" class="section level1">
+<h1><span class="header-section-number">3</span> Read in the data</h1>
+<p>Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here)</code></pre></div>
+<pre><code>here() starts at /Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+<span class="kw">library</span>(janitor)
+<span class="kw">library</span>(dplyr)
+moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks-cleaned.csv&quot;</span>))</code></pre></div>
+<pre><code>Parsed with column specification:
+cols(
+  .default = col_double(),
+  title = col_character(),
+  artist = col_character(),
+  artist_bio = col_character(),
+  artist_gender = col_character(),
+  circumference_cm = col_logical(),
+  diameter_cm = col_logical(),
+  length_cm = col_logical(),
+  seat_height_cm = col_logical(),
+  purchase = col_logical(),
+  gift = col_logical(),
+  exchange = col_logical(),
+  classification = col_character(),
+  department = col_character()
+)</code></pre>
+<pre><code>See spec(...) for full column specifications.</code></pre>
+</div>
+<div id="explore-with-dplyr" class="section level1">
+<h1><span class="header-section-number">4</span> Explore with <code>dplyr</code></h1>
+<div id="how-many-paintings" class="section level2">
+<h2><span class="header-section-number">4.1</span> How many paintings?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+moma</code></pre></div>
+<pre><code># A tibble: 2,253 x 23
+   title  artist  artist_bio artist_birth_ye… artist_death_ye… num_artists
+   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;                 &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;
+ 1 Rope … Joan M… (Spanish,…            1893.            1983.          1.
+ 2 Fire … Paul K… (German, …            1879.            1940.          1.
+ 3 Portr… Paul K… (German, …            1879.            1940.          1.
+ 4 Guitar Pablo … (Spanish,…            1881.            1973.          1.
+ 5 Grand… Arthur… (American…            1880.            1946.          1.
+ 6 &quot;\&quot;M&#39;… Franci… (French, …            1879.            1953.          1.
+ 7 Untit… Blinky… (German, …            1943.            1977.          1.
+ 8 Dayli… Pierre… (French, …            1880.            1950.          1.
+ 9 The B… Paul C… (French, …            1839.            1906.          1.
+10 Synth… Enrico… (Italian,…            1894.            1956.          1.
+# ... with 2,243 more rows, and 17 more variables: n_female_artists &lt;dbl&gt;,
+#   n_male_artists &lt;dbl&gt;, artist_gender &lt;chr&gt;, year_acquired &lt;dbl&gt;,
+#   year_created &lt;dbl&gt;, circumference_cm &lt;lgl&gt;, depth_cm &lt;dbl&gt;,
+#   diameter_cm &lt;lgl&gt;, height_cm &lt;dbl&gt;, length_cm &lt;lgl&gt;, width_cm &lt;dbl&gt;,
+#   seat_height_cm &lt;lgl&gt;, purchase &lt;lgl&gt;, gift &lt;lgl&gt;, exchange &lt;lgl&gt;,
+#   classification &lt;chr&gt;, department &lt;chr&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(moma)</code></pre></div>
+<pre><code>Observations: 2,253
+Variables: 23
+$ title             &lt;chr&gt; &quot;Rope and People, I&quot;, &quot;Fire in the Evening&quot;,...
+$ artist            &lt;chr&gt; &quot;Joan Miró&quot;, &quot;Paul Klee&quot;, &quot;Paul Klee&quot;, &quot;Pabl...
+$ artist_bio        &lt;chr&gt; &quot;(Spanish, 1893–1983)&quot;, &quot;(German, born Switz...
+$ artist_birth_year &lt;dbl&gt; 1893, 1879, 1879, 1881, 1880, 1879, 1943, 18...
+$ artist_death_year &lt;dbl&gt; 1983, 1940, 1940, 1973, 1946, 1953, 1977, 19...
+$ num_artists       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
+$ n_female_artists  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+$ n_male_artists    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
+$ artist_gender     &lt;chr&gt; &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Mal...
+$ year_acquired     &lt;dbl&gt; 1936, 1970, 1966, 1955, 1939, 1968, 1997, 19...
+$ year_created      &lt;dbl&gt; 1935, 1929, 1927, 1919, 1925, 1919, 1970, 19...
+$ circumference_cm  &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+$ depth_cm          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+$ diameter_cm       &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+$ height_cm         &lt;dbl&gt; 104.8, 33.8, 60.3, 215.9, 50.8, 129.2, 200.0...
+$ length_cm         &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+$ width_cm          &lt;dbl&gt; 74.6, 33.3, 36.8, 78.7, 54.0, 89.9, 200.0, 3...
+$ seat_height_cm    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+$ purchase          &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FA...
+$ gift              &lt;lgl&gt; TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE,...
+$ exchange          &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FAL...
+$ classification    &lt;chr&gt; &quot;Painting&quot;, &quot;Painting&quot;, &quot;Painting&quot;, &quot;Paintin...
+$ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Painting &amp; Sculptur...</code></pre>
+</div>
+<div id="how-many-paintings-by-year-acquired" class="section level2">
+<h2><span class="header-section-number">4.2</span> How many paintings by year acquired?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(year_acquired, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code># A tibble: 88 x 2
+   year_acquired     n
+           &lt;dbl&gt; &lt;int&gt;
+ 1         1985.    86
+ 2         1942.    71
+ 3         1979.    71
+ 4         1991.    67
+ 5         2005.    67
+ 6         1967.    65
+ 7         2008.    55
+ 8         1961.    45
+ 9         1969.    45
+10         1956.    42
+# ... with 78 more rows</code></pre>
+</div>
+<div id="how-many-paintings-by-year-created" class="section level2">
+<h2><span class="header-section-number">4.3</span> How many paintings by year created?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(year_created, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code># A tibble: 139 x 2
+   year_created     n
+          &lt;dbl&gt; &lt;int&gt;
+ 1        1977.    57
+ 2        1940.    56
+ 3        1964.    56
+ 4        1961.    50
+ 5        1962.    49
+ 6        1963.    44
+ 7        1959.    42
+ 8        1968.    40
+ 9        1960.    39
+10        1914.    37
+# ... with 129 more rows</code></pre>
+</div>
+<div id="how-many-paintings-since-2000" class="section level2">
+<h2><span class="header-section-number">4.4</span> How many paintings since 2000?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(year_acquired <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tally</span>()</code></pre></div>
+<pre><code># A tibble: 1 x 1
+      n
+  &lt;int&gt;
+1   458</code></pre>
+</div>
+<div id="most-popular-artists" class="section level2">
+<h2><span class="header-section-number">4.5</span> Most popular artists</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(artist, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code># A tibble: 989 x 2
+   artist               n
+   &lt;chr&gt;            &lt;int&gt;
+ 1 Pablo Picasso       55
+ 2 Henri Matisse       32
+ 3 On Kawara           32
+ 4 Jacob Lawrence      30
+ 5 Batiste Madalena    25
+ 6 Jean Dubuffet       25
+ 7 Odilon Redon        25
+ 8 Ben Vautier         24
+ 9 Frank Stella        23
+10 Philip Guston       23
+# ... with 979 more rows</code></pre>
+</div>
+<div id="what-about-dimensions" class="section level2">
+<h2><span class="header-section-number">4.6</span> What about dimensions?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Let’s try filtering</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_for_size &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">600</span>, width_cm <span class="op">&lt;</span><span class="st"> </span><span class="dv">760</span>)
+<span class="kw">ggplot</span>(moma_for_size, <span class="kw">aes</span>(<span class="dt">x =</span> height_cm, <span class="dt">y =</span> width_cm)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>)</code></pre></div>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+<div id="year-painted-vs-year-acquired" class="section level1">
+<h1><span class="header-section-number">5</span> Year painted vs year acquired</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(moma, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_fixed</span>()</code></pre></div>
+<pre><code>Warning: Removed 14 rows containing missing values (geom_point).</code></pre>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div id="how-many-feature-males-only" class="section level2">
+<h2><span class="header-section-number">5.1</span> How many feature males only?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma_solo &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+<span class="kw">ggplot</span>(moma_solo, <span class="kw">aes</span>(year_created, year_acquired)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_fixed</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>artist_gender)</code></pre></div>
+<pre><code>Warning: Removed 14 rows containing missing values (geom_point).</code></pre>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="how-many-feature-females-only" class="section level2">
+<h2><span class="header-section-number">5.2</span> How many feature females only?</h2>
+</div>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

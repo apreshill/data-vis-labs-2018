@@ -1,0 +1,10 @@
+---
+title: "Principles & Practice of Data Visualization"
+---
+
+This is the site for sharing our Data Visualization Labs for CS631 at Oregon Health & Science University.
+
+- [Lab 00: Day One in R](00-install_name_plot.html)
+- [Lab 01: Nathan's Hot Dog Eating Context](01-eda_hot_dogs.html)
+- [Lab 02: A Data Scientist's MOMA Tour](02-moma.html)
+

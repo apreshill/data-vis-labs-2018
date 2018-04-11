@@ -1,19 +1,22 @@
-name: "purrr-tutorial"
-output_dir: "."
+name: CS631 Labs
+output_dir: '.'
 navbar:
-  title: "purrr tutorial"
+  title: CS631 Labs
   left:
-    - text: "Lessons and examples"
-      href: index.html
-    - text: "More resources"
-      href: more-resources.html
-    - text: "Talks"
-      href: talks.html
+  - text: Day One in R
+    href: 00-install_name_plot.html
+  - text: Sakai
+    href: https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18
+  - text: Talks & Workshops
+    href: data-vis-talks.html
   right:
-    - text: "About"
-      href: about.html
+  - text: About
+    href: about.html
 output:
   html_document:
     theme: flatly
     includes:
       after_body: footer.html
+    lib_dir: site_libs
+    self_contained: no
+

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 02a: MOMA cleaning</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="00-install_name_plot.html">Day One in R</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+<li>
+  <a href="data-vis-talks.html">Talks &amp; Workshops</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Lab 02a: MOMA cleaning</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="load-the-moma-data" class="section level1">
+<h1><span class="header-section-number">1</span> Load the MOMA data</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(here)
+<span class="kw">library</span>(readr)
+<span class="kw">library</span>(janitor)
+<span class="kw">library</span>(dplyr)
+moma &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks.csv&quot;</span>),
+                 <span class="dt">col_types =</span> <span class="kw">cols</span>(
+                   <span class="dt">BeginDate =</span> <span class="kw">col_number</span>(),
+                   <span class="dt">EndDate =</span> <span class="kw">col_number</span>(),
+                   <span class="st">`</span><span class="dt">Length (cm)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>(),
+                   <span class="st">`</span><span class="dt">Circumference (cm)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>(),
+                   <span class="st">`</span><span class="dt">Duration (sec.)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>(),
+                   <span class="st">`</span><span class="dt">Diameter (cm)</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_number</span>()
+                 )) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">clean_names</span>()</code></pre></div>
+<pre><code>Warning: 8 parsing failures.
+   row          col   expected  actual                                                                                file
+103824 DateAcquired date like  1998-04 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
+128673 DateAcquired date like  1977-08 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
+131406 DateAcquired date like  1998-04 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
+131785 DateAcquired date like  1975-01 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
+132165 DateAcquired date like  1998-04 &#39;/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/data/artworks.csv&#39;
+...... ............ .......... ....... ...................................................................................
+See problems(...) for more details.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">problems</span>(moma)</code></pre></div>
+<pre><code># A tibble: 8 x 5
+     row col          expected     actual  file                           
+   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;                          
+1 103824 DateAcquired &quot;date like &quot; 1998-04 &#39;/Users/hillali/Documents/Proj…
+2 128673 DateAcquired &quot;date like &quot; 1977-08 &#39;/Users/hillali/Documents/Proj…
+3 131406 DateAcquired &quot;date like &quot; 1998-04 &#39;/Users/hillali/Documents/Proj…
+4 131785 DateAcquired &quot;date like &quot; 1975-01 &#39;/Users/hillali/Documents/Proj…
+5 132165 DateAcquired &quot;date like &quot; 1998-04 &#39;/Users/hillali/Documents/Proj…
+6 132166 DateAcquired &quot;date like &quot; 1998-04 &#39;/Users/hillali/Documents/Proj…
+7 132167 DateAcquired &quot;date like &quot; 1995    &#39;/Users/hillali/Documents/Proj…
+8 132169 DateAcquired &quot;date like &quot; 1998-04 &#39;/Users/hillali/Documents/Proj…</code></pre>
+<p>Basic cleaning with <code>stringr</code> of <code>gender</code> variable, which refers to the gender of the artist (a <code>()</code> is used a placeholder for “various artists”)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(stringr)
+moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender =</span> <span class="kw">str_replace_all</span>(gender, <span class="kw">fixed</span>(<span class="st">&quot;(female)&quot;</span>, 
+                                                    <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>), <span class="st">&quot;F&quot;</span>),
+         <span class="dt">gender =</span> <span class="kw">str_replace_all</span>(gender, <span class="kw">fixed</span>(<span class="st">&quot;(male)&quot;</span>, 
+                                                    <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>), <span class="st">&quot;M&quot;</span>),
+         <span class="dt">num_artists =</span> <span class="kw">str_count</span>(gender, <span class="st">&quot;[:alpha:]&quot;</span>),
+         <span class="dt">num_artists =</span> <span class="kw">na_if</span>(num_artists, <span class="dv">0</span>),
+         <span class="dt">n_female_artists =</span> <span class="kw">str_count</span>(gender, <span class="st">&quot;F&quot;</span>),
+         <span class="dt">n_male_artists =</span> <span class="kw">str_count</span>(gender, <span class="st">&quot;M&quot;</span>),
+         <span class="dt">artist_gender =</span> <span class="kw">case_when</span>(
+           num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_female_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;Female&quot;</span>,
+           num_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>n_male_artists <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> &quot;Male&quot;</span>
+         ))</code></pre></div>
+<p>Let’s also do some detecting of strings in the <code>credit_line</code> variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">purchase =</span> <span class="kw">str_detect</span>(credit_line, <span class="kw">fixed</span>(<span class="st">&quot;purchase&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)),
+         <span class="dt">gift =</span> <span class="kw">str_detect</span>(credit_line, <span class="kw">fixed</span>(<span class="st">&quot;gift&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)),
+         <span class="dt">exchange =</span> <span class="kw">str_detect</span>(credit_line, <span class="kw">fixed</span>(<span class="st">&quot;exchange&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)))</code></pre></div>
+<p>According to <a href="https://www.moma.org/momaorg/shared/pdfs/docs/explore/CollectionsMgmtPolicyMoMA_Oct10.pdf">MOMA</a>: Acquisitions to the Collection may be made by purchase, gift, fractional interest gift, bequest, or exchange.</p>
+<p>Let’s clean up some dates:</p>
+<ul>
+<li>We’ll clean up year acquired with <code>lubridate</code> to pull out the <code>year</code>.</li>
+<li>We’ll rename two date variables that are the artist birth/death year, but aren’t labelled clearly.</li>
+<li>We’ll do a very rough estimate of the date each piece was created, using <code>stringr::str_extract()</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre></div>
+<pre><code>Warning: package &#39;lubridate&#39; was built under R version 3.4.3</code></pre>
+<pre><code>
+Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:here&#39;:
+
+    here</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    date</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year_acquired =</span> <span class="kw">year</span>(date_acquired)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">artist_birth_year =</span> begin_date, <span class="dt">artist_death_year =</span> end_date) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year_created =</span> <span class="kw">str_extract</span>(date, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">d{4}&quot;</span>),
+         <span class="dt">artist_birth_year =</span> <span class="kw">na_if</span>(artist_birth_year, <span class="dv">0</span>),
+         <span class="dt">artist_death_year =</span> <span class="kw">na_if</span>(artist_death_year, <span class="dv">0</span>))</code></pre></div>
+<p>What different kinds of art classifications are available?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(classification) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="ot">Inf</span>)</code></pre></div>
+<pre><code># A tibble: 31 x 1
+   classification                
+   &lt;chr&gt;                         
+ 1 Architecture                  
+ 2 Mies van der Rohe Archive     
+ 3 Design                        
+ 4 Illustrated Book              
+ 5 Print                         
+ 6 Drawing                       
+ 7 Film                          
+ 8 Multiple                      
+ 9 Periodical                    
+10 Photograph                    
+11 Painting                      
+12 (not assigned)                
+13 Architectural Model           
+14 Product Design                
+15 Video                         
+16 Media                         
+17 Performance                   
+18 Sculpture                     
+19 Photography Research/Reference
+20 Software                      
+21 Installation                  
+22 Work on Paper                 
+23 Audio                         
+24 Textile                       
+25 Ephemera                      
+26 Collage                       
+27 Film (object)                 
+28 Frank Lloyd Wright Archive    
+29 Poster                        
+30 Graphic Design                
+31 Furniture and Interiors       </code></pre>
+<p>We want to focus on standard rectangular paintings:</p>
+<ul>
+<li>Filter based on classification</li>
+<li>Drop all pieces of art that have either missing (<code>NA</code>) height or width measurements, or who have <code>0</code> for either height or width.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(classification <span class="op">==</span><span class="st"> &quot;Painting&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">drop_na</span>(height_cm, width_cm) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(height_cm <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>width_cm <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<p>We’ll select those columns we want to keep:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moma &lt;-<span class="st"> </span>moma <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(title, <span class="kw">contains</span>(<span class="st">&quot;artist&quot;</span>), <span class="kw">contains</span>(<span class="st">&quot;year&quot;</span>), <span class="kw">contains</span>(<span class="st">&quot;_cm&quot;</span>),
+         purchase, gift, exchange, classification, department)</code></pre></div>
+<p>Now let’s export this data frame for the lab.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_csv</span>(moma, here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;artworks-cleaned.csv&quot;</span>))</code></pre></div>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

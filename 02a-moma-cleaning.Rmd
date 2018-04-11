@@ -1,0 +1,131 @@
+---
+title: "Lab 02a: MOMA cleaning"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    highlight: pygments
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+    code_folding: hide
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+```{r load-packages, include = FALSE}
+library(tidyverse)
+```
+
+
+
+
+# Load the MOMA data
+
+```{r}
+library(here)
+library(readr)
+library(janitor)
+library(dplyr)
+moma <- read_csv(here::here("data", "artworks.csv"),
+                 col_types = cols(
+                   BeginDate = col_number(),
+                   EndDate = col_number(),
+                   `Length (cm)` = col_number(),
+                   `Circumference (cm)` = col_number(),
+                   `Duration (sec.)` = col_number(),
+                   `Diameter (cm)` = col_number()
+                 )) %>% 
+  clean_names()
+problems(moma)
+```
+
+Basic cleaning with `stringr` of `gender` variable, which refers to the gender of the artist (a `()` is used a placeholder for "various artists")
+
+```{r}
+library(stringr)
+moma <- moma %>% 
+  mutate(gender = str_replace_all(gender, fixed("(female)", 
+                                                    ignore_case = TRUE), "F"),
+         gender = str_replace_all(gender, fixed("(male)", 
+                                                    ignore_case = TRUE), "M"),
+         num_artists = str_count(gender, "[:alpha:]"),
+         num_artists = na_if(num_artists, 0),
+         n_female_artists = str_count(gender, "F"),
+         n_male_artists = str_count(gender, "M"),
+         artist_gender = case_when(
+           num_artists == 1 & n_female_artists == 1 ~ "Female",
+           num_artists == 1 & n_male_artists == 1 ~ "Male"
+         ))
+```
+
+
+Let's also do some detecting of strings in the `credit_line` variable.
+
+```{r}
+moma <- moma %>% 
+  mutate(purchase = str_detect(credit_line, fixed("purchase", ignore_case = TRUE)),
+         gift = str_detect(credit_line, fixed("gift", ignore_case = TRUE)),
+         exchange = str_detect(credit_line, fixed("exchange", ignore_case = TRUE)))
+```
+
+According to [MOMA](https://www.moma.org/momaorg/shared/pdfs/docs/explore/CollectionsMgmtPolicyMoMA_Oct10.pdf):
+Acquisitions to the Collection may be made by purchase, gift, fractional interest gift, bequest, or exchange. 
+
+Let's clean up some dates:
+
+- We'll clean up year acquired with `lubridate` to pull out the `year`.
+- We'll rename two date variables that are the artist birth/death year, but aren't labelled clearly.
+- We'll do a very rough estimate of the date each piece was created, using `stringr::str_extract()`
+
+```{r}
+library(lubridate)
+moma <- moma %>% 
+  mutate(year_acquired = year(date_acquired)) %>% 
+  rename(artist_birth_year = begin_date, artist_death_year = end_date) %>% 
+  mutate(year_created = str_extract(date, "\\d{4}"),
+         artist_birth_year = na_if(artist_birth_year, 0),
+         artist_death_year = na_if(artist_death_year, 0))
+```
+
+
+
+What different kinds of art classifications are available?
+
+```{r}
+moma %>% 
+  distinct(classification) %>% 
+  print(n = Inf)
+```
+
+We want to focus on standard rectangular paintings:
+
+- Filter based on classification
+- Drop all pieces of art that have either missing (`NA`) height or width measurements, or who have `0` for either height or width.
+
+```{r}
+library(tidyr)
+moma <- moma %>% 
+  filter(classification == "Painting") %>% 
+  drop_na(height_cm, width_cm) %>% 
+  filter(height_cm > 0 & width_cm > 0)
+```
+
+We'll select those columns we want to keep:
+
+```{r}
+moma <- moma %>% 
+  select(title, contains("artist"), contains("year"), contains("_cm"),
+         purchase, gift, exchange, classification, department)
+```
+
+
+Now let's export this data frame for the lab.
+```{r}
+write_csv(moma, here::here("data", "artworks-cleaned.csv"))
+```
+
