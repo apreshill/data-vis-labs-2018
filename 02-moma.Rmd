@@ -72,6 +72,8 @@ moma
 glimpse(moma)
 ```
 
+There are `r nrow(moma)` paintings in `moma`.
+
 ## What is the earliest painting acquired?
 
 
@@ -88,10 +90,10 @@ moma %>%
   arrange(year_acquired)
 ```
 
-## What is the earliest painting created?
+## What is the earliest painting created (oldest)?
 
 
-- What is the earliest painting ever created in the MOMA collection historically? 
+- What is the earliest painting ever created in the MOMA collection historically (oldest painting)? 
 - Which year?
 - Which artist?
 - What title?
@@ -104,6 +106,14 @@ moma %>%
   arrange(year_created)
 ```
 
+```{r include = FALSE}
+oldest <- moma %>% 
+  select(artist, title, year_created) %>% 
+  arrange(year_created) %>% 
+  slice(1)
+```
+
+To do inline comments, I could say that the oldest painting is `r oldest %>% pull(title)`, painted by `r oldest %>% pull(artist)` in `r oldest %>% pull(year_created)`.
 
 ## How many artists?
 
@@ -119,7 +129,7 @@ moma %>%
 ## How many paintings per artist?
 
 - Which artist has the most paintings ever owned by `moma`? 
-- How many have there been?
+- How many were there by that artist?
 
 Try `dplyr::count`. Use `?count` to figure out how to sort the output.
 
