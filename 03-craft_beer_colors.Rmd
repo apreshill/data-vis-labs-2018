@@ -1,0 +1,546 @@
+---
+title: "Lab 03: Playing with Color"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+# Goals for Lab 03
+
+# Packages
+
+```{r}
+library(tidyverse)
+library(forcats)
+library(RColorBrewer)
+library(viridis)
+library(ggthemes)
+library(wesanderson)
+library(beyonce)
+```
+
+https://github.com/EmilHvitfeldt/r-color-palettes
+
+
+# Read in the data
+
+Use this code chunk to read in the data available at [http://bit.ly/cs631-beer](http://bit.ly/cs631-beer):
+
+```{r}
+library(tidyverse)
+select_beers <- c("American Double / Imperial IPA", 
+                  "American IPA", "American Blonde Ale")
+
+beer <- read_csv("http://bit.ly/cs631-beer") %>% 
+  filter(style %in% select_beers) %>% 
+  drop_na(ibu)
+```
+
+
+# Know your data
+
+- How many variables?
+- How many observations?
+- How many ages (in months)?
+- How many types of animal words?
+- How many total kids do we have data for?
+
+Animals:
+- Cat item 22 (plus kitty item 36)
+- Chicken item 23 (plus hen item 34)
+- Dog item 26 (plus puppy item 46)
+
+
+
+# Categorical vs continuous
+
+In order to use color with your data, most importantly, you need to know if you’re dealing with a categorical or continuous variable.
+
+1. Do an HLO!
+2. Use `forcats`!
+
+# Colour vs fill aesthetic
+
+Fill and colour scales in ggplot2 can use the same palettes. Some shapes such as lines only accept the colour aesthetic, while others, such as polygons, accept both colour and fill aesthetics. In the latter case, the colour refers to the border of the shape, and the fill to the interior.
+
+```{r}
+## A look at all 25 symbols
+df2 <- data.frame(x = 1:5, 
+                  y = rep(seq(0, 24, by = 5), each = 5), 
+                  z = 1:25)
+s <- ggplot(df2, aes(x = x, y = y)) + scale_shape_identity() + geom_text(aes(label = z, y = y - 1)) + theme_void()
+s + geom_point(aes(shape = z), size = 4) 
+```
+
+---
+
+While all symbols have a foreground colour, symbols 21-25 also take a background colour (fill)
+
+```{r}
+s + geom_point(aes(shape = z), size = 4, colour = "navy") 
+```
+
+---
+
+```{r}
+s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid") 
+```
+
+
+For the rest of today, we'll play with the `beer` dataset. 
+
+# Create a scatterplot
+
+Plot `ibu` (stands for International Bitterness Units) versus `abv` (Alcohol by Volume).
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv)) + 
+  geom_point()
+```
+
+
+# Discrete colors
+
+## Default discrete palette
+
+```{r}
+beer_plot <- ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point()
+beer_plot 
+```
+
+We would call this a qualitative palette and it works well for these data. The addition of `scale_color_hue` changes nothing.
+
+```{r}
+beer_plot  +
+  scale_color_hue()
+```
+
+## Set luminance and saturation (chromaticity)
+
+We can change these settings within the default color palette by adding the layer `scale_color_hue`.
+
+```{r}
+# All defaults
+beer_plot  +
+  scale_color_hue(l = 65, c = 100)
+
+# Use luminance=45, instead of default 65
+beer_plot  +
+  scale_color_hue(l = 45)
+
+# Reduce saturation (chromaticity) from 100 to 50, and increase luminance
+beer_plot  +
+  scale_color_hue(l = 75, c = 50)
+```
+
+## Set discrete colors
+
+We can change the actual colors used by adding the layer `scale_color_manual` or `scale_fill_manual`. Confusion between which to use when is often the cause of much frustration!
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point() +
+  scale_color_manual(values = c("cornflowerblue", "seagreen", "coral"))
+```
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #1:</div>
+  <div class="panel-body">
+Why doesn't this code work?
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point() +
+  scale_fill_manual(values = c("cornflowerblue", "seagreen", "coral"))
+```
+
+  </div>
+</div>
+
+
+Or this?...
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, fill = style)) + 
+  geom_point() +
+  scale_fill_manual(values = c("cornflowerblue", "seagreen", "coral"))
+```
+
+**Hint**: think about which *shape* is the default for `geom_point`...
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point(shape = 20)
+```
+
+
+*Challenge*: Try adding a black outline to the points and color by `style`. If that was easy, change the color values for `style` from the defaults.
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, fill = style)) + 
+  geom_point(shape = 21) +
+  scale_fill_manual(values = c("cornflowerblue", "seagreen", "coral"))
+```
+
+
+*Challenge*: Using [this link](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf), find 3 new named colors, and save them as an object called `my_colors` outside of `ggplot2`; then call that object within the `scale_colour_manual` function.
+
+```{r}
+my_colors <- c("cadetblue", "steelblue", "salmon")
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point() +
+  scale_color_manual(values = my_colors)
+```
+
+*Challenge*: Try using non-named R colors, like hexadecimal colors (#rrggbb). Some basic ones are here: 
+
+https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
+
+Parse the hexadecimal string like so: #rrggbb, where rr, gg, and bb refer to color intensity in the red, green, and blue channels, respectively. 
+
+
+```{r}
+#' these are all 6 seaborn color palettes
+#` from https://github.com/mwaskom/seaborn/blob/master/seaborn/palettes.py
+sb_deep <- c("#4C72B0", "#55A868", "#C44E52",
+        "#8172B2", "#CCB974", "#64B5CD")
+sb_muted <- c("#4878CF", "#6ACC65", "#D65F5F",
+         "#B47CC7", "#C4AD66", "#77BEDB")
+sb_pastel <- c("#92C6FF", "#97F0AA", "#FF9F9A",
+          "#D0BBFF", "#FFFEA3", "#B0E0E6")
+sb_bright <- c("#003FFF", "#03ED3A", "#E8000B",
+                    "#8A2BE2", "#FFC400", "#00D7FF")
+sb_dark <- c("#001C7F", "#017517", "#8C0900",
+        "#7600A1", "#B8860B", "#006374")
+sb_colorblind <- c("#0072B2", "#009E73", "#D55E00",
+                        "#CC79A7", "#F0E442", "#56B4E9")
+```
+
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point() +
+  scale_colour_manual(values = sb_colorblind)
+```
+
+
+## Built-in discrete palettes
+
+### Colorbrewer
+
+```{r eval = FALSE}
+library(RColorBrewer)
+brewer.pal(5, "Dark2")
+display.brewer.pal(5, "Dark2")
+```
+
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point() +
+  scale_color_brewer(palette = "Dark2")
+```
+
+*Challenge*: Again! Try adding a black outline to the points and color by `Species` using the `Dark2` palette. 
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, fill = style)) + 
+  geom_point(size = 3, shape = 21) + 
+  scale_fill_brewer(palette = "Dark2")
+```
+
+### Wes Anderson palettes 
+
+My favorite!
+
+```{r eval = FALSE}
+library(wesanderson)
+```
+
+
+```{r}
+names(wes_palettes)
+wes_palette("GrandBudapest2")
+str(wes_palette("GrandBudapest2"))
+wes_palette("GrandBudapest2")[1:4]
+wes_palette("GrandBudapest2")[c(1,4)]
+```
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point(size = 3) +
+  scale_color_manual(values = wes_palette("Darjeeling"))
+
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +  
+  geom_point(size = 3) +
+  scale_color_manual(values = wes_palette("FantasticFox"))
+```
+
+*Challenge!*: What if you just don't want to use the colors in the order they are in?
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) + 
+  geom_point(size = 3) +
+  scale_color_manual(values = wes_palette("Darjeeling")[3:5])
+
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = wes_palette("FantasticFox")[c(2, 3, 5)])
+```
+
+
+
+### `ggthemes` palettes
+
+```{r eval = FALSE}
+library(ggthemes)
+```
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +
+  geom_point(size = 3) +
+  scale_color_fivethirtyeight()
+
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +
+  geom_point(size = 3) +
+  scale_color_economist()
+```
+
+
+### Palettes from [the Queen Bee](https://github.com/dill/beyonce)
+
+```{r eval=FALSE}
+install.packages("devtools")
+devtools::install_github("dill/beyonce")
+library(beyonce)
+```
+
+```{r}
+beyonce_palette(18)
+```
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = beyonce_palette(18)[3:5])
+```
+
+*Challenge!*: Use `beyonce_palette` 18, but only the first, fourth, and fifth colors in the palette.
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = beyonce_palette(18)[c(1, 4, 5)])
+```
+
+### Viridis palettes
+
+Read more here in the [viridis vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, color = style)) +
+  geom_point(size = 3) +
+  scale_color_viridis(discrete = TRUE)
+```
+
+*Challenge*: Use the `viridis` package to color the points by `Species`; make the outline of the points "midnightblue".
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, fill = style)) +
+  geom_point(size = 3, shape = 21, colour = "midnightblue") + 
+  scale_fill_viridis(discrete = TRUE)
+```
+
+
+## Greyscale for discrete
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, colour = style)) +
+  geom_point(size = 3) +
+  scale_color_grey() +
+  theme_bw()
+```
+
+Set start and end
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, colour = style)) +
+  geom_point(size = 3) +
+  scale_color_grey(start = 0.1, end = 1) +
+  theme_bw()
+```
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, colour = style)) +
+  geom_point(size = 3, shape = 21) +
+  scale_fill_grey(start = 0, end = 1) +
+  theme_bw()
+```
+
+## Adding layers
+
+*Challenge!*: Create 3 new plots using the `iris` data. 
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, colour = style)) +
+  geom_point(size = 3)
+```
+
+First, add a linear regression line for each `Species` to your plot and color both the points and the line by `Species` (you may want to remove the standard error ribbon to make this plot more readable). 
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, colour = style)) +
+  geom_point(size = 3) +
+  stat_smooth(method = "lm", se = FALSE)
+```
+
+Second, add a single linear regression line across all `Species` to your plot and color *only* the points by `Species` (again, you may want to remove the standard error ribbon to make this plot more readable). Make the regression line some color other than the default.
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv)) +
+  geom_point(aes(colour = style), size = 3) +
+  stat_smooth(method = "lm", se = FALSE, color = "darkgray")
+```
+
+
+Third, add a linear regression line for each `Species` to your plot and color *only* the points by `Species` (again, you may want to remove the standard error ribbon to make this plot more readable). Make the regression lines some color other than the default.
+
+```{r}
+ggplot(beer, aes(x = ibu, y = abv, group = style)) +
+  geom_point(aes(color = style), size = 3) +
+  stat_smooth(method = "lm", se = FALSE, color = "darkgray")
+```
+
+If this was all easy...
+
+* color by `Species`
+* change the default coloring to new colors
+* make the regression lines all one color
+* add a `facet_wrap` by `Species` _and_ 
+* remove the legend (since it is redundant with the facet labels).
+* (I used the `theme_minimal`)
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Sepal.Width, group = Species)) +
+  geom_point(aes(color = Species), size = 3) +
+  stat_smooth(method = "lm", se = FALSE, color = "darkgray") +
+  facet_wrap(~Species) +
+  scale_color_manual(values = sb_colorblind, guide = FALSE) +
+  theme_minimal()
+```
+
+# Continuous colors
+
+## Default continuous palette
+
+Let’s map color to a continuous variable, Sepal.Width:
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+  geom_point(size = 3)
+```
+
+
+## Color choice with continuous variables (`scale_color_gradient()`, `scale_color_gradient2()`)
+
+You can reverse the gradient scale...
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_gradient(trans = "reverse")
+```
+
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_gradient(low = "white", high = "red")
+```
+
+*Challenge*: Make this same plot using a grayscale gradient.
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_gradient(low = "gray90", high = "black")
+```
+
+
+
+So `scale_color_gradient` gives you a sequential gradient, but you may want a diverging color scheme instead.
+
+
+```{r}
+# Diverging color scheme
+mid <- mean(iris$Sepal.Width)
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_gradient2(midpoint=mid,
+                      low="blue", mid="white", high="red" )
+```
+
+## Built-in continuous palettes
+
+### Use `RColorBrewer` with `scale_color_gradientn`
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_gradientn(colours = brewer.pal(n=5, name="PuBuGn"))
+```
+
+Reverse the colors...
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_gradientn(colours = rev(brewer.pal(n=5, name="PuBuGn")))
+```
+
+### Viridis
+
+Read more here in the [viridis vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)
+
+```{r eval = FALSE}
+library(viridis)
+```
+
+The default is the `viridis` palette within the `viridis` package!
+
+Note! For discrete == FALSE (the default) all other arguments are as to `scale_fill_gradientn` or `scale_color_gradientn`. 
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_viridis()
+```
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_viridis(option = "magma")
+```
+
+*Challenge*: Read the help function for `?scale_color_viridis` and use the "inferno" palette _in reverse_.
+
+```{r}
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Sepal.Width)) + 
+    geom_point(size = 3) +
+    scale_color_viridis(option = "inferno", begin = 1, end = 0)
+```
+
+
+
+
+
+

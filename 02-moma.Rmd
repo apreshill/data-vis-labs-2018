@@ -35,7 +35,7 @@ We'll use data from the Museum of Modern Art (MOMA)
 
 ```{r}
 library(here) # to set file path if working from local file
-library(tidyverse) # readr, tidyr, ggplot2, dplyr
+library(tidyverse) # readr, ggplot2, dplyr
 ```
 
 
@@ -124,12 +124,24 @@ To do inline comments, I could say that the oldest painting is `r oldest %>% pul
 
 - How many distinct artists are there?
 
-Try `dplyr::distinct`.
+Try `dplyr::distinct`. 
 
 ```{r}
 moma %>% 
   distinct(artist)
 ```
+
+You could add a `tally()` too to get just the number of rows. You can also then use `pull()` to get that single number out of the tibble:
+
+```{r}
+num_artists <- moma %>% 
+  distinct(artist) %>% 
+  tally() %>% 
+  pull()
+num_artists
+```
+
+Then I can refer to this number in inline comments like: there are `r num_artists` total.
 
 ## How many paintings per artist?
 
@@ -143,7 +155,86 @@ moma %>%
   count(artist, sort = TRUE)
 ```
 
+```{r include = FALSE}
+pablo <- moma %>% 
+  count(artist, sort = TRUE) %>% 
+  slice(1)
+```
 
+In the `?count` documentation, it says: "`count` and `tally` are designed so that you can call them repeatedly, each time rolling up a level of detail." Try running `count()` again (leave parentheses empty) on your last code chunk.
+
+```{r}
+moma %>% 
+  count(artist, sort = TRUE) %>% 
+  count()
+```
+
+## How many paintings by male vs female artists?
+
+
+
+```{r}
+moma %>% 
+  count(artist_gender)
+```
+
+
+Now together we'll count the number of artists by gender. You'll need to give `count` two variable names in the parentheses: `artist_gender` and `artist`.
+
+```{r}
+moma %>% 
+  count(artist_gender, artist, sort = TRUE) 
+```
+
+This output is not superhelpful as we already know that `r pablo %>% pull(artist)` has `r pablo %>% pull(n)` paintings in the MoMA collection. But how can we find out which female artist has the most paintings? We have a few options. Let's first add a `filter` for females.
+
+```{r}
+moma %>% 
+  count(artist_gender, artist, sort = TRUE) %>% 
+  filter(artist_gender == "Female")
+```
+
+Another option is to use another `dplyr` function called `top_n()`. Use `?top_n` to see how it works. How it won't work in this context:
+
+```{r}
+moma %>% 
+  count(artist_gender, artist, sort = TRUE) %>% 
+  top_n(1)
+```
+
+How it will work better is following a `group_by(artist_gender)`:
+
+```{r}
+moma %>% 
+  count(artist_gender, artist, sort = TRUE) %>% 
+  group_by(artist_gender) %>% 
+  top_n(1)
+```
+
+
+```{r include = FALSE}
+sherrie <- moma %>% 
+  count(artist_gender, artist, sort = TRUE) %>% 
+  filter(artist_gender == "Female") %>% 
+  slice(1)
+```
+
+Now we can see that `r sherrie %>% pull(artist)` has `r sherrie %>% pull(n)` paintings. This is a pretty far cry from the `r pablo %>% pull(n)` paintings by `r pablo %>% pull(artist)`.
+
+## How many male vs female artists are represented in MoMA's collection?
+
+This is a harder question to answer than you think! This is because the level of observation in our current `moma` dataset is *unique paintings*. We have multiple paintings done by the same artists though, so counting just the number of unique paintings is different than counting the number of unique artists. 
+
+Remember how `count` can be used back-to-back to roll up a level of detail? Try running `count(artist_gender)` again on your last code chunk.
+
+```{r}
+moma %>% 
+  count(artist_gender, artist) %>% 
+  count(artist_gender)
+```
+
+
+This output takes the previous table (made with `count(artist_gender, artist)`), and essentially ignores the `n` column. So we no longer care about how *many* paintings each individual artist created. Instead, we want to `count` the rows in this *new* table where each row is a unique artist. By counting by `artist_gender` in the last line, we are grouping by levels of that variable (so Female/Male/`NA`) and `nn` is the number of unique artists for each gender category recorded.
 
 ## When were the most paintings in the collection acquired?
 
@@ -163,11 +254,12 @@ moma %>%
   count(year_created, sort = TRUE)
 ```
 
+
 ## What about the first painting by a solo female artist?
 
 Try combining three `dplyr` functions: `filter`, `select`, and `arrange`. 
 
-Try `year_acquired` and `year_created`!
+When was the first painting by a solo female artist acquired?
 
 ```{r}
 moma %>% 
@@ -175,6 +267,8 @@ moma %>%
   select(title, artist, year_acquired, year_created) %>% 
   arrange(year_acquired)
 ```
+
+What is the oldest painting by a solo female artist, and when was it created?
 
 ```{r}
 moma %>% 
