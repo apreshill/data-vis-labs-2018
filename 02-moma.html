@@ -332,8 +332,14 @@ div.tocify {
 <li>Be able to create facetted plots with <code>ggplot2</code></li>
 </ul>
 </div>
+<div id="slides-for-today" class="section level1">
+<h1><span class="header-section-number">2</span> Slides for today</h1>
+<pre class="r"><code>knitr::include_url(&quot;https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html&quot;)</code></pre>
+<iframe src="https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html" width="672" height="400px">
+</iframe>
+</div>
 <div id="inspiration-data" class="section level1">
-<h1><span class="header-section-number">2</span> Inspiration + data</h1>
+<h1><span class="header-section-number">3</span> Inspiration + data</h1>
 <p>We’ll use data from the Museum of Modern Art (MOMA)</p>
 <ul>
 <li>Publicly available on <a href="https://github.com/MuseumofModernArt/collection">GitHub</a></li>
@@ -342,12 +348,12 @@ div.tocify {
 </ul>
 </div>
 <div id="packages-needed" class="section level1">
-<h1><span class="header-section-number">3</span> Packages needed</h1>
+<h1><span class="header-section-number">4</span> Packages needed</h1>
 <pre class="r"><code>library(here) # to set file path if working from local file
 library(tidyverse) # readr, ggplot2, dplyr</code></pre>
 </div>
 <div id="read-in-the-data" class="section level1">
-<h1><span class="header-section-number">4</span> Read in the data</h1>
+<h1><span class="header-section-number">5</span> Read in the data</h1>
 <p>Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.</p>
 <p>Use this code chunk to read in the data available at <a href="http://bit.ly/cs631-moma" class="uri">http://bit.ly/cs631-moma</a>:</p>
 <pre class="r"><code>library(readr)
@@ -359,9 +365,9 @@ library(dplyr)
 moma &lt;- read_csv(here::here(&quot;data&quot;, &quot;artworks-cleaned.csv&quot;))</code></pre>
 </div>
 <div id="challenge-1-know-your-data" class="section level1">
-<h1><span class="header-section-number">5</span> Challenge 1: Know your data</h1>
+<h1><span class="header-section-number">6</span> Challenge 1: Know your data</h1>
 <div id="how-many-paintings" class="section level2">
-<h2><span class="header-section-number">5.1</span> How many paintings?</h2>
+<h2><span class="header-section-number">6.1</span> How many paintings?</h2>
 <ul>
 <li>How many rows/observations are in <code>moma</code>?</li>
 <li>How many variables are in <code>moma</code>?</li>
@@ -416,7 +422,7 @@ $ classification    &lt;chr&gt; &quot;Painting&quot;, &quot;Painting&quot;, &quo
 $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Painting &amp; Sculptur...</code></pre>
 </div>
 <div id="what-is-the-first-painting-acquired" class="section level2">
-<h2><span class="header-section-number">5.2</span> What is the first painting acquired?</h2>
+<h2><span class="header-section-number">6.2</span> What is the first painting acquired?</h2>
 <ul>
 <li>What is the first painting acquired by MoMA (since they started tracking)?</li>
 <li>What year was it acquired?</li>
@@ -443,7 +449,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 # ... with 2,243 more rows</code></pre>
 </div>
 <div id="what-is-the-oldest-painting-in-the-moma-collection" class="section level2">
-<h2><span class="header-section-number">5.3</span> What is the oldest painting in the MoMA collection?</h2>
+<h2><span class="header-section-number">6.3</span> What is the oldest painting in the MoMA collection?</h2>
 <ul>
 <li>What is the oldest painting in the MoMA collection historically (since they started tracking)?</li>
 <li>What year was it created?</li>
@@ -471,7 +477,7 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <p>To do inline comments, I could say that the oldest painting is Landscape at Daybreak, painted by Odilon Redon in 1872.</p>
 </div>
 <div id="how-many-artists" class="section level2">
-<h2><span class="header-section-number">5.4</span> How many artists?</h2>
+<h2><span class="header-section-number">6.4</span> How many artists?</h2>
 <ul>
 <li>How many distinct artists are there?</li>
 </ul>
@@ -502,7 +508,7 @@ num_artists</code></pre>
 <p>Then I can refer to this number in inline comments like: there are 989 total.</p>
 </div>
 <div id="how-many-paintings-per-artist" class="section level2">
-<h2><span class="header-section-number">5.5</span> How many paintings per artist?</h2>
+<h2><span class="header-section-number">6.5</span> How many paintings per artist?</h2>
 <ul>
 <li>Which artist has the most paintings ever owned by <code>moma</code>?</li>
 <li>How many paintings in the MoMA collection by that artist?</li>
@@ -534,7 +540,7 @@ num_artists</code></pre>
 1   989</code></pre>
 </div>
 <div id="how-many-paintings-by-male-vs-female-artists" class="section level2">
-<h2><span class="header-section-number">5.6</span> How many paintings by male vs female artists?</h2>
+<h2><span class="header-section-number">6.6</span> How many paintings by male vs female artists?</h2>
 <pre class="r"><code>moma %&gt;% 
   count(artist_gender)</code></pre>
 <pre><code># A tibble: 3 x 2
@@ -601,7 +607,7 @@ num_artists</code></pre>
 <p>Now we can see that Sherrie Levine has 12 paintings. This is a pretty far cry from the 55 paintings by Pablo Picasso.</p>
 </div>
 <div id="how-many-male-vs-female-artists-are-represented-in-momas-collection" class="section level2">
-<h2><span class="header-section-number">5.7</span> How many male vs female artists are represented in MoMA’s collection?</h2>
+<h2><span class="header-section-number">6.7</span> How many male vs female artists are represented in MoMA’s collection?</h2>
 <p>This is a harder question to answer than you think! This is because the level of observation in our current <code>moma</code> dataset is <em>unique paintings</em>. We have multiple paintings done by the same artists though, so counting just the number of unique paintings is different than counting the number of unique artists.</p>
 <p>Remember how <code>count</code> can be used back-to-back to roll up a level of detail? Try running <code>count(artist_gender)</code> again on your last code chunk.</p>
 <pre class="r"><code>moma %&gt;% 
@@ -616,7 +622,7 @@ num_artists</code></pre>
 <p>This output takes the previous table (made with <code>count(artist_gender, artist)</code>), and essentially ignores the <code>n</code> column. So we no longer care about how <em>many</em> paintings each individual artist created. Instead, we want to <code>count</code> the rows in this <em>new</em> table where each row is a unique artist. By counting by <code>artist_gender</code> in the last line, we are grouping by levels of that variable (so Female/Male/<code>NA</code>) and <code>nn</code> is the number of unique artists for each gender category recorded.</p>
 </div>
 <div id="when-were-the-most-paintings-in-the-collection-acquired" class="section level2">
-<h2><span class="header-section-number">5.8</span> When were the most paintings in the collection acquired?</h2>
+<h2><span class="header-section-number">6.8</span> When were the most paintings in the collection acquired?</h2>
 <p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
 <pre class="r"><code>moma %&gt;% 
   count(year_acquired, sort = TRUE)</code></pre>
@@ -636,7 +642,7 @@ num_artists</code></pre>
 # ... with 78 more rows</code></pre>
 </div>
 <div id="when-were-the-most-paintings-in-the-collection-created" class="section level2">
-<h2><span class="header-section-number">5.9</span> When were the most paintings in the collection created?</h2>
+<h2><span class="header-section-number">6.9</span> When were the most paintings in the collection created?</h2>
 <p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
 <pre class="r"><code>moma %&gt;% 
   count(year_created, sort = TRUE)</code></pre>
@@ -656,7 +662,7 @@ num_artists</code></pre>
 # ... with 129 more rows</code></pre>
 </div>
 <div id="what-about-the-first-painting-by-a-solo-female-artist" class="section level2">
-<h2><span class="header-section-number">5.10</span> What about the first painting by a solo female artist?</h2>
+<h2><span class="header-section-number">6.10</span> What about the first painting by a solo female artist?</h2>
 <p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>.</p>
 <p>When was the first painting by a solo female artist acquired?</p>
 <pre class="r"><code>moma %&gt;% 
@@ -704,18 +710,18 @@ moma %&gt;%
 </div>
 </div>
 <div id="challenge-2-on-paper" class="section level1">
-<h1><span class="header-section-number">6</span> Challenge 2: On paper</h1>
+<h1><span class="header-section-number">7</span> Challenge 2: On paper</h1>
 <p>We’ll do this together: see <a href="https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html">slides</a></p>
 </div>
 <div id="challenge-3-plot-your-data" class="section level1">
-<h1><span class="header-section-number">7</span> Challenge 3: Plot your data</h1>
+<h1><span class="header-section-number">8</span> Challenge 3: Plot your data</h1>
 <p>From <a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/">fivethirtyeight</a>. Let’s recreate this plot (mostly)!</p>
 <div class="figure">
 <img src="https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-1.png?w=1150&amp;quality=90&amp;strip=info" />
 
 </div>
 <div id="plot-year-painted-vs-year-acquired" class="section level2">
-<h2><span class="header-section-number">7.1</span> Plot year painted vs year acquired</h2>
+<h2><span class="header-section-number">8.1</span> Plot year painted vs year acquired</h2>
 <p>Things to consider:</p>
 <ul>
 <li>You’ll want to play around with setting an <code>alpha</code> value here- keep in mind that <code>0</code> is totally transparent and <code>1</code> is opaque.</li>
@@ -730,10 +736,10 @@ moma %&gt;%
   geom_abline(intercept = c(0,0), colour = &quot;red&quot;) +
   labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
   ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) </code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
 <div id="facet-by-artist-gender" class="section level2">
-<h2><span class="header-section-number">7.2</span> Facet by artist gender</h2>
+<h2><span class="header-section-number">8.2</span> Facet by artist gender</h2>
 <p>Can you make the same plot above, but facet by artist gender? For this to make sense, you probably want to do some filtering to select only those paintings where there was one “solo” artist.</p>
 <pre class="r"><code>moma_solo &lt;- moma %&gt;% 
   filter(num_artists == 1)
@@ -743,11 +749,11 @@ ggplot(moma_solo, aes(year_created, year_acquired)) +
   labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
   ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) +
   facet_wrap(~artist_gender)</code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 </div>
 <div id="challenge-4-plot-painting-dimensions" class="section level1">
-<h1><span class="header-section-number">8</span> Challenge 4: Plot painting dimensions</h1>
+<h1><span class="header-section-number">9</span> Challenge 4: Plot painting dimensions</h1>
 <p>Let’s (somewhat) try to recreate this scatterplot from <a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/">fivethirtyeight</a>.</p>
 <div class="figure">
 <img src="https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&amp;quality=90&amp;strip=info" />
@@ -776,7 +782,7 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
   labs(x = &quot;Width&quot;, y = &quot;Height&quot;) </code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>Because Grace is right, we can do better with colors!</p>
 <pre class="r"><code>library(ggthemes)
 ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
@@ -787,7 +793,7 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
   labs(x = &quot;Width&quot;, y = &quot;Height&quot;) </code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>We could also do away with the legend and use <code>geom_annotate</code> instead.</p>
 <pre class="r"><code>library(ggthemes)
 ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
@@ -804,10 +810,10 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
     annotate(x = 375, y = 100, geom = &quot;text&quot;, 
              label = &quot;Wider than\nTall&quot;, color = &quot;#6999cd&quot;, 
              size = 5, family = &quot;Lato&quot;, hjust = 0, fontface = 2)</code></pre>
-<p><img src="02-moma_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="02-moma_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 </div>
 <div id="challenge-5-plot-something-new-different" class="section level1">
-<h1><span class="header-section-number">9</span> Challenge 5: Plot something new &amp; different!</h1>
+<h1><span class="header-section-number">10</span> Challenge 5: Plot something new &amp; different!</h1>
 <p>It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are that you make one new plot that is original, and you <em>must</em> be able to write 1-2 sentences to present the plot and why it makes sense. It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.</p>
 </div>
 
