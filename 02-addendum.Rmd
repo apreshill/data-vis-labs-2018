@@ -1,0 +1,37 @@
+---
+title: "Lab 02: Addendum"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+    code_folding: hide
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+```{r}
+library(tidyverse)
+moma <- read_csv("http://bit.ly/cs631-moma")
+
+moma_singles_summary <- moma %>% 
+  filter(num_artists == 1) %>% 
+  mutate(lag_acquired = year_acquired - year_created,
+         artist_gender = as.factor(artist_gender)) %>% 
+  group_by(year_acquired, artist_gender) %>% 
+  summarize(n_acquired = n(),
+            mean_lag = mean(lag_acquired)) %>% 
+  complete(year_acquired, artist_gender, 
+           fill = list(n_acquired = 0))
+
+ggplot(moma_singles_summary, aes(x = year_acquired, 
+                                 y = n_acquired,
+                                 color = artist_gender)) +
+  geom_point()
+```
+
