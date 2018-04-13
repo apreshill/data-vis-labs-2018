@@ -641,6 +641,7 @@ library(beyonce)</code></pre>
   scale_color_manual(values = sb_colorblind, guide = FALSE) +
   theme_minimal()</code></pre>
 <p><img src="03-colors_and_animal_words_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><a href="https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2" class="uri">https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2</a></p>
 </div>
 </div>
 <div id="continuous-colors" class="section level1">
@@ -737,6 +738,17 @@ ggplot(animal_words, aes(x = age,
   geom_point() +
   scale_color_viridis(option = &quot;inferno&quot;, begin = 1, end = 0)</code></pre>
 <p><img src="03-colors_and_animal_words_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p>What if I want to separate?? <a href="https://github.com/tidyverse/ggplot2/issues/2345" class="uri">https://github.com/tidyverse/ggplot2/issues/2345</a></p>
+<pre class="r"><code>cols = c(&quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;)
+cols_dark = c(&#39;#C18511&#39;, &#39;#289ACF&#39;, &#39;#0D8561&#39;)
+ggplot(animal_words, aes(x = age, 
+                         y = prop_produced, 
+                         color = animal_word)) + 
+  geom_point(aes(point_color = animal_word)) +
+  geom_line(aes(group = animal_word)) +
+  scale_color_manual(values = cols) +
+  ggplot2:::manual_scale(&quot;point_color&quot;, values = cols_dark, guide = &quot;none&quot;) </code></pre>
+<p><img src="03-colors_and_animal_words_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 </div>
 </div>
 </div>

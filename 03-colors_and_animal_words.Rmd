@@ -475,6 +475,8 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width, group = Species)) +
   theme_minimal()
 ```
 
+https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2
+
 # Continuous colors
 
 ## Default continuous palette
@@ -604,6 +606,20 @@ ggplot(animal_words, aes(x = age,
 ```
 
 
+What if I want to separate??
+https://github.com/tidyverse/ggplot2/issues/2345
+
+```{r}
+cols = c("#E69F00", "#56B4E9", "#009E73")
+cols_dark = c('#C18511', '#289ACF', '#0D8561')
+ggplot(animal_words, aes(x = age, 
+                         y = prop_produced, 
+                         color = animal_word)) + 
+  geom_point(aes(point_color = animal_word)) +
+  geom_line(aes(group = animal_word)) +
+  scale_color_manual(values = cols) +
+  ggplot2:::manual_scale("point_color", values = cols_dark, guide = "none") 
+```
 
 
 

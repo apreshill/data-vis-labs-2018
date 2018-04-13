@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 01: Addendum</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="00-install_name_plot.html">Day One in R</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 01: Addendum</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="packages" class="section level1">
+<h1><span class="header-section-number">1</span> Packages</h1>
+<pre class="r"><code>library(tidyverse)
+library(extrafont)</code></pre>
+<pre class="r"><code>hot_dogs &lt;- read_csv(&quot;http://bit.ly/cs631-hotdog&quot;, 
+    col_types = cols(
+      gender = col_factor(levels = NULL)
+    ))</code></pre>
+</div>
+<div id="visualizing-new-world-records" class="section level1">
+<h1><span class="header-section-number">2</span> Visualizing new world records</h1>
+<div class="figure">
+<img src="https://i0.wp.com/flowingdata.com/wp-content/uploads/2009/06/hot-dogs1.gif?zoom=2&amp;fit=900%2C423" />
+
+</div>
+<p>Let’s adapt <a href="http://flowingdata.com/2009/07/02/whos-going-to-win-nathans-hot-dog-eating-contest/hot-dogs-2/">Nathan Yau’s hot dog contest example</a>.</p>
+<p>The first thing we notice is that we don’t have data about whether each year’s winner is a record or not. Since our data is nicely tidy, we can use <code>dplyr</code> window functions:</p>
+<ul>
+<li><p>First, we use base R’s <code>cummax</code> to create a new variable that reflects the maximum HDB eaten cumulatively, that is, compared to all earlier years. For this reason, the <code>arrange(year)</code> here is critical.</p></li>
+<li><p>Next, we want to know if the <code>hdb_record</code> is actually a <em>new</em> record or not, compared to all previous years. We can use <code>case_when</code> to create a logical variable that is TRUE if the <code>hdb_record</code> for a given year is greater than the <code>hdb_record</code> from the year before (using <code>dplyr::lag</code>). If not, this variable is FALSE.</p></li>
+</ul>
+<pre class="r"><code>hot_dogs_records &lt;- hot_dogs  %&gt;% 
+  filter(year &gt;= 1980 &amp; gender == &#39;male&#39;) %&gt;%  
+  arrange(year) %&gt;% 
+  mutate(hdb_record = cummax(num_eaten),
+         new_record = case_when(
+           hdb_record &gt; lag(hdb_record) ~ TRUE,
+           TRUE ~ FALSE
+         )) %&gt;% 
+  filter(year &gt;= 1981)</code></pre>
+<p>We’ll also make our x-axis ticks again…</p>
+<pre class="r"><code>years_to_label &lt;- seq(from = 1981, to = 2017, by = 4)
+years_to_label</code></pre>
+<pre><code> [1] 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017</code></pre>
+<pre class="r"><code>hd_years &lt;- hot_dogs_records %&gt;%
+  distinct(year) %&gt;% 
+  mutate(year_lab = ifelse(year %in% years_to_label, year, &quot;&quot;))</code></pre>
+<pre class="r"><code>hdb_records &lt;- ggplot(hot_dogs_records, 
+                      aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = new_record)) + 
+  labs(x = &quot;Year&quot;, y = &quot;Hot Dogs and Buns Consumed&quot;) +
+  ggtitle(&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;) +
+  scale_fill_manual(values = c(&#39;#284a29&#39;, &#39;#629d62&#39;)) + 
+  scale_y_continuous(expand = c(0, 0),
+                     breaks = seq(0, 70, 10)) +
+  scale_x_continuous(expand = c(0, 0), 
+                     breaks = hd_years$year,
+                     labels = hd_years$year_lab) + 
+  coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(size = 12),
+        panel.background = element_blank(),
+        axis.line.x = element_line(color = &quot;gray80&quot;, 
+                                   size = 0.5),
+        axis.ticks = element_line(color = &quot;gray80&quot;, 
+                                  size = 0.5),
+        text = element_text(family = &quot;Lato&quot;),
+        legend.position = &quot;bottom&quot;,
+        panel.grid.minor = element_blank())
+hdb_records</code></pre>
+<p><img src="01-addendum_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="visualizing-background-data" class="section level1">
+<h1><span class="header-section-number">3</span> Visualizing background data</h1>
+<p>We’ll do this to highlight differences in gender.</p>
+<p><a href="https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2" class="uri">https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2</a></p>
+<pre class="r"><code>hot_dogs_both &lt;- hot_dogs %&gt;% 
+  filter(year &gt;= 1981) 
+hot_dog_behind &lt;- hot_dogs_both %&gt;% 
+  filter(gender == &quot;male&quot;) %&gt;% 
+  select(-gender)</code></pre>
+<pre class="r"><code>hdb_facets &lt;- ggplot(hot_dogs_both, 
+                      aes(x = year, y = num_eaten)) + 
+  geom_col(data = hot_dog_behind, fill = &#39;#4254a7&#39;, alpha = .1) +
+  geom_col(aes(fill = gender), show.legend = FALSE) + 
+  facet_wrap(~gender) +
+  labs(x = &quot;Year&quot;, y = &quot;Hot Dogs and Buns Consumed&quot;) +
+  ggtitle(&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;) +
+  scale_fill_manual(values = c(&#39;#4254a7&#39;, &#39;#f4b31a&#39;)) + 
+  scale_y_continuous(expand = c(0, 0),
+                     breaks = seq(0, 70, 10)) +
+  scale_x_continuous(expand = c(0, 0)) +
+  coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(size = 10),
+        panel.background = element_blank(),
+        axis.line.x = element_line(color = &quot;gray80&quot;, 
+                                   size = 0.5),
+        axis.ticks = element_line(color = &quot;gray80&quot;, 
+                                  size = 0.5),
+        text = element_text(family = &quot;Lato&quot;),
+        legend.position = &quot;bottom&quot;,
+        panel.grid.minor = element_blank())
+hdb_facets</code></pre>
+<p><img src="01-addendum_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
