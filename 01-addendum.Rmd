@@ -29,7 +29,7 @@ hot_dogs <- read_csv("http://bit.ly/cs631-hotdog",
     ))
 ```
 
-# Visualizing new world records
+# Visualizing new world records (for males)
 
 ![](https://i0.wp.com/flowingdata.com/wp-content/uploads/2009/06/hot-dogs1.gif?zoom=2&fit=900%2C423)
 
@@ -82,9 +82,9 @@ hdb_records <- ggplot(hot_dogs_records,
   theme(plot.title = element_text(hjust = 0.5),
         axis.text = element_text(size = 12),
         panel.background = element_blank(),
-        axis.line.x = element_line(color = "gray80", 
+        axis.line.x = element_line(color = "gray92", 
                                    size = 0.5),
-        axis.ticks = element_line(color = "gray80", 
+        axis.ticks = element_line(color = "gray92", 
                                   size = 0.5),
         text = element_text(family = "Lato"),
         legend.position = "bottom",
@@ -113,23 +113,24 @@ hdb_facets <- ggplot(hot_dogs_both,
   geom_col(data = hot_dog_behind, fill = '#4254a7', alpha = .1) +
   geom_col(aes(fill = gender), show.legend = FALSE) + 
   facet_wrap(~gender) +
-  labs(x = "Year", y = "Hot Dogs and Buns Consumed") +
+  labs(x = "", y = "Hot Dogs and Buns Consumed") +
   ggtitle("Nathan's Hot Dog Eating Contest Results, 1981-2017") +
   scale_fill_manual(values = c('#4254a7', '#f4b31a')) + 
   scale_y_continuous(expand = c(0, 0),
                      breaks = seq(0, 70, 10)) +
-  scale_x_continuous(expand = c(0, 0)) +
+  scale_x_continuous(expand = c(0, 0),
+                     breaks = seq(1981, 2017, 6)) +
   coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.text = element_text(size = 10),
+  theme(axis.text = element_text(size = 10),
         panel.background = element_blank(),
-        axis.line.x = element_line(color = "gray80", 
+        axis.line.x = element_line(color = "grey80", 
                                    size = 0.5),
-        axis.ticks = element_line(color = "gray80", 
+        axis.ticks = element_line(color = "grey80", 
                                   size = 0.5),
         text = element_text(family = "Lato"),
         legend.position = "bottom",
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(1, "lines"))
 hdb_facets
 ```
 

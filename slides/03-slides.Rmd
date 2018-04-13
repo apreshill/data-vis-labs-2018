@@ -1,0 +1,161 @@
+---
+title: "Lab 03: CS631"
+subtitle: "Data Basics"
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "80%", cache = FALSE)
+library(tidyverse)
+```
+
+```{r include = FALSE}
+animal_words <- read_csv(here::here("data",
+                                    "animal_age_summary.csv")) %>% 
+  select(-prop_produced) %>% 
+  rename(kids_produced = kids_produced_either)
+```
+
+
+
+# Data types
+
+```{r echo = FALSE}
+knitr::include_graphics("http://r4ds.had.co.nz/diagrams/data-structures-overview.png")
+```
+
+
+---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review 
+
+---
+# Mutate
+
+- <font color="#ED1941">Create a new variable with a specific value</font>  
+
+- Create a new variable based on other variables 
+
+- Change the contents of an existing variable
+
+--
+
+```{r}
+animal_words %>% 
+  mutate(form = "WS")
+```
+
+---
+# Mutate
+
+
+- Create a new variable with a specific value
+
+- <font color="#ED1941">Create a new variable based on other variables</font> 
+
+- Change the contents of an existing variable
+
+--
+
+```{r}
+animal_words %>% 
+  mutate(prop_produced = kids_produced / kids_responded)
+```
+
+---
+# Mutate
+
+- Create a new variable with a specific value
+
+- Create a new variable based on other variables
+
+- <font color="#ED1941">Change the contents of an existing variable</font> 
+
+--
+
+```{r include = FALSE}
+animal_words <- animal_words %>% 
+  mutate(prop_produced = kids_produced / kids_responded)
+```
+
+```{r}
+animal_words %>% 
+  mutate(prop_produced = prop_produced * 100)
+```
+
+---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review some helpful functions for `mutate`
+
+
+---
+class: middle, center, inverse
+
+#💡
+
+## First: Arithmetic
+
+---
+
+```{r}
+?Arithmetic
+```
+
+```{r include = FALSE}
+math_table <- tibble::tribble(
+  ~Operator, ~Description, ~Usage,
+  "+", "addition", "x + y",
+  "-", "subtraction", "x - y",
+  "*", "multiplication", "x * y",
+  "/", "division", "x / y",
+  "^", "raised to the power of", "x ^ y",
+  "abs", "absolute value", "abs(x)",
+  "%/%", "integer division", "x %/% y",
+  "%%", "remainder after division", "x %% y"
+)
+```
+
+
+```{r echo = FALSE, results = 'asis'}
+knitr::kable(math_table, format = "html")
+```
+
+```{r}
+5 %/% 2 # 2 goes into 5 two times with...
+5 %% 2 # 1 left over
+```
+
+
+---
+class: middle, center, inverse
+
+#💡
+
+## Second: 
+
+## Summaries
+
+
+
+---
+
+All very useful in a mutate!
+
+sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!

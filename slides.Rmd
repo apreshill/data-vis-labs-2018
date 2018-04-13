@@ -1,0 +1,30 @@
+---
+title: "In-Class Slides for CS631"
+output: html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, echo = FALSE)
+```
+
+
+## Slide Decks {.tabset .tabset-pills}
+
+### 01: R Basics
+
+```{r}
+knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/01-slides.html")
+```
+
+### 02: Tidyverse Basics
+
+```{r}
+knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html")
+```
+
+### 03: Data Basics
+
+```{r}
+knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/03-slides.html")
+```
+

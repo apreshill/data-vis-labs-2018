@@ -36,6 +36,8 @@ In David Robinson's DataCamp course you learned:
 ---
 class: center, middle, inverse
 
+# 📇
+
 ## Let's review
 
 ---
@@ -91,9 +93,180 @@ From Lab 01
 ]
 
 ---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review some helpful functions for `filter`
+
+
+---
+class: middle, center, inverse
+
+#💡
+
+## First: 
+
+## Logical Operators
+
+
+
+---
+
+
+
+```r
+?base::Logic
+```
+
+
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Operator &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Description &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Usage &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;amp; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; and &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x &amp;amp; y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; | &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; or &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x | y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; xor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; exactly x or y &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; xor(x, y) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ! &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; not &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; !x &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+Logical or (`|`) is inclusive, so `x | y` really means: 
+
+* x or 
+* y or 
+* both x &amp; y
+
+Exclusive or (`xor`) is exclusive, so `xor(x, y)` really means: 
+
+* x or
+* y...
+* but not both x &amp; y
+
+
+```r
+x &lt;- c(0, 1, 0, 1)
+y &lt;- c(0, 0, 1, 1)
+boolean_or &lt;- x | y
+exclusive_or &lt;- xor(x, y)
+cbind(x, y, boolean_or, exclusive_or)
+```
+
+```
+     x y boolean_or exclusive_or
+[1,] 0 0          0            0
+[2,] 1 0          1            1
+[3,] 0 1          1            1
+[4,] 1 1          1            0
+```
+
+---
+class: middle, center, inverse
+
+#💡
+
+## Second: 
+
+## Comparisons
+
+---
+
+```r
+?Comparison
+```
+
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Operator &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Description &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Usage &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; less than &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x &amp;lt; y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;= &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; less than or equal to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x &amp;lt;= y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; greater than &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x &amp;gt; y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;gt;= &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; greater than or equal to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x &amp;gt;= y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; == &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; exactly equal to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x == y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; != &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; not equal to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x != y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; %in% &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; group membership* &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x %in% y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; is.na &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; is missing &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; is.na(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; !is.na &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; is not missing &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; !is.na(x) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+*(shortcut to using `|` repeatedly with `==`)
+
+---
 # Lab 02: Challenge 1
 
-Use all the `dplyr` functions you have learned to answer the following questions:
+Use `dplyr` to answer the following questions:
 
 1. How many rows/observations are in `moma`?
 1. How many variables are in `moma`?
@@ -101,7 +274,7 @@ Use all the `dplyr` functions you have learned to answer the following questions
     - *Hint: you may want to look into `select` + `arrange`*
 1. What is the oldest painting in the collection? Which year? Which artist? What title? *(see above hint)*
 1. How many distinct artists are there?
-1. Which artist has the most paintings ever owned by MoMA? How many paintings are by this artist?
+1. Which artist has the most paintings in the collection? How many paintings are by this artist?
 
 If you want more:
 1. In what year were the most paintings acquired? Created?
@@ -128,19 +301,19 @@ all `ggplot2`
 
 ```
 # A tibble: 4 x 4
-  year_created year_acquired area_cmsq artist_gender
-         &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        
-1        1980.         1985.        3. male         
-2        1990.         1995.        2. male         
-3        2000.         2005.        1. female       
-4        2010.         2015.        2. female       
+  painted acquired  area gender
+    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; 
+1   1980.    1985.    3. male  
+2   1990.    1995.    2. male  
+3   2000.    2005.    1. female
+4   2010.    2015.    2. female
 ```
 
 &lt;!-- Copy to chalkboard/whiteboard --&gt;
 
 1. A scatter plot
-1. A scatter plot where the `color` of the points corresponds to `artist_gender`
-1. A scatter plot where the `size` of the points corresponds to `area_cmsq`
+1. A scatter plot where the `color` of the points corresponds to `gender`
+1. A scatter plot where the `size` of the points corresponds to `area`
 
 .footnote[
 [1] Shamelessly borrowed with much appreciation to [Chester Ismay](https://ismayc.github.io/talks/ness-infer/slide_deck.html)
@@ -153,47 +326,43 @@ all `ggplot2`
 
 ```r
 library(ggplot2)
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired)) + 
+ggplot(moma_ex, aes(painted, acquired)) + 
   geom_point()
 ```
 --
 
-&lt;img src="02-slides_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 
-# 2. `color` points by `D`
+# 2. `color` points by `gender`
 
 
 ```r
 library(ggplot2)
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired)) + 
-  geom_point(mapping = aes(color = artist_gender))
-```
---
-
-&lt;img src="02-slides_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# 3. `size` points by `C`
-
-
-```r
-library(ggplot2)
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired, 
-                                       size = artist_gender)) + 
+ggplot(moma_ex, aes(painted, acquired, color = gender)) + 
   geom_point()
 ```
 --
 
-&lt;img src="02-slides_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# 3. `size` points by `area`
+
+
+```r
+library(ggplot2)
+ggplot(moma_ex, aes(painted, acquired, size = area)) + 
+  geom_point()
+```
+--
+
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -204,14 +373,14 @@ ggplot(data = simple_ex, mapping = aes(x = year_created,
 - Line graph: `geom_line()`
 - Histogram: `geom_histogram()`
 - Boxplot: `geom_boxplot()`
-- Bar graph: `geom_bar()`
+- Bar graph: `geom_bar()` or `geom_col` (see [Lab 01](../01-eda_hot_dogs.html))
 
 
 
 ---
 # Lab 02: Plotting Challenges
 
-Challenges 3 &amp; 4 are in the [lab](https://apreshill.github.io/data-vis-labs-2018/02-moma.html)!
+Challenges 3-5 are in the [Lab 02 code-through](../02-moma.html)!
 
 https://apreshill.github.io/data-vis-labs-2018/02-moma.html
     </textarea>

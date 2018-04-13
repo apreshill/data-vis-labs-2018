@@ -1,5 +1,5 @@
 ---
-title: 'Day One in R'
+title: 'Introduce Yourself'
 author: "Alison Hill"
 output:
   html_document:
@@ -200,6 +200,18 @@ ggsave("alison_hill.pdf", plot) # please make the filename unique!
 ```
 
 Upload this exported plot to Sakai before Wednesday at noon.
+
+# Other cool `babynames` projects
+
+
+- Julia Silge *'My Baby Boomer Name Might Have Been "Debbie"'*: https://juliasilge.com/blog/my-baby-boomer-name/
+    - Use Julia's Shiny app: https://juliasilge.shinyapps.io/PredictNamesApp/
+![](https://juliasilge.com/figs/2016-02-29-My-Baby-Boomer-Name/unnamed-chunk-8-1.png)
+
+- Hilary Parker: Hilary: The Most Poisoned Baby Name in US History: https://hilaryparker.com/2013/01/30/hilary-the-most-poisoned-baby-name-in-us-history/
+
+![](https://hilaryparker.files.wordpress.com/2013/01/more_names_trimmed2.png)
+
 
 
 # Resources

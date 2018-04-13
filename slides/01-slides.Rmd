@@ -1,0 +1,263 @@
+---
+title: "Lab 01: CS631"
+subtitle: "R Basics"
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "80%", cache = FALSE)
+library(tidyverse)
+library(babynames)
+```
+
+# R Basics
+
+--
+
+* R is an interpreter `>`
+
+--
+
+* You are an object maker & borrower `<-`
+
+--
+
+* Know your data types
+
+--
+
+* Case matters (`i_like_snake_case`)
+
+--
+
+* Use comments! All text behind a `#` is a comment
+
+--
+
+* Use packages; think: *"install once per machine, load once per R session"*
+
+--
+
+* Use the `%>%`; think: *"dataframe first, dataframe once"*
+
+---
+
+## R is an interpreter `>`
+
+--
+
+You enter commands line-by-line (as opposed to compiled languages).
+
+--
+
+* The `>` means R is a ready for a command
+
+--
+
+* The `+` means your last command isn't complete
+
+--
+
+    - If you get stuck with a `+` use your escape key!
+
+---
+
+## You are an object maker
+
+
+```{r}
+data_vis <- c("Steven", "Jackie", "Alison") # c = combine
+data_vis
+num_labs <- c(1:10)
+num_labs
+mood <- rep("yippee", sum(num_labs)) # replicate X times
+mood
+```
+
+---
+
+## You are an object borrower
+
+
+```{r}
+letters # built-in
+my_names <- babynames # from the babynames package
+my_names
+```
+
+
+
+---
+
+## Every object has a class
+
+Classes:
+
+* Numeric
+* Character
+* Factor
+* Logical
+* Double (`?double`: "identical to numeric", but "double precision")
+* a few others you may run into `?typeof`
+
+```{r}
+typeof(num_labs) # numeric
+typeof(mood) # "yippee" is a character
+```
+
+Vectors can only contain one type of thing.
+
+```{r mixing-types}
+my_things <- c("oh", 1, 2, "hi") 
+my_things
+typeof(my_things) 
+```
+
+R denotes missing data with a special type of thing, `NA`, which is not a character (and hence not in quotes). It is actually a logical, which returns TRUE or FALSE.
+
+```{r missing-values-in-vector}
+?logical
+missing <- c(NA, NA, NA)
+typeof(missing)
+is.na(missing)
+dollars <- c(12, 1, 2, 3, NA)
+typeof(dollars)
+is.na(dollars)
+dollars*3
+mean(dollars)
+mean(dollars, na.rm = TRUE)
+```
+
+
+---
+
+## Case matters
+
+```{r mean-works}
+# calculate the mean
+mean(dollars) # calculate mean of numbers 
+```
+
+```{r mean-wont-work, eval = FALSE}
+Mean(dollars) # no function
+mean(Dollars) # no data 
+```
+
+Read more: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
+
+---
+
+## Text behind a `#` is a comment
+
+```{r}
+2+2 # add 2 + 2 here
+
+# I can say anything I want here
+```
+
+
+---
+
+## Packages! 
+
+**Install once** per machine
+
+```{r eval = FALSE}
+install.packages("dplyr")
+```
+
+**Load once** per R work session
+
+```{r eval = FALSE}
+library(dplyr)
+```
+
+*also: quotes matter, sorry*
+
+This can get to be a long list if we want to use a lot of packages in our work session. We can make a function to load a *list* of packages, and install them if not already installed (more on functions later).
+
+```{r package-list-to-load}
+pkgs <- c("readr", "readxl", "haven", "dplyr", "tidyr", "stringr") # list packages needed
+```
+
+```{r}
+ipak <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) 
+        install.packages(new.pkg, dependencies = TRUE)
+    sapply(pkg, require, character.only = TRUE)
+}
+```
+
+```{r run-pkg-function, eval = FALSE}
+ipak(pkgs) # take function, and give it that list
+```
+
+---
+
+## Functions 
+
+Sometimes abbreviated `funs` in documentation, which is a little ironic 😉.
+
+Some simple ones:
+
+```{r}
+
+class_weeks <- seq(1, 12, 1)
+class_labs <- seq(1, 12, 2)
+```
+
+
+Read more: http://r4ds.had.co.nz/workflow-basics.html#calling-functions
+
+---
+
+## Piping/chaining with the `%>%` operator
+
+This is the magrittr operator: `%>%`. You can use with the `dplyr` package loaded (which we just did above).
+
+You can check via `sessionInfo()`
+```{r}
+sessionInfo()
+```
+
+---
+
+## *Nesting* your dataframe in commands is hard to read
+
+```{r}
+head(iris)
+```
+
+## *Piping* your dataframe into a command lets you read L to R
+
+```{r}
+iris %>% head(.)
+```
+
+---
+
+## Sequences of commands are read *inside out*
+
+```{r}
+head(iris[iris$Species == "virginica", ])
+```
+
+### Chaining your commands lets you read *L to R*
+```{r}
+iris %>% filter(Species == "virginica") %>% head(.) 
+```
+
+The `(.)` is implicit- try the above code without the parentheses or the `.`. But keep in mind that under the hood, this is what the implied syntax is. It will be useful later on!
+

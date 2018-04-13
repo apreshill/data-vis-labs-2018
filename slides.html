@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Alison Hill" />
 
 
-<title>Lab 03a: Animal Word Cleaning</title>
+<title>In-Class Slides for CS631</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -201,66 +200,28 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Lab 03a: Animal Word Cleaning</h1>
-<h3 class="subtitle"><em>CS631</em></h3>
-<h4 class="author"><em>Alison Hill</em></h4>
+<h1 class="title toc-ignore">In-Class Slides for CS631</h1>
 
 </div>
 
 
-<div id="data" class="section level1">
-<h1>Data</h1>
-<p><a href="http://langcog.github.io/wordbankr/" class="uri">http://langcog.github.io/wordbankr/</a></p>
+<div id="slide-decks" class="section level2 tabset tabset-pills">
+<h2>Slide Decks</h2>
+<div id="r-basics" class="section level3">
+<h3>01: R Basics</h3>
+<iframe src="https://apreshill.github.io/data-vis-labs-2018/slides/01-slides.html" width="672" height="400px">
+</iframe>
 </div>
-<div id="packages" class="section level1">
-<h1>Packages</h1>
-<pre class="r"><code>library(tidyverse)
-library(wordbankr)
-library(here)</code></pre>
-<pre class="r"><code>my_animals &lt;- c(&quot;cat&quot;, &quot;kitty&quot;, &quot;chicken (animal)&quot;, 
-                &quot;hen&quot;, &quot;dog&quot;, &quot;puppy&quot;)
-
-# first get the items in the animal category
-animal_words &lt;- get_item_data(language = &quot;English (American)&quot;, 
-                         form = &quot;WS&quot;) %&gt;%
-  filter(definition %in% my_animals) 
-
-# then get instrument data for those items
-animal_word_data &lt;- get_instrument_data(
-  language = &quot;English (American)&quot;,
-  form = &quot;WS&quot;,
-  items = animal_words$item_id,
-  administrations = TRUE,
-  iteminfo = TRUE
-  ) %&gt;% 
-  mutate(produces = value == &quot;produces&quot;) %&gt;% 
-  mutate(animal_word = case_when(
-           definition %in% c(&quot;cat&quot;, &quot;kitty&quot;) ~ &quot;cat&quot;,
-           definition %in% c(&quot;chicken (animal)&quot;, &quot;hen&quot;) ~ &quot;chicken&quot;,
-           definition %in% c(&quot;dog&quot;, &quot;puppy&quot;) ~ &quot;dog&quot;
-         )) %&gt;% 
-  drop_na(animal_word)
-
-# how many kids produce either of each word category?
-animal_produced &lt;- animal_word_data %&gt;% 
-  group_by(age, data_id, animal_word) %&gt;% 
-  summarize(produce_either = case_when(
-    sum(produces, na.rm = TRUE) &gt; 0 ~ 1,
-    sum(produces, na.rm = TRUE) == 0 ~ 0
-  )) %&gt;% 
-  ungroup()
-
-# what proportion of kids at each age produce each word?
-animal_age_summary &lt;- animal_produced %&gt;% 
-  group_by(age, animal_word) %&gt;%
-  summarise(kids_produced_either = sum(produce_either, na.rm = TRUE),
-            kids_responded = n_distinct(data_id),
-            prop_produced = kids_produced_either / kids_responded)</code></pre>
-<p>Now let’s export both data frames for the lab.</p>
-<pre class="r"><code>write_csv(animal_word_data, here::here(&quot;data&quot;,
-                                       &quot;animal_word_data.csv&quot;))
-write_csv(animal_age_summary, here::here(&quot;data&quot;,
-                                         &quot;animal_age_summary.csv&quot;))</code></pre>
+<div id="tidyverse-basics" class="section level3">
+<h3>02: Tidyverse Basics</h3>
+<iframe src="https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html" width="672" height="400px">
+</iframe>
+</div>
+<div id="data-basics" class="section level3">
+<h3>03: Data Basics</h3>
+<iframe src="https://apreshill.github.io/data-vis-labs-2018/slides/03-slides.html" width="672" height="400px">
+</iframe>
+</div>
 </div>
 
 <p>

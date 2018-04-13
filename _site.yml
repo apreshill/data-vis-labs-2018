@@ -3,12 +3,12 @@ output_dir: '.'
 navbar:
   title: CS631 Labs
   left:
-  - text: Day One in R
-    href: 00-install_name_plot.html
-  - text: Sakai
-    href: https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18
+  - text: Slides
+    href: slides.html
   - text: Resources
     href: data-vis-resources.html
+  - text: Sakai
+    href: https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18
   right:
   - text: About
     href: about.html

@@ -35,6 +35,8 @@ In David Robinson's DataCamp course you learned:
 ---
 class: center, middle, inverse
 
+# 📇
+
 ## Let's review
 
 ---
@@ -89,9 +91,109 @@ From Lab 01
 ]
 
 ---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review some helpful functions for `filter`
+
+
+---
+class: middle, center, inverse
+
+#💡
+
+## First: 
+
+## Logical Operators
+
+
+
+---
+
+
+```{r}
+?base::Logic
+```
+
+
+```{r include = FALSE}
+logic_table <- tibble::tribble(
+  ~Operator, ~Description, ~Usage,
+  "&", "and", "x & y",
+  "|", "or", "x | y",
+  "xor", "exactly x or y", "xor(x, y)",
+  "!", "not", "!x"
+)
+```
+
+
+```{r echo = FALSE, results = 'asis'}
+knitr::kable(logic_table, format = "html")
+```
+
+---
+
+Logical or (`|`) is inclusive, so `x | y` really means: 
+
+* x or 
+* y or 
+* both x & y
+
+Exclusive or (`xor`) is exclusive, so `xor(x, y)` really means: 
+
+* x or
+* y...
+* but not both x & y
+
+```{r}
+x <- c(0, 1, 0, 1)
+y <- c(0, 0, 1, 1)
+boolean_or <- x | y
+exclusive_or <- xor(x, y)
+cbind(x, y, boolean_or, exclusive_or)
+```
+
+---
+class: middle, center, inverse
+
+#💡
+
+## Second: 
+
+## Comparisons
+
+---
+```{r}
+?Comparison
+```
+
+```{r include = FALSE}
+comp_table <- tibble::tribble(
+  ~Operator, ~Description, ~Usage,
+  "<", "less than", "x < y",
+  "<=", "less than or equal to", "x <= y",
+  ">", "greater than", "x > y",
+  ">=", "greater than or equal to", "x >= y",
+  "==", "exactly equal to", "x == y",
+  "!=", "not equal to", "x != y",
+  "%in%", "group membership*", "x %in% y",
+  "is.na", "is missing", "is.na(x)",
+  "!is.na", "is not missing", "!is.na(x)"
+)
+```
+
+
+```{r echo = FALSE, results = 'asis'}
+knitr::kable(comp_table, format = "html")
+```
+
+*(shortcut to using `|` repeatedly with `==`)
+
+---
 # Lab 02: Challenge 1
 
-Use all the `dplyr` functions you have learned to answer the following questions:
+Use `dplyr` to answer the following questions:
 
 1. How many rows/observations are in `moma`?
 1. How many variables are in `moma`?
@@ -99,7 +201,7 @@ Use all the `dplyr` functions you have learned to answer the following questions
     - *Hint: you may want to look into `select` + `arrange`*
 1. What is the oldest painting in the collection? Which year? Which artist? What title? *(see above hint)*
 1. How many distinct artists are there?
-1. Which artist has the most paintings ever owned by MoMA? How many paintings are by this artist?
+1. Which artist has the most paintings in the collection? How many paintings are by this artist?
 
 If you want more:
 1. In what year were the most paintings acquired? Created?
@@ -124,21 +226,21 @@ all `ggplot2`
 - Sketch the graphics below on paper, where the `x`-axis is variable `year_created` and the `y`-axis is variable `year_acquired`
 
 ```{r echo=FALSE}
-simple_ex <-
+moma_ex <-
   data_frame(
-    year_created = c(1980, 1990, 2000, 2010),
-    year_acquired = c(1985, 1995, 2005, 2015),
-    area_cmsq = c(3, 2, 1, 2),
-    artist_gender = c("male", "male", "female", "female")
+    painted = c(1980, 1990, 2000, 2010),
+    acquired = c(1985, 1995, 2005, 2015),
+    area = c(3, 2, 1, 2),
+    gender = c("male", "male", "female", "female")
   )
-simple_ex
+moma_ex
 ```
 
 <!-- Copy to chalkboard/whiteboard -->
 
 1. A scatter plot
-1. A scatter plot where the `color` of the points corresponds to `artist_gender`
-1. A scatter plot where the `size` of the points corresponds to `area_cmsq`
+1. A scatter plot where the `color` of the points corresponds to `gender`
+1. A scatter plot where the `size` of the points corresponds to `area`
 
 .footnote[
 [1] Shamelessly borrowed with much appreciation to [Chester Ismay](https://ismayc.github.io/talks/ness-infer/slide_deck.html)
@@ -150,15 +252,13 @@ simple_ex
 
 ```{r, eval=FALSE}
 library(ggplot2)
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired)) + 
+ggplot(moma_ex, aes(painted, acquired)) + 
   geom_point()
 ```
 --
 
 ```{r, echo=FALSE, fig.height=4.4}
-ggplot(data = simple_ex, aes(x = year_created, 
-                             y = year_acquired)) + 
+ggplot(moma_ex, aes(painted, acquired)) + 
   geom_point()
 ```
 
@@ -166,40 +266,34 @@ ggplot(data = simple_ex, aes(x = year_created,
 ---
 
 
-# 2. `color` points by `D`
+# 2. `color` points by `gender`
 
 ```{r, eval=FALSE}
 library(ggplot2)
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired)) + 
-  geom_point(mapping = aes(color = artist_gender))
-```
---
-
-```{r, echo=FALSE, fig.height=4.4}
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired)) + 
-  geom_point(mapping = aes(color = artist_gender))
-```
-
-
----
-
-# 3. `size` points by `C`
-
-```{r, eval=FALSE}
-library(ggplot2)
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired, 
-                                       size = artist_gender)) + 
+ggplot(moma_ex, aes(painted, acquired, color = gender)) + 
   geom_point()
 ```
 --
 
 ```{r, echo=FALSE, fig.height=4.4}
-ggplot(data = simple_ex, mapping = aes(x = year_created, 
-                                       y = year_acquired, 
-                                       size = area_cmsq)) + 
+ggplot(moma_ex, aes(painted, acquired, color = gender)) + 
+  geom_point()
+```
+
+
+---
+
+# 3. `size` points by `area`
+
+```{r, eval=FALSE}
+library(ggplot2)
+ggplot(moma_ex, aes(painted, acquired, size = area)) + 
+  geom_point()
+```
+--
+
+```{r, echo=FALSE, fig.height=4.4}
+ggplot(moma_ex, aes(painted, acquired, size = area)) + 
   geom_point()
 ```
 
@@ -212,13 +306,13 @@ ggplot(data = simple_ex, mapping = aes(x = year_created,
 - Line graph: `geom_line()`
 - Histogram: `geom_histogram()`
 - Boxplot: `geom_boxplot()`
-- Bar graph: `geom_bar()`
+- Bar graph: `geom_bar()` or `geom_col` (see [Lab 01](../01-eda_hot_dogs.html))
 
 
 
 ---
 # Lab 02: Plotting Challenges
 
-Challenges 3 & 4 are in the [lab](https://apreshill.github.io/data-vis-labs-2018/02-moma.html)!
+Challenges 3-5 are in the [Lab 02 code-through](../02-moma.html)!
 
 https://apreshill.github.io/data-vis-labs-2018/02-moma.html

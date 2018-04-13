@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 01: CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 01: CS631
+## R Basics
+### Alison Hill
+
+---
+
+
+
+
+# R Basics
+
+--
+
+* R is an interpreter `&gt;`
+
+--
+
+* You are an object maker &amp; borrower `&lt;-`
+
+--
+
+* Know your data types
+
+--
+
+* Case matters (`i_like_snake_case`)
+
+--
+
+* Use comments! All text behind a `#` is a comment
+
+--
+
+* Use packages; think: *"install once per machine, load once per R session"*
+
+--
+
+* Use the `%&gt;%`; think: *"dataframe first, dataframe once"*
+
+---
+
+## R is an interpreter `&gt;`
+
+--
+
+You enter commands line-by-line (as opposed to compiled languages).
+
+--
+
+* The `&gt;` means R is a ready for a command
+
+--
+
+* The `+` means your last command isn't complete
+
+--
+
+    - If you get stuck with a `+` use your escape key!
+
+---
+
+## You are an object maker
+
+
+
+```r
+data_vis &lt;- c("Steven", "Jackie", "Alison") # c = combine
+data_vis
+```
+
+```
+[1] "Steven" "Jackie" "Alison"
+```
+
+```r
+num_labs &lt;- c(1:10)
+num_labs
+```
+
+```
+ [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```r
+mood &lt;- rep("yippee", sum(num_labs)) # replicate X times
+mood
+```
+
+```
+ [1] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+ [8] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+[15] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+[22] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+[29] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+[36] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+[43] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+[50] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+```
+
+---
+
+## You are an object borrower
+
+
+
+```r
+letters # built-in
+```
+
+```
+ [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"
+[18] "r" "s" "t" "u" "v" "w" "x" "y" "z"
+```
+
+```r
+my_names &lt;- babynames # from the babynames package
+my_names
+```
+
+```
+# A tibble: 1,858,689 x 5
+    year sex   name          n   prop
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;
+ 1 1880. F     Mary       7065 0.0724
+ 2 1880. F     Anna       2604 0.0267
+ 3 1880. F     Emma       2003 0.0205
+ 4 1880. F     Elizabeth  1939 0.0199
+ 5 1880. F     Minnie     1746 0.0179
+ 6 1880. F     Margaret   1578 0.0162
+ 7 1880. F     Ida        1472 0.0151
+ 8 1880. F     Alice      1414 0.0145
+ 9 1880. F     Bertha     1320 0.0135
+10 1880. F     Sarah      1288 0.0132
+# ... with 1,858,679 more rows
+```
+
+
+
+---
+
+## Every object has a class
+
+Classes:
+
+* Numeric
+* Character
+* Factor
+* Logical
+* Double (`?double`: "identical to numeric", but "double precision")
+* a few others you may run into `?typeof`
+
+
+```r
+typeof(num_labs) # numeric
+```
+
+```
+[1] "integer"
+```
+
+```r
+typeof(mood) # "yippee" is a character
+```
+
+```
+[1] "character"
+```
+
+Vectors can only contain one type of thing.
+
+
+```r
+my_things &lt;- c("oh", 1, 2, "hi") 
+my_things
+```
+
+```
+[1] "oh" "1"  "2"  "hi"
+```
+
+```r
+typeof(my_things) 
+```
+
+```
+[1] "character"
+```
+
+R denotes missing data with a special type of thing, `NA`, which is not a character (and hence not in quotes). It is actually a logical, which returns TRUE or FALSE.
+
+
+```r
+?logical
+missing &lt;- c(NA, NA, NA)
+typeof(missing)
+```
+
+```
+[1] "logical"
+```
+
+```r
+is.na(missing)
+```
+
+```
+[1] TRUE TRUE TRUE
+```
+
+```r
+dollars &lt;- c(12, 1, 2, 3, NA)
+typeof(dollars)
+```
+
+```
+[1] "double"
+```
+
+```r
+is.na(dollars)
+```
+
+```
+[1] FALSE FALSE FALSE FALSE  TRUE
+```
+
+```r
+dollars*3
+```
+
+```
+[1] 36  3  6  9 NA
+```
+
+```r
+mean(dollars)
+```
+
+```
+[1] NA
+```
+
+```r
+mean(dollars, na.rm = TRUE)
+```
+
+```
+[1] 4.5
+```
+
+
+---
+
+## Case matters
+
+
+```r
+# calculate the mean
+mean(dollars) # calculate mean of numbers 
+```
+
+```
+[1] NA
+```
+
+
+```r
+Mean(dollars) # no function
+mean(Dollars) # no data 
+```
+
+Read more: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
+
+---
+
+## Text behind a `#` is a comment
+
+
+```r
+2+2 # add 2 + 2 here
+```
+
+```
+[1] 4
+```
+
+```r
+# I can say anything I want here
+```
+
+
+---
+
+## Packages! 
+
+**Install once** per machine
+
+
+```r
+install.packages("dplyr")
+```
+
+**Load once** per R work session
+
+
+```r
+library(dplyr)
+```
+
+*also: quotes matter, sorry*
+
+This can get to be a long list if we want to use a lot of packages in our work session. We can make a function to load a *list* of packages, and install them if not already installed (more on functions later).
+
+
+```r
+pkgs &lt;- c("readr", "readxl", "haven", "dplyr", "tidyr", "stringr") # list packages needed
+```
+
+
+```r
+ipak &lt;- function(pkg){
+    new.pkg &lt;- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) 
+        install.packages(new.pkg, dependencies = TRUE)
+    sapply(pkg, require, character.only = TRUE)
+}
+```
+
+
+```r
+ipak(pkgs) # take function, and give it that list
+```
+
+---
+
+## Functions 
+
+Sometimes abbreviated `funs` in documentation, which is a little ironic 😉.
+
+Some simple ones:
+
+
+```r
+class_weeks &lt;- seq(1, 12, 1)
+class_labs &lt;- seq(1, 12, 2)
+```
+
+
+Read more: http://r4ds.had.co.nz/workflow-basics.html#calling-functions
+
+---
+
+## Piping/chaining with the `%&gt;%` operator
+
+This is the magrittr operator: `%&gt;%`. You can use with the `dplyr` package loaded (which we just did above).
+
+You can check via `sessionInfo()`
+
+```r
+sessionInfo()
+```
+
+```
+R version 3.4.1 (2017-06-30)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+Matrix products: default
+BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] babynames_0.3.0    forcats_0.3.0.9000 stringr_1.3.0     
+ [4] dplyr_0.7.4.9000   purrr_0.2.4        readr_1.2.0       
+ [7] tidyr_0.8.0        tibble_1.4.2       ggplot2_2.2.1.9000
+[10] tidyverse_1.2.1   
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_0.2.4.9000 xfun_0.1              reshape2_1.4.3       
+ [4] haven_1.1.0           lattice_0.20-35       colorspace_1.3-2     
+ [7] htmltools_0.3.6       yaml_2.1.18           utf8_1.1.3           
+[10] rlang_0.2.0.9000      pillar_1.2.1          withr_2.1.2          
+[13] foreign_0.8-69        glue_1.2.0            modelr_0.1.1         
+[16] readxl_1.0.0          bindrcpp_0.2.0.9000   bindr_0.1.0.9000     
+[19] plyr_1.8.4            munsell_0.4.3         gtable_0.2.0         
+[22] cellranger_1.1.0      rvest_0.3.2           psych_1.7.5          
+[25] evaluate_0.10.1       knitr_1.20            parallel_3.4.1       
+[28] broom_0.4.2           Rcpp_0.12.15          backports_1.1.2      
+[31] scales_0.5.0.9000     jsonlite_1.5          mnormt_1.5-5         
+[34] hms_0.4.1             digest_0.6.15         stringi_1.1.6        
+[37] xaringan_0.6.1        grid_3.4.1            rprojroot_1.3-2      
+[40] cli_1.0.0             tools_3.4.1           magrittr_1.5         
+[43] lazyeval_0.2.1        crayon_1.3.4          pkgconfig_2.0.1      
+[46] xml2_1.2.0            lubridate_1.7.3       assertthat_0.2.0     
+[49] rmarkdown_1.9.5       httr_1.3.1            rstudioapi_0.7       
+[52] R6_2.2.2              nlme_3.1-131          compiler_3.4.1       
+```
+
+---
+
+## *Nesting* your dataframe in commands is hard to read
+
+
+```r
+head(iris)
+```
+
+```
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+```
+
+## *Piping* your dataframe into a command lets you read L to R
+
+
+```r
+iris %&gt;% head(.)
+```
+
+```
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+```
+
+---
+
+## Sequences of commands are read *inside out*
+
+
+```r
+head(iris[iris$Species == "virginica", ])
+```
+
+```
+    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+101          6.3         3.3          6.0         2.5 virginica
+102          5.8         2.7          5.1         1.9 virginica
+103          7.1         3.0          5.9         2.1 virginica
+104          6.3         2.9          5.6         1.8 virginica
+105          6.5         3.0          5.8         2.2 virginica
+106          7.6         3.0          6.6         2.1 virginica
+```
+
+### Chaining your commands lets you read *L to R*
+
+```r
+iris %&gt;% filter(Species == "virginica") %&gt;% head(.) 
+```
+
+```
+  Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+1          6.3         3.3          6.0         2.5 virginica
+2          5.8         2.7          5.1         1.9 virginica
+3          7.1         3.0          5.9         2.1 virginica
+4          6.3         2.9          5.6         1.8 virginica
+5          6.5         3.0          5.8         2.2 virginica
+6          7.6         3.0          6.6         2.1 virginica
+```
+
+The `(.)` is implicit- try the above code without the parentheses or the `.`. But keep in mind that under the hood, this is what the implied syntax is. It will be useful later on!
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

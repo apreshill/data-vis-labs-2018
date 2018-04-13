@@ -9,7 +9,6 @@ output:
     toc_float: TRUE
     toc_depth: 2
     number_sections: TRUE
-    code_folding: hide
 ---
 ```{r setup, include = FALSE, cache = FALSE}
 knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)

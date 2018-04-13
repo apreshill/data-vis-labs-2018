@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 03: CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 03: CS631
+## Data Basics
+### Alison Hill
+
+---
+
+
+
+
+
+
+
+
+# Data types
+
+&lt;img src="http://r4ds.had.co.nz/diagrams/data-structures-overview.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review 
+
+---
+# Mutate
+
+- &lt;font color="#ED1941"&gt;Create a new variable with a specific value&lt;/font&gt;  
+
+- Create a new variable based on other variables 
+
+- Change the contents of an existing variable
+
+--
+
+
+```r
+animal_words %&gt;% 
+  mutate(form = "WS")
+```
+
+```
+# A tibble: 45 x 5
+     age animal_word kids_produced kids_responded form 
+   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;
+ 1   16. cat                  565.           956. WS   
+ 2   16. chicken               83.           956. WS   
+ 3   16. dog                  684.           956. WS   
+ 4   17. cat                  158.           273. WS   
+ 5   17. chicken               31.           273. WS   
+ 6   17. dog                  202.           273. WS   
+ 7   18. cat                  317.           442. WS   
+ 8   18. chicken              112.           442. WS   
+ 9   18. dog                  365.           442. WS   
+10   19. cat                  259.           328. WS   
+# ... with 35 more rows
+```
+
+---
+# Mutate
+
+
+- Create a new variable with a specific value
+
+- &lt;font color="#ED1941"&gt;Create a new variable based on other variables&lt;/font&gt; 
+
+- Change the contents of an existing variable
+
+--
+
+
+```r
+animal_words %&gt;% 
+  mutate(prop_produced = kids_produced / kids_responded)
+```
+
+```
+# A tibble: 45 x 5
+     age animal_word kids_produced kids_responded prop_produced
+   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+ 1   16. cat                  565.           956.        0.591 
+ 2   16. chicken               83.           956.        0.0868
+ 3   16. dog                  684.           956.        0.715 
+ 4   17. cat                  158.           273.        0.579 
+ 5   17. chicken               31.           273.        0.114 
+ 6   17. dog                  202.           273.        0.740 
+ 7   18. cat                  317.           442.        0.717 
+ 8   18. chicken              112.           442.        0.253 
+ 9   18. dog                  365.           442.        0.826 
+10   19. cat                  259.           328.        0.790 
+# ... with 35 more rows
+```
+
+---
+# Mutate
+
+- Create a new variable with a specific value
+
+- Create a new variable based on other variables
+
+- &lt;font color="#ED1941"&gt;Change the contents of an existing variable&lt;/font&gt; 
+
+--
+
+
+
+
+```r
+animal_words %&gt;% 
+  mutate(prop_produced = prop_produced * 100)
+```
+
+```
+# A tibble: 45 x 5
+     age animal_word kids_produced kids_responded prop_produced
+   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+ 1   16. cat                  565.           956.         59.1 
+ 2   16. chicken               83.           956.          8.68
+ 3   16. dog                  684.           956.         71.5 
+ 4   17. cat                  158.           273.         57.9 
+ 5   17. chicken               31.           273.         11.4 
+ 6   17. dog                  202.           273.         74.0 
+ 7   18. cat                  317.           442.         71.7 
+ 8   18. chicken              112.           442.         25.3 
+ 9   18. dog                  365.           442.         82.6 
+10   19. cat                  259.           328.         79.0 
+# ... with 35 more rows
+```
+
+---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review some helpful functions for `mutate`
+
+
+---
+class: middle, center, inverse
+
+#💡
+
+## First: Arithmetic
+
+---
+
+
+```r
+?Arithmetic
+```
+
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Operator &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Description &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Usage &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; + &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; addition &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x + y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; - &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; subtraction &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x - y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; * &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; multiplication &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x * y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; / &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; division &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x / y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ^ &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; raised to the power of &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x ^ y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; abs &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; absolute value &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; abs(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; %/% &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; integer division &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x %/% y &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; %% &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; remainder after division &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; x %% y &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+```r
+5 %/% 2 # 2 goes into 5 two times with...
+```
+
+```
+[1] 2
+```
+
+```r
+5 %% 2 # 1 left over
+```
+
+```
+[1] 1
+```
+
+
+---
+class: middle, center, inverse
+
+#💡
+
+## Second: 
+
+## Summaries
+
+
+
+---
+
+All very useful in a mutate!
+
+sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

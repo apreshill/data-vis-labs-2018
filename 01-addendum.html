@@ -277,13 +277,13 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="00-install_name_plot.html">Day One in R</a>
-</li>
-<li>
-  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+  <a href="slides.html">Slides</a>
 </li>
 <li>
   <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -315,8 +315,8 @@ library(extrafont)</code></pre>
       gender = col_factor(levels = NULL)
     ))</code></pre>
 </div>
-<div id="visualizing-new-world-records" class="section level1">
-<h1><span class="header-section-number">2</span> Visualizing new world records</h1>
+<div id="visualizing-new-world-records-for-males" class="section level1">
+<h1><span class="header-section-number">2</span> Visualizing new world records (for males)</h1>
 <div class="figure">
 <img src="https://i0.wp.com/flowingdata.com/wp-content/uploads/2009/06/hot-dogs1.gif?zoom=2&amp;fit=900%2C423" />
 
@@ -359,9 +359,9 @@ years_to_label</code></pre>
   theme(plot.title = element_text(hjust = 0.5),
         axis.text = element_text(size = 12),
         panel.background = element_blank(),
-        axis.line.x = element_line(color = &quot;gray80&quot;, 
+        axis.line.x = element_line(color = &quot;gray92&quot;, 
                                    size = 0.5),
-        axis.ticks = element_line(color = &quot;gray80&quot;, 
+        axis.ticks = element_line(color = &quot;gray92&quot;, 
                                   size = 0.5),
         text = element_text(family = &quot;Lato&quot;),
         legend.position = &quot;bottom&quot;,
@@ -383,23 +383,24 @@ hot_dog_behind &lt;- hot_dogs_both %&gt;%
   geom_col(data = hot_dog_behind, fill = &#39;#4254a7&#39;, alpha = .1) +
   geom_col(aes(fill = gender), show.legend = FALSE) + 
   facet_wrap(~gender) +
-  labs(x = &quot;Year&quot;, y = &quot;Hot Dogs and Buns Consumed&quot;) +
+  labs(x = &quot;&quot;, y = &quot;Hot Dogs and Buns Consumed&quot;) +
   ggtitle(&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;) +
   scale_fill_manual(values = c(&#39;#4254a7&#39;, &#39;#f4b31a&#39;)) + 
   scale_y_continuous(expand = c(0, 0),
                      breaks = seq(0, 70, 10)) +
-  scale_x_continuous(expand = c(0, 0)) +
+  scale_x_continuous(expand = c(0, 0),
+                     breaks = seq(1981, 2017, 6)) +
   coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.text = element_text(size = 10),
+  theme(axis.text = element_text(size = 10),
         panel.background = element_blank(),
-        axis.line.x = element_line(color = &quot;gray80&quot;, 
+        axis.line.x = element_line(color = &quot;grey80&quot;, 
                                    size = 0.5),
-        axis.ticks = element_line(color = &quot;gray80&quot;, 
+        axis.ticks = element_line(color = &quot;grey80&quot;, 
                                   size = 0.5),
         text = element_text(family = &quot;Lato&quot;),
         legend.position = &quot;bottom&quot;,
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(1, &quot;lines&quot;))
 hdb_facets</code></pre>
 <p><img src="01-addendum_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
