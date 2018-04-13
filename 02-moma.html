@@ -354,7 +354,7 @@ library(tidyverse) # readr, ggplot2, dplyr</code></pre>
 </div>
 <div id="read-in-the-data" class="section level1">
 <h1><span class="header-section-number">5</span> Read in the data</h1>
-<p>Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.</p>
+<p>Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MoMA collection.</p>
 <p>Use this code chunk to read in the data available at <a href="http://bit.ly/cs631-moma" class="uri">http://bit.ly/cs631-moma</a>:</p>
 <pre class="r"><code>library(readr)
 moma &lt;- read_csv(&quot;http://bit.ly/cs631-moma&quot;)</code></pre>
@@ -364,15 +364,39 @@ library(readr)
 library(dplyr)
 moma &lt;- read_csv(here::here(&quot;data&quot;, &quot;artworks-cleaned.csv&quot;))</code></pre>
 </div>
-<div id="challenge-1-know-your-data" class="section level1">
-<h1><span class="header-section-number">6</span> Challenge 1: Know your data</h1>
+<div id="know-your-data" class="section level1">
+<h1><span class="header-section-number">6</span> Know your data</h1>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #1:
+</div>
+<div class="panel-body">
+<p>Try to answer all of these questions using <code>dplyr</code>. Answers are below but try them on your own first!</p>
+<ol style="list-style-type: decimal">
+<li>How many paintings (rows) are in <code>moma</code>? How many variables (columns) are in <code>moma</code>?</li>
+<li>What is the first painting acquired by MoMA? Which year? Which artist? What title?</li>
+<li>What is the oldest painting in the collection? Which year? Which artist? What title?</li>
+<li>How many distinct artists are there?</li>
+<li>Which artist has the most paintings in the collection? How many paintings are by this artist?</li>
+<li>How many paintings by male vs female artists?</li>
+</ol>
+<p>If you want more:</p>
+<ol style="list-style-type: decimal">
+<li>How many artists of each gender are there?</li>
+<li>In what year were the most paintings acquired? Created?</li>
+<li>In what year was the first painting by a (solo) female artist acquired? When was that painting created? Which artist? What title?
+</div></li>
+</ol>
+</div>
 <div id="how-many-paintings" class="section level2">
 <h2><span class="header-section-number">6.1</span> How many paintings?</h2>
 <ul>
 <li>How many rows/observations are in <code>moma</code>?</li>
 <li>How many variables are in <code>moma</code>?</li>
 </ul>
-<p>These questions can be answered using the <code>dplyr</code> function <code>glimpse</code>. There are 2253 paintings in <code>moma</code>.</p>
+<p class="text-info">
+<strong>Hint:</strong> These questions can be answered using the <code>dplyr</code> function <code>glimpse</code>.
+</p>
 <pre class="r"><code>library(dplyr)
 moma</code></pre>
 <pre><code># A tibble: 2,253 x 23
@@ -420,6 +444,7 @@ $ gift              &lt;lgl&gt; TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE,...
 $ exchange          &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FAL...
 $ classification    &lt;chr&gt; &quot;Painting&quot;, &quot;Painting&quot;, &quot;Painting&quot;, &quot;Paintin...
 $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Painting &amp; Sculptur...</code></pre>
+<p>There are 2253 paintings in <code>moma</code>.</p>
 </div>
 <div id="what-is-the-first-painting-acquired" class="section level2">
 <h2><span class="header-section-number">6.2</span> What is the first painting acquired?</h2>
@@ -429,7 +454,9 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <li>Which artist?</li>
 <li>What title?</li>
 </ul>
-<p>These questions can be answered by combining two <code>dplyr</code> functions: <code>select</code> and <code>arrange</code>.</p>
+<p class="text-info">
+<strong>Hint:</strong> These questions can be answered by combining two <code>dplyr</code> functions: <code>select</code> and <code>arrange</code>.
+</p>
 <pre class="r"><code>moma %&gt;% 
   select(artist, title, year_acquired) %&gt;% 
   arrange(year_acquired)</code></pre>
@@ -456,7 +483,9 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <li>Which artist?</li>
 <li>What title?</li>
 </ul>
-<p>These questions can be answered by combining two <code>dplyr</code> functions: <code>select</code> and <code>arrange</code>.</p>
+<p class="text-info">
+<strong>Hint:</strong> These questions can be answered by combining two <code>dplyr</code> functions: <code>select</code> and <code>arrange</code>.
+</p>
 <pre class="r"><code>moma %&gt;% 
   select(artist, title, year_created) %&gt;% 
   arrange(year_created)</code></pre>
@@ -481,7 +510,9 @@ $ department        &lt;chr&gt; &quot;Painting &amp; Sculpture&quot;, &quot;Pain
 <ul>
 <li>How many distinct artists are there?</li>
 </ul>
-<p>Try <code>dplyr::distinct</code>.</p>
+<p class="text-info">
+<strong>Hint:</strong> Try <code>dplyr::distinct</code>.
+</p>
 <pre class="r"><code>moma %&gt;% 
   distinct(artist)</code></pre>
 <pre><code># A tibble: 989 x 1
@@ -507,13 +538,15 @@ num_artists</code></pre>
 <pre><code>[1] 989</code></pre>
 <p>Then I can refer to this number in inline comments like: there are 989 total.</p>
 </div>
-<div id="how-many-paintings-per-artist" class="section level2">
-<h2><span class="header-section-number">6.5</span> How many paintings per artist?</h2>
+<div id="which-artist-has-the-most-paintings" class="section level2">
+<h2><span class="header-section-number">6.5</span> Which artist has the most paintings?</h2>
 <ul>
 <li>Which artist has the most paintings ever owned by <code>moma</code>?</li>
 <li>How many paintings in the MoMA collection by that artist?</li>
 </ul>
-<p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
+<p class="text-info">
+<strong>Hint:</strong> Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.
+</p>
 <pre class="r"><code>moma %&gt;% 
   count(artist, sort = TRUE)</code></pre>
 <pre><code># A tibble: 989 x 2
@@ -587,11 +620,13 @@ num_artists</code></pre>
 <p>Another option is to use another <code>dplyr</code> function called <code>top_n()</code>. Use <code>?top_n</code> to see how it works. How it won’t work in this context:</p>
 <pre class="r"><code>moma %&gt;% 
   count(artist_gender, artist, sort = TRUE) %&gt;% 
-  top_n(1)</code></pre>
-<pre><code># A tibble: 1 x 3
+  top_n(2)</code></pre>
+<pre><code># A tibble: 3 x 3
   artist_gender artist            n
   &lt;chr&gt;         &lt;chr&gt;         &lt;int&gt;
-1 Male          Pablo Picasso    55</code></pre>
+1 Male          Pablo Picasso    55
+2 Male          Henri Matisse    32
+3 Male          On Kawara        32</code></pre>
 <p>How it will work better is following a <code>group_by(artist_gender)</code>:</p>
 <pre class="r"><code>moma %&gt;% 
   count(artist_gender, artist, sort = TRUE) %&gt;% 
@@ -606,8 +641,8 @@ num_artists</code></pre>
 3 &lt;NA&gt;          Gilbert &amp; George, Gilbert Proesch, George Passmore     2</code></pre>
 <p>Now we can see that Sherrie Levine has 12 paintings. This is a pretty far cry from the 55 paintings by Pablo Picasso.</p>
 </div>
-<div id="how-many-male-vs-female-artists-are-represented-in-momas-collection" class="section level2">
-<h2><span class="header-section-number">6.7</span> How many male vs female artists are represented in MoMA’s collection?</h2>
+<div id="how-many-artists-of-each-gender-are-there" class="section level2">
+<h2><span class="header-section-number">6.7</span> How many artists of each gender are there?</h2>
 <p>This is a harder question to answer than you think! This is because the level of observation in our current <code>moma</code> dataset is <em>unique paintings</em>. We have multiple paintings done by the same artists though, so counting just the number of unique paintings is different than counting the number of unique artists.</p>
 <p>Remember how <code>count</code> can be used back-to-back to roll up a level of detail? Try running <code>count(artist_gender)</code> again on your last code chunk.</p>
 <pre class="r"><code>moma %&gt;% 
@@ -623,7 +658,9 @@ num_artists</code></pre>
 </div>
 <div id="when-were-the-most-paintings-in-the-collection-acquired" class="section level2">
 <h2><span class="header-section-number">6.8</span> When were the most paintings in the collection acquired?</h2>
-<p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
+<p class="text-info">
+<strong>Hint:</strong> Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.
+</p>
 <pre class="r"><code>moma %&gt;% 
   count(year_acquired, sort = TRUE)</code></pre>
 <pre><code># A tibble: 88 x 2
@@ -643,7 +680,9 @@ num_artists</code></pre>
 </div>
 <div id="when-were-the-most-paintings-in-the-collection-created" class="section level2">
 <h2><span class="header-section-number">6.9</span> When were the most paintings in the collection created?</h2>
-<p>Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.</p>
+<p class="text-info">
+<strong>Hint:</strong> Try <code>dplyr::count</code>. Use <code>?count</code> to figure out how to sort the output.
+</p>
 <pre class="r"><code>moma %&gt;% 
   count(year_created, sort = TRUE)</code></pre>
 <pre><code># A tibble: 139 x 2
@@ -663,7 +702,9 @@ num_artists</code></pre>
 </div>
 <div id="what-about-the-first-painting-by-a-solo-female-artist" class="section level2">
 <h2><span class="header-section-number">6.10</span> What about the first painting by a solo female artist?</h2>
-<p>Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>.</p>
+<p class="text-info">
+<strong>Hint:</strong> Try combining three <code>dplyr</code> functions: <code>filter</code>, <code>select</code>, and <code>arrange</code>.
+</p>
 <p>When was the first painting by a solo female artist acquired?</p>
 <pre class="r"><code>moma %&gt;% 
   filter(num_artists == 1 &amp; n_female_artists == 1) %&gt;% 
@@ -709,28 +750,42 @@ moma %&gt;%
   arrange(year_acquired)</code></pre>
 </div>
 </div>
-<div id="challenge-2-on-paper" class="section level1">
-<h1><span class="header-section-number">7</span> Challenge 2: On paper</h1>
-<p>We’ll do this together: see <a href="https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html">slides</a></p>
+<div id="basics-of-ggplot2" class="section level1">
+<h1><span class="header-section-number">7</span> Basics of <code>ggplot2</code></h1>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #2:
 </div>
-<div id="challenge-3-plot-your-data" class="section level1">
-<h1><span class="header-section-number">8</span> Challenge 3: Plot your data</h1>
-<p>From <a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/">fivethirtyeight</a>. Let’s recreate this plot (mostly)!</p>
+<div class="panel-body">
+We’ll do this together <em>(nothing to turn in)</em>: see <a href="https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html#16">slides</a>.
+</div>
+</div>
+</div>
+<div id="plot-your-data" class="section level1">
+<h1><span class="header-section-number">8</span> Plot your data</h1>
+<div id="plot-year-painted-vs-year-acquired" class="section level2">
+<h2><span class="header-section-number">8.1</span> Plot year painted vs year acquired</h2>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #3:
+</div>
+<div class="panel-body">
+<p>Let’s recreate this plot from <a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/">fivethirtyeight</a> (mostly)!</p>
 <div class="figure">
 <img src="https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-1.png?w=1150&amp;quality=90&amp;strip=info" />
 
 </div>
-<div id="plot-year-painted-vs-year-acquired" class="section level2">
-<h2><span class="header-section-number">8.1</span> Plot year painted vs year acquired</h2>
 <p>Things to consider:</p>
 <ul>
 <li>You’ll want to play around with setting an <code>alpha</code> value here- keep in mind that <code>0</code> is totally transparent and <code>1</code> is opaque.</li>
 <li>Try using <code>geom_abline()</code> to add the line in red (use the default intercept value of 0). The actual red line is difficult to recreate- here is what the authors say: “The red regression line shows the “modernizing” of MoMA’s collection — how quickly the museum has moved toward acquiring recent paintings.”</li>
 <li>Go back to <a href="https://apreshill.github.io/data-vis-labs-2018/01-eda_hot_dogs.html">Lab 01</a> to review how to do the following:
 <ul>
-<li>Change the x- and y-axis labels and the plot title to match the plot above</li>
+<li>Change the x- and y-axis labels and the plot title to match the plot above
+</div></li>
 </ul></li>
 </ul>
+</div>
 <pre class="r"><code>ggplot(moma, aes(year_created, year_acquired)) +
   geom_point(alpha = .1, na.rm = TRUE) +
   geom_abline(intercept = c(0,0), colour = &quot;red&quot;) +
@@ -740,7 +795,10 @@ moma %&gt;%
 </div>
 <div id="facet-by-artist-gender" class="section level2">
 <h2><span class="header-section-number">8.2</span> Facet by artist gender</h2>
-<p>Can you make the same plot above, but facet by artist gender? For this to make sense, you probably want to do some filtering to select only those paintings where there was one “solo” artist.</p>
+<p>Can you make the same plot above, but facet by artist gender?</p>
+<p class="text-info">
+<strong>Hint:</strong> For this to make sense, you probably want to do some filtering to select only those paintings where there was one “solo” artist.
+</p>
 <pre class="r"><code>moma_solo &lt;- moma %&gt;% 
   filter(num_artists == 1)
 ggplot(moma_solo, aes(year_created, year_acquired)) +
@@ -752,8 +810,13 @@ ggplot(moma_solo, aes(year_created, year_acquired)) +
 <p><img src="02-moma_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 </div>
-<div id="challenge-4-plot-painting-dimensions" class="section level1">
-<h1><span class="header-section-number">9</span> Challenge 4: Plot painting dimensions</h1>
+<div id="plot-painting-dimensions" class="section level1">
+<h1><span class="header-section-number">9</span> Plot painting dimensions</h1>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #4:
+</div>
+<div class="panel-body">
 <p>Let’s (somewhat) try to recreate this scatterplot from <a href="https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/">fivethirtyeight</a>.</p>
 <div class="figure">
 <img src="https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&amp;quality=90&amp;strip=info" />
@@ -763,8 +826,12 @@ ggplot(moma_solo, aes(year_created, year_acquired)) +
 <ul>
 <li>Try filtering all paintings with height less than 600 cm and width less than 760 cm.</li>
 <li>If you want to add color as in the original, you’ll need to create a new variable using <code>mutate</code>.</li>
-<li>You’ll probably also want to look into <code>case_when</code>.</li>
 </ul>
+<p class="text-info">
+<strong>Hint:</strong> You’ll probably also want to look into <code>case_when</code> to create a categorical variable to color by.
+</p>
+</div>
+</div>
 <pre class="r"><code>moma_dim &lt;- moma %&gt;% 
   filter(height_cm &lt; 600, width_cm &lt; 760) %&gt;% 
   mutate(hw_ratio = height_cm / width_cm,
@@ -812,9 +879,21 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
              size = 5, family = &quot;Lato&quot;, hjust = 0, fontface = 2)</code></pre>
 <p><img src="02-moma_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 </div>
-<div id="challenge-5-plot-something-new-different" class="section level1">
-<h1><span class="header-section-number">10</span> Challenge 5: Plot something new &amp; different!</h1>
-<p>It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are that you make one new plot that is original, and you <em>must</em> be able to write 1-2 sentences to present the plot and why it makes sense. It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.</p>
+<div id="plot-something-new-different" class="section level1">
+<h1><span class="header-section-number">10</span> Plot something new &amp; different!</h1>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #5:
+</div>
+<div class="panel-body">
+<p>It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are:</p>
+<ol style="list-style-type: decimal">
+<li>You <em>make</em> one new plot that is original, and</li>
+<li>You <em>write</em> 1-2 sentences to present the plot and why it makes sense. What questions do you think your plot can help you to answer?</li>
+</ol>
+It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.
+</div>
+</div>
 </div>
 
 <p>

@@ -49,7 +49,7 @@ library(tidyverse) # readr, ggplot2, dplyr
 
 # Read in the data
 
-Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MOMA collection.
+Note! This is not the original data- I did a lot of cleaning and decision-making in the pre-processing. The below contains only paintings and drawings in the MoMA collection.
 
 Use this code chunk to read in the data available at [http://bit.ly/cs631-moma](http://bit.ly/cs631-moma):
 
@@ -70,14 +70,36 @@ moma <- read_csv(here::here("data", "artworks-cleaned.csv"))
 
 
 
-# Challenge 1: Know your data
+# Know your data
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #1:</div>
+  <div class="panel-body">
+Try to answer all of these questions using `dplyr`. Answers are below but try them on your own first!
+
+1. How many paintings (rows) are in `moma`? How many variables (columns) are in `moma`?
+1. What is the first painting acquired by MoMA? Which year? Which artist? What title?
+1. What is the oldest painting in the collection? Which year? Which artist? What title?
+1. How many distinct artists are there?
+1. Which artist has the most paintings in the collection? How many paintings are by this artist?
+1. How many paintings by male vs female artists?
+
+
+If you want more:
+
+1. How many artists of each gender are there?
+1. In what year were the most paintings acquired? Created?
+1. In what year was the first painting by a (solo) female artist acquired? When was that painting created? Which artist? What title?
+  </div>
+</div>
 
 ## How many paintings?
 
 - How many rows/observations are in `moma`?
 - How many variables are in `moma`?
 
-These questions can be answered using the `dplyr` function `glimpse`. There are `r nrow(moma)` paintings in `moma`.
+<p class="text-info"> __Hint:__ These questions can be answered using the `dplyr` function `glimpse`.</p>
+
 
 ```{r}
 library(dplyr)
@@ -85,7 +107,7 @@ moma
 glimpse(moma)
 ```
 
-
+There are `r nrow(moma)` paintings in `moma`.
 
 ## What is the first painting acquired?
 
@@ -95,7 +117,8 @@ glimpse(moma)
 - Which artist?
 - What title?
 
-These questions can be answered by combining two `dplyr` functions: `select` and `arrange`.
+<p class="text-info"> __Hint:__ These questions can be answered by combining two `dplyr` functions: `select` and `arrange`.</p>
+
 
 ```{r}
 moma %>% 
@@ -111,7 +134,9 @@ moma %>%
 - Which artist?
 - What title?
 
-These questions can be answered by combining two `dplyr` functions: `select` and `arrange`.
+<p class="text-info"> __Hint:__ These questions can be answered by combining two `dplyr` functions: `select` and `arrange`.</p>
+
+
 
 ```{r}
 moma %>% 
@@ -132,7 +157,8 @@ To do inline comments, I could say that the oldest painting is `r oldest %>% pul
 
 - How many distinct artists are there?
 
-Try `dplyr::distinct`. 
+<p class="text-info"> __Hint:__ Try `dplyr::distinct`.</p>
+ 
 
 ```{r}
 moma %>% 
@@ -151,12 +177,13 @@ num_artists
 
 Then I can refer to this number in inline comments like: there are `r num_artists` total.
 
-## How many paintings per artist?
+## Which artist has the most paintings?
 
 - Which artist has the most paintings ever owned by `moma`? 
 - How many paintings in the MoMA collection by that artist?
 
-Try `dplyr::count`. Use `?count` to figure out how to sort the output.
+<p class="text-info"> __Hint:__ Try `dplyr::count`. Use `?count` to figure out how to sort the output.</p>
+
 
 ```{r}
 moma %>% 
@@ -178,7 +205,6 @@ moma %>%
 ```
 
 ## How many paintings by male vs female artists?
-
 
 
 ```{r}
@@ -207,7 +233,7 @@ Another option is to use another `dplyr` function called `top_n()`. Use `?top_n`
 ```{r}
 moma %>% 
   count(artist_gender, artist, sort = TRUE) %>% 
-  top_n(1)
+  top_n(2)
 ```
 
 How it will work better is following a `group_by(artist_gender)`:
@@ -229,7 +255,7 @@ sherrie <- moma %>%
 
 Now we can see that `r sherrie %>% pull(artist)` has `r sherrie %>% pull(n)` paintings. This is a pretty far cry from the `r pablo %>% pull(n)` paintings by `r pablo %>% pull(artist)`.
 
-## How many male vs female artists are represented in MoMA's collection?
+## How many artists of each gender are there?
 
 This is a harder question to answer than you think! This is because the level of observation in our current `moma` dataset is *unique paintings*. We have multiple paintings done by the same artists though, so counting just the number of unique paintings is different than counting the number of unique artists. 
 
@@ -246,7 +272,8 @@ This output takes the previous table (made with `count(artist_gender, artist)`),
 
 ## When were the most paintings in the collection acquired?
 
-Try `dplyr::count`. Use `?count` to figure out how to sort the output.
+
+<p class="text-info"> __Hint:__ Try `dplyr::count`. Use `?count` to figure out how to sort the output.</p>
 
 ```{r}
 moma %>% 
@@ -255,7 +282,8 @@ moma %>%
 
 ## When were the most paintings in the collection created?
 
-Try `dplyr::count`. Use `?count` to figure out how to sort the output.
+
+<p class="text-info"> __Hint:__ Try `dplyr::count`. Use `?count` to figure out how to sort the output.</p>
 
 ```{r}
 moma %>% 
@@ -265,7 +293,9 @@ moma %>%
 
 ## What about the first painting by a solo female artist?
 
-Try combining three `dplyr` functions: `filter`, `select`, and `arrange`. 
+
+
+<p class="text-info"> __Hint:__ Try combining three `dplyr` functions: `filter`, `select`, and `arrange`.</p>
 
 When was the first painting by a solo female artist acquired?
 
@@ -293,17 +323,33 @@ moma %>%
   arrange(year_acquired)
 ```
 
-# Challenge 2: On paper
+# Basics of `ggplot2`
 
-We'll do this together: see [slides](https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html)
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #2:</div>
+  <div class="panel-body">
+We'll do this together *(nothing to turn in)*: see [slides](https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html#16).
+  </div>
+</div>
 
-# Challenge 3: Plot your data
 
-From [fivethirtyeight](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/). Let's recreate this plot (mostly)!
 
-![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-1.png?w=1150&quality=90&strip=info)
+# Plot your data
+
+
 
 ## Plot year painted vs year acquired
+
+ 
+
+
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #3:</div>
+  <div class="panel-body">
+Let's recreate this plot from [fivethirtyeight](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/) (mostly)!
+
+![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-1.png?w=1150&quality=90&strip=info)
 
 Things to consider:
 
@@ -311,6 +357,8 @@ Things to consider:
 - Try using `geom_abline()` to add the line in red (use the default intercept value of 0). The actual red line is difficult to recreate- here is what the authors say: "The red regression line shows the “modernizing” of MoMA’s collection — how quickly the museum has moved toward acquiring recent paintings."
 - Go back to [Lab 01](https://apreshill.github.io/data-vis-labs-2018/01-eda_hot_dogs.html) to review how to do the following:
     - Change the x- and y-axis labels and the plot title to match the plot above
+  </div>
+</div>
 
 
 ```{r}
@@ -325,7 +373,9 @@ ggplot(moma, aes(year_created, year_acquired)) +
 
 ## Facet by artist gender
 
-Can you make the same plot above, but facet by artist gender? For this to make sense, you probably want to do some filtering to select only those paintings where there was one "solo" artist. 
+Can you make the same plot above, but facet by artist gender? 
+
+<p class="text-info"> __Hint:__ For this to make sense, you probably want to do some filtering to select only those paintings where there was one "solo" artist.</p>
 
 ```{r}
 moma_solo <- moma %>% 
@@ -339,18 +389,31 @@ ggplot(moma_solo, aes(year_created, year_acquired)) +
 ```
 
 
-# Challenge 4: Plot painting dimensions
+# Plot painting dimensions
 
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #4:</div>
+  <div class="panel-body">
 Let's (somewhat) try to recreate this scatterplot from [fivethirtyeight](https://fivethirtyeight.com/features/a-nerds-guide-to-the-2229-paintings-at-moma/). 
 
-![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&quality=90&strip=info)
 
+![](https://espnfivethirtyeight.files.wordpress.com/2015/08/roeder-feature-moma-3.png?w=1150&quality=90&strip=info)
 
 To recreate, some things to consider:
 
 - Try filtering all paintings with height less than 600 cm and width less than 760 cm. 
 - If you want to add color as in the original, you'll need to create a new variable using `mutate`. 
-- You'll probably also want to look into `case_when`.
+
+
+<p class="text-info"> __Hint:__ You'll probably also want to look into `case_when` to create a categorical variable to color by.</p>
+  </div>
+</div>
+
+
+
+
+
+
 
 ```{r}
 moma_dim <- moma %>% 
@@ -407,9 +470,21 @@ ggplot(moma_dim, aes(x = width_cm, y = height_cm, colour = hw_cat)) +
              size = 5, family = "Lato", hjust = 0, fontface = 2)
 ```
 
-# Challenge 5: Plot something new & different!
+# Plot something new & different!
 
-It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are that you make one new plot that is original, and you *must* be able to write 1-2 sentences to present the plot and why it makes sense. It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #5:</div>
+  <div class="panel-body">
+It can be anything- you can change colors, add annotations, switch the geoms, add new variables to examine- the world is your oyster! The only requirements are:
+
+1. You *make* one new plot that is original, and 
+2. You *write* 1-2 sentences to present the plot and why it makes sense. What questions do you think your plot can help you to answer?
+
+It does not have to be pretty right now, but it must make sense as a visualization- you must be able to intelligently and succintly tell us about it in real words.
+  </div>
+</div>
+
+
 
 
 

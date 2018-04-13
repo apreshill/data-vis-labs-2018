@@ -9,7 +9,7 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 
 This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html). 
-The source can be found [on GitHub.<i class="fa fa-github"></i>](https://github.com/apreshill/data-vis-labs-2018)
+The source can be found [on GitHub <i class="fa fa-github"></i>](https://github.com/apreshill/data-vis-labs-2018).
 
 The link to all the labs is here:
 
@@ -23,4 +23,6 @@ Who am I?
   * <a href = "https://alison.rbind.io"><i class="fa fa-home"> Personal Website</i></a>
 
 Materials initially created for [CS631: Principles & Practice of Data Visualization (Spring 2018)](http://cslu.ohsu.edu/~bedricks/courses/cs631/).
+
+Course Directors: Drs. Steven Bedrick, Jackie Wirz, and Alison Hill.
 
