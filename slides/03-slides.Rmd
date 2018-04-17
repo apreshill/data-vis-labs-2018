@@ -1,6 +1,6 @@
 ---
 title: "Lab 03: CS631"
-subtitle: "Data Basics"
+subtitle: "Working with Data"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
@@ -104,6 +104,16 @@ class: middle, center, inverse
 
 ## Let's review some helpful functions for `mutate`
 
+---
+class: inverse, bottom, center
+background-image: url("../images/peapod.png")
+background-size: 25%
+
+
+## Remember:
+
+## Base R + Tidyverse
+
 
 ---
 class: middle, center, inverse
@@ -159,3 +169,21 @@ class: middle, center, inverse
 All very useful in a mutate!
 
 sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!
+
+
+---
+class: inverse, middle, center
+
+# 👇🏽
+
+## R Markdown:
+
+https://www.markdowntutorial.com
+
+https://andrewbtran.github.io/NICAR/2018/workflow/docs/02-rmarkdown.html
+
+https://yihui.name/tinytex/ *(install!)*
+
+https://rmarkdown.rstudio.com/html_document_format.html
+
+https://rmarkdown.rstudio.com/pdf_document_format.html

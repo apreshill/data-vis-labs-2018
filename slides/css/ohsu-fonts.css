@@ -3,7 +3,7 @@ OHSU-themed fonts are:
 Lato (headers)
 Noto Serif (body)
 Fira Code (code; my selection!)
-Rock Salt (script; my selection!)
+Sofia (script; my selection!)
 Author: Alison Presmanes Hill
 Updated: 2018-03-22
 */
@@ -80,10 +80,9 @@ h1, h2, h3 {
       font-family: 'Noto Serif', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif; 
 }
 
+
 .title-slide h2 {
-  font-family: 'Rock Salt';
+  font-family: 'Sofia';
 }
 
-.inverse h2 {
-  font-family: 'Rock Salt';
-}
+

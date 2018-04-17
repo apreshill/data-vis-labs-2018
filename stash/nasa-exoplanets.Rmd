@@ -1,0 +1,41 @@
+---
+title: "Nasa Exoplanets"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+http://data-illustrator.com/example.php?v=planets
+https://www.nationalgeographic.com/astrobiology/goldilocks-worlds/
+
+
+hzd = habitable zone distance
+
+```{r}
+library(tidyverse)
+planets <- read_csv("http://data-illustrator.com/datasets/planets.csv") %>% 
+  mutate(hzd_cat = case_when(
+    hzd < -1 ~ "Too Hot",
+    between(hzd, -1, 1) ~ "Just Right",
+    hzd > 1 ~ "Too Cold"
+  ))
+```
+
+```{r}
+
+ggplot(planets, aes(x = hzd, y = mass, 
+                    size = radius, color = hzd_cat)) +
+  geom_jitter(alpha = .25) +
+  scale_y_log10() +
+  scale_color_manual(values = c("#75a200", "#079c9c", "#e42549"))
+```
+

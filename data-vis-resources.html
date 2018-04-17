@@ -19,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -166,101 +163,6 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -276,7 +178,7 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="slides.html">Slides</a>
+  <a href="slides.html">Slides &amp; Reading</a>
 </li>
 <li>
   <a href="data-vis-resources.html">Resources</a>
@@ -303,30 +205,17 @@ div.tocify {
 </div>
 
 
-<div id="talks-workshops" class="section level1">
-<h1><span class="header-section-number">1</span> Talks &amp; Workshops</h1>
 <div id="take-a-sad-plot-make-it-better" class="section level2">
-<h2><span class="header-section-number">1.1</span> Take A Sad Plot &amp; Make It Better</h2>
+<h2>Take A Sad Plot &amp; Make It Better</h2>
 <p>Talk given at OHSU BioData Club</p>
 <iframe src="https://apreshill.github.io/ohsu-biodatavis/slides.html#1" width="672" height="400px">
 </iframe>
 <p>Link: <a href="https://alison.rbind.io/talk/ohsu-biodatavis/" class="uri">https://alison.rbind.io/talk/ohsu-biodatavis/</a></p>
 </div>
 <div id="code-your-graph" class="section level2">
-<h2><span class="header-section-number">1.2</span> Code Your Graph</h2>
+<h2>Code Your Graph</h2>
 <p>Workshop given at OHSU Data Jamboree</p>
 <p><a href="https://alison.rbind.io/html/jamboree_heart_ggplot.html" class="uri">https://alison.rbind.io/html/jamboree_heart_ggplot.html</a></p>
-</div>
-</div>
-<div id="reading" class="section level1">
-<h1><span class="header-section-number">2</span> Reading</h1>
-<p>Free books, available to read online:</p>
-<ul>
-<li>Modern Dive chapter on Data Visualization: <a href="http://moderndive.com/3-viz.html" class="uri">http://moderndive.com/3-viz.html</a></li>
-<li>R for Data Science chapter on Data Visualization: <a href="http://r4ds.had.co.nz/data-visualisation.html" class="uri">http://r4ds.had.co.nz/data-visualisation.html</a></li>
-<li>Fundamentals of Data Visualization: <a href="http://serialmentor.com/dataviz/" class="uri">http://serialmentor.com/dataviz/</a></li>
-<li>Data Visualization: A Practical Introduction: <a href="http://socviz.co" class="uri">http://socviz.co</a></li>
-</ul>
 </div>
 
 <p>
@@ -335,8 +224,6 @@ div.tocify {
 </p>
 
 
-</div>
-</div>
 
 </div>
 

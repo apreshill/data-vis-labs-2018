@@ -43,9 +43,14 @@ a, a > code {
   line-height: 1.0em;
 }
 
-.inverse a {
+
+.inverse a, a > code {
   color: #FFFFFF;
   text-decoration: none;
+}
+
+.inverse .remark-code {
+  color: #3498CC;
 }
 
 /* Two-column layout */
@@ -101,8 +106,8 @@ thead, tfoot, tr:nth-child(even) { background: #eee }
 }
 
 .inverse h2 {
-  font-family: 'Sofia';
   line-height: 1.1;
+  font-family: 'Sofia';
 }
 
 .inverse .remark-inline-code { 
@@ -128,7 +133,6 @@ thead, tfoot, tr:nth-child(even) { background: #eee }
   padding-top: 0px;
   margin-top: 0px;
   text-shadow: none;
-  font-family: 'Sofia';
 }
 
 .title-slide h3 {

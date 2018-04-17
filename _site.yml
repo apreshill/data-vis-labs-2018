@@ -3,7 +3,7 @@ output_dir: '.'
 navbar:
   title: CS631 Labs
   left:
-  - text: Slides
+  - text: Slides & Reading
     href: slides.html
   - text: Resources
     href: data-vis-resources.html

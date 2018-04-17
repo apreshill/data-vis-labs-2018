@@ -1,0 +1,79 @@
+---
+title: "bikes"
+author: "Alison Hill"
+date: "4/13/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(janitor)
+bikes <- read_csv(here::here("data", "pdx_bike_counts.csv"), 
+                  skip = 1, na = c("-","", "NA"),
+                  col_types = cols(
+                    Sector = col_factor(levels = NULL),
+                    'count time' = col_factor(levels = NULL)
+                  )) %>% 
+  clean_names() %>% 
+  select(-prior_to_2000)
+```
+
+good example of tidying
+
+```{r}
+glimpse(bikes)
+bikes_tidy <- bikes %>% 
+  gather(year, count, x2017:x2000) %>% 
+  mutate(year = parse_number(year))
+glimpse(bikes_tidy)
+bikes_tidy %>% 
+  count(sector)
+```
+
+```{r}
+pick_four <- c("northeast", "southeast", "northwest", "city center")
+bikes_tidy <- bikes_tidy %>% 
+  filter(sector %in% pick_four)
+bikes_tidy %>% 
+  count(sector)
+```
+
+```{r}
+ggplot(bikes_tidy, aes(year, count, fill = count_time)) +
+  geom_col()
+```
+
+```{r}
+ggplot(bikes_tidy, aes(year, count)) +
+  geom_jitter(aes(color = count_time), alpha = .5) +
+  geom_quantile(quantiles = 0.5) +
+  facet_wrap(~sector)
+```
+
+```{r}
+ggplot(bikes_tidy, aes(year, count)) +
+  geom_jitter(aes(color = sector), alpha = .5) +
+  geom_quantile(quantiles = 0.5) 
+```
+
+
+```{r}
+ggplot(bikes_tidy, aes(year, count)) +
+  geom_jitter(aes(color = count_time), alpha = .5) +
+  geom_smooth() +
+  facet_wrap(~sector)
+```
+
+How much missing data per year?
+```{r}
+bikes_tidy %>% 
+  count(year)
+library(naniar)
+bikes_tidy %>%
+  group_by(year) %>%
+  miss_var_summary() %>% 
+  filter(variable == "count")
+```
+
+
+# idea plot missing data

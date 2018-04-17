@@ -1,14 +1,8 @@
 ---
 title: "Resources"
-output:
-  html_document:
-    toc: true
-    toc_depth: 2
-    toc_float: TRUE
-    number_sections: true
+output: html_document
 ---
 
-# Talks & Workshops
 
 ## Take A Sad Plot & Make It Better
 
@@ -27,11 +21,4 @@ Workshop given at OHSU Data Jamboree
 
 https://alison.rbind.io/html/jamboree_heart_ggplot.html
 
-# Reading
 
-Free books, available to read online:
-
-- Modern Dive chapter on Data Visualization: http://moderndive.com/3-viz.html
-- R for Data Science chapter on Data Visualization: http://r4ds.had.co.nz/data-visualisation.html
-- Fundamentals of Data Visualization: http://serialmentor.com/dataviz/
-- Data Visualization: A Practical Introduction: http://socviz.co

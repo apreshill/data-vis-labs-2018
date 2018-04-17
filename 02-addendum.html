@@ -277,7 +277,7 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="slides.html">Slides</a>
+  <a href="slides.html">Slides &amp; Reading</a>
 </li>
 <li>
   <a href="data-vis-resources.html">Resources</a>
@@ -315,7 +315,7 @@ moma_singles_summary &lt;- moma %&gt;%
          artist_gender = as.factor(artist_gender)) %&gt;% 
   group_by(year_acquired, artist_gender) %&gt;% 
   summarize(n_acquired = n(),
-            mean_lag = mean(lag_acquired)) %&gt;% 
+            median_lag = median(lag_acquired)) %&gt;% 
   complete(year_acquired, artist_gender, 
            fill = list(n_acquired = 0))
 
@@ -324,6 +324,41 @@ ggplot(moma_singles_summary, aes(x = year_acquired,
                                  color = artist_gender)) +
   geom_point()</code></pre>
 <p><img src="02-addendum_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(moma_singles_summary, aes(x = year_acquired, 
+                                 y = median_lag,
+                                 color = artist_gender,
+                                 group = artist_gender)) +
+  geom_point() +
+  geom_line()</code></pre>
+<p><img src="02-addendum_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<p>Tag top artists</p>
+<pre class="r"><code>top_artists &lt;- moma %&gt;% 
+  count(artist_gender, artist, sort = TRUE) %&gt;% 
+  group_by(artist_gender) %&gt;% 
+  top_n(1) %&gt;% 
+  filter(!is.na(artist_gender)) %&gt;% 
+  pull(artist)
+
+moma &lt;- moma %&gt;% 
+  mutate(top_to_color = case_when(
+    artist %in% top_artists &amp; artist_gender == &quot;Male&quot; ~ &quot;Picasso&quot;,
+    artist %in% top_artists &amp; artist_gender == &quot;Female&quot; ~ &quot;Levine&quot;
+  ))
+
+moma_top &lt;- moma %&gt;% 
+  filter(!is.na(top_to_color))
+
+moma_else &lt;- moma %&gt;% 
+  filter(is.na(top_to_color))
+
+# need to separate plotting of &quot;NA&quot; points
+# plot Levine and Picasso points with separate geom layer
+ggplot(data = NULL, aes(year_created, year_acquired)) +
+  geom_point(data = moma_else, color = &quot;grey70&quot;, alpha = .5) +
+  geom_point(data = moma_top, aes(color = top_to_color), size = 2) +
+  labs(x = &quot;Year Painted&quot;, y = &quot;Year Acquired&quot;) +
+  ggtitle(&quot;MoMA Keeps Its Collection Current&quot;) </code></pre>
+<p><img src="02-addendum_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 
 <p>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">

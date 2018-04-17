@@ -1,5 +1,5 @@
 ---
-title: "In-Class Slides for CS631"
+title: "In-Class Slides & Reading for CS631 Labs"
 output: html_document
 ---
 
@@ -7,24 +7,44 @@ output: html_document
 knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, echo = FALSE)
 ```
 
+The following are all *free* books, available to read online:
 
-## Slide Decks {.tabset .tabset-pills}
+- Modern Dive: http://moderndive.com
+- R for Data Science: http://r4ds.had.co.nz
+- Fundamentals of Data Visualization: http://serialmentor.com/dataviz/
+- Data Visualization: A Practical Introduction: http://socviz.co
 
-### 01: R Basics
+## Slide Decks & Reading {.tabset}
+
+### 01: Working in R
 
 ```{r}
-knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/01-slides.html")
+knitr::include_url("slides/01-slides.html")
 ```
 
-### 02: Tidyverse Basics
+- R for Data Science, Workflow: Basics Chapter: http://r4ds.had.co.nz/workflow-basics.html
+
+- Modern Dive, Getting Started Chapter: http://moderndive.com/2-getting-started.html
+
+- R & RStudio Basics: https://bookdown.org/chesterismay/rbasics/3-rstudiobasics.html
+
+- RStudio IDE Cheatsheet: https://github.com/rstudio/cheatsheets/blob/master/rstudio-ide.pdf
+
+### 02: Working in the Tidyverse
 
 ```{r}
-knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html")
+knitr::include_url("slides/02-slides.html")
 ```
 
-### 03: Data Basics
+- R for Data Science, Data Visualization Chapter: http://r4ds.had.co.nz/data-visualisation.html
+
+- Modern Dive, Data Visualization Chapter: http://moderndive.com/3-viz.html
+
+- RStudio `ggplot2` Cheatsheet: https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf
+
+### 03: Working with Data
 
 ```{r}
-knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/03-slides.html")
+knitr::include_url("slides/03-slides.html")
 ```
 
