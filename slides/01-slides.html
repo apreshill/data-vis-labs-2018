@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lab 01: CS631
-## R Basics
+## Working in R
 ### Alison Hill
 
 ---
@@ -21,35 +21,48 @@ class: center, middle, inverse, title-slide
 
 
 
-# R Basics
+## R Basics
 
 --
 
-* R is an interpreter `&gt;`
+* R is an interpreter (`&gt;`)
 
 --
 
-* You are an object maker &amp; borrower `&lt;-`
+* Make (&amp; borrow) objects in R (`&lt;-`)
 
 --
 
-* Know your data types
+* Name objects in R (`i_like_snake_case`)
 
 --
 
-* Case matters (`i_like_snake_case`)
+* Know your object types (`typeof()`)
 
 --
 
-* Use comments! All text behind a `#` is a comment
+* Case matters (`my_names != My_names`)
+
 
 --
 
-* Use packages; think: *"install once per machine, load once per R session"*
+* Use comments! (`# use the hashtag symbol`) 
 
 --
 
-* Use the `%&gt;%`; think: *"dataframe first, dataframe once"*
+* Functions (`fun`!)
+
+--
+
+* Use packages (*"install once per machine, load once per R session"*)
+
+--
+
+* Use the `%&gt;%` (*"dataframe first, dataframe once"*)
+
+
+
+
 
 ---
 
@@ -71,15 +84,25 @@ You enter commands line-by-line (as opposed to compiled languages).
 
     - If you get stuck with a `+` use your escape key!
 
+
+---
+class: center, middle, inverse
+
+# 🗝
+
+## Make (&amp; Borrow) Objects in R
+
+## `&lt;-`
+
 ---
 
-## You are an object maker
+## Make new objects
 
 
 
 ```r
-data_vis &lt;- c("Steven", "Jackie", "Alison") # c = combine
-data_vis
+us &lt;- c("Steven", "Jackie", "Alison") # combine strings
+us
 ```
 
 ```
@@ -87,7 +110,7 @@ data_vis
 ```
 
 ```r
-num_labs &lt;- c(1:10)
+num_labs &lt;- c(1:10) # combine numbers
 num_labs
 ```
 
@@ -96,29 +119,24 @@ num_labs
 ```
 
 ```r
-mood &lt;- rep("yippee", sum(num_labs)) # replicate X times
+mood &lt;- rep("yippee", length(num_labs)) # replicate 10 times
 mood
 ```
 
 ```
  [1] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
- [8] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
-[15] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
-[22] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
-[29] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
-[36] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
-[43] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
-[50] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
+ [8] "yippee" "yippee" "yippee"
 ```
 
 ---
 
-## You are an object borrower
+## Borrow objects
 
 
 
 ```r
-letters # built-in
+my_alpha &lt;- letters # built-in, no package needed
+my_alpha
 ```
 
 ```
@@ -149,19 +167,86 @@ my_names
 ```
 
 
+---
+class: center, middle, inverse
+
+# 🐍
+
+## Name Objects in R
+
+
+## `i_like_snake_case`
 
 ---
 
-## Every object has a class
+## Naming objects
 
-Classes:
 
-* Numeric
-* Character
-* Factor
-* Logical
-* Double (`?double`: "identical to numeric", but "double precision")
-* a few others you may run into `?typeof`
+```r
+?make.names
+```
+
+
+.pull-left[
+Object names cannot:
+
+- Start with a number
+- Contain a space
+- Contain ["reserved" words](http://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+]
+
+--
+
+.pull-right[
+Object names must:
+
+- Start with a letter
+- Contain letters, numbers, `_` and `.`
+]
+
+---
+
+## Adopt a consistent naming style
+
+
+```r
+i_use_snake_case # recommended
+otherPeopleUseCamelCase
+some.people.use.periods
+And_aFew.People_RENOUNCEconvention
+```
+
+From: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
+
+Read more:
+http://style.tidyverse.org/syntax.html#object-names
+
+
+
+---
+class: center, middle, inverse
+
+
+# 🔦
+
+## Know Your Data Types
+
+
+## `typeof()`
+
+---
+
+## Know your data types
+
+
+* Numeric (2 subtypes)
+    - Integers (`1, 50`)
+    - Double (`1.5, 50.25`, `?double`)
+* Character (`"hello"`)
+* Factor (`grade = "A" | grade = "B"`)
+* Logical (`TRUE | FALSE`)
+
+--
 
 
 ```r
@@ -180,16 +265,32 @@ typeof(mood) # "yippee" is a character
 [1] "character"
 ```
 
-Vectors can only contain one type of thing.
+```r
+typeof(mood == "yippee") # is mood equal to "yippee"- T or F?
+```
+
+```
+[1] "logical"
+```
+
+
+
+---
+
+## Characters can be deceiving
+
+
 
 
 ```r
-my_things &lt;- c("oh", 1, 2, "hi") 
+my_things &lt;- c(num_labs, mood)
 my_things
 ```
 
 ```
-[1] "oh" "1"  "2"  "hi"
+ [1] "1"      "2"      "3"      "4"      "5"      "6"      "7"     
+ [8] "8"      "9"      "10"     "yippee" "yippee" "yippee" "yippee"
+[15] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
 ```
 
 ```r
@@ -200,54 +301,32 @@ typeof(my_things)
 [1] "character"
 ```
 
-R denotes missing data with a special type of thing, `NA`, which is not a character (and hence not in quotes). It is actually a logical, which returns TRUE or FALSE.
+
+---
+
+## `NA` is special
 
 
-```r
-?logical
-missing &lt;- c(NA, NA, NA)
-typeof(missing)
-```
-
-```
-[1] "logical"
-```
 
 ```r
-is.na(missing)
+num_labs &lt;- c(num_labs, NA) 
+typeof(num_labs)
 ```
 
 ```
-[1] TRUE TRUE TRUE
+[1] "integer"
 ```
 
 ```r
-dollars &lt;- c(12, 1, 2, 3, NA)
-typeof(dollars)
+num_labs*3
 ```
 
 ```
-[1] "double"
-```
-
-```r
-is.na(dollars)
-```
-
-```
-[1] FALSE FALSE FALSE FALSE  TRUE
+ [1]  3  6  9 12 15 18 21 24 27 30 NA
 ```
 
 ```r
-dollars*3
-```
-
-```
-[1] 36  3  6  9 NA
-```
-
-```r
-mean(dollars)
+max(num_labs)
 ```
 
 ```
@@ -255,35 +334,74 @@ mean(dollars)
 ```
 
 ```r
-mean(dollars, na.rm = TRUE)
+max(num_labs, na.rm = TRUE)
 ```
 
 ```
-[1] 4.5
+[1] 10
 ```
 
+
+
+---
+class: center, middle, inverse
+
+
+## Case matters
+
+## `my_names != My_names`
 
 ---
 
 ## Case matters
 
-
-```r
-# calculate the mean
-mean(dollars) # calculate mean of numbers 
-```
-
-```
-[1] NA
-```
+This works:
 
 
 ```r
-Mean(dollars) # no function
-mean(Dollars) # no data 
+glimpse(babynames)
 ```
 
-Read more: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
+```
+Observations: 1,858,689
+Variables: 5
+$ year &lt;dbl&gt; 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 188...
+$ sex  &lt;chr&gt; "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F...
+$ name &lt;chr&gt; "Mary", "Anna", "Emma", "Elizabeth", "Minnie", "Margaret"...
+$ n    &lt;int&gt; 7065, 2604, 2003, 1939, 1746, 1578, 1472, 1414, 1320, 128...
+$ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...
+```
+
+--
+
+These do not:
+
+
+```r
+Glimpse(babynames) # no function
+```
+
+```
+Error in Glimpse(babynames): could not find function "Glimpse"
+```
+
+```r
+glimpse(Babynames) # no data 
+```
+
+```
+Error in glimpse(Babynames): object 'Babynames' not found
+```
+
+
+---
+class: center, middle, inverse
+
+# 📢
+
+## Comments
+
+## `# go here`
 
 ---
 
@@ -291,44 +409,453 @@ Read more: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
 
 
 ```r
-2+2 # add 2 + 2 here
+num_labs + 2 # add 2 here
 ```
 
 ```
-[1] 4
+ [1]  3  4  5  6  7  8  9 10 11 12 NA
 ```
 
 ```r
-# I can say anything I want here
+num_weeks &lt;- num_labs + 2 # save as new object
 ```
 
+--
+
+
+```r
+# I can say anything I want here...
+num_weeks
+```
+
+```
+ [1]  3  4  5  6  7  8  9 10 11 12 NA
+```
+
+--
+
+
+```r
+but not here
+```
+
+```
+Error: &lt;text&gt;:1:5: unexpected symbol
+1: but not
+        ^
+```
+
+---
+class: center, middle, inverse
+
+# 🍰
+
+## Functions
+
+
+
+
+
+
+---
+background-image: url("../images/Slide06.png")
+background-size: cover
+
+---
+background-image: url("../images/Slide07.png")
+background-size: cover
+
+---
+background-image: url("../images/Slide08.png")
+background-size: cover
+
+---
+background-image: url("../images/Slide10.png")
+background-size: cover
+
+
+
+
+
+---
+
+## Functions 
+
+Sometimes abbreviated `funs` in documentation, which is a little ironic 😉.
+
+Functions can come from:
+
+- base R (these functions are "built in")
+- packages
+- you
+
+---
+class: middle
+
+# Base R Functions
+
+
+```r
+seq(1, 12, 1) # base R
+```
+
+```
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12
+```
+
+---
+class: middle
+
+# Functions from Packages
+
+
+```r
+babynames %&gt;% count(sex) # count is from dplyr
+```
+
+```
+# A tibble: 2 x 2
+  sex        nn
+  &lt;chr&gt;   &lt;int&gt;
+1 F     1100858
+2 M      757831
+```
+
+---
+class: middle
+
+# Roll your own functions
+
+
+```r
+greet &lt;- function(name) {
+  glue::glue("Welcome to CS631, {name}!")
+}
+greet("Sloane")
+```
+
+```
+Welcome to CS631, Sloane!
+```
+
+
+
+
+
+
+---
+
+# Function help
+
+
+```r
+?seq
+?count
+```
+
+
+
+Pay attention to: 
+
+--
+
+* Usage *(recipe)*
+
+--
+
+* Arguments *(ingredients)*
+
+--
+
+* Examples 
+
+
+--
+
+Read more: 
+- http://r4ds.had.co.nz/workflow-basics.html#calling-functions
+- http://socviz.co/appendix.html#a-little-more-about-r
+- http://stat545.com/block011_write-your-own-function-01.html
+- http://stat545.com/block011_write-your-own-function-02.html
+- http://stat545.com/block011_write-your-own-function-03.html
+
+
+
+---
+class: center, middle, inverse
+
+# 📦
+
+## Packages
+
+
+
+*"install once per machine, load once per R session"*
 
 ---
 
 ## Packages! 
 
-**Install once** per machine
+*Install once* per machine
 
 
 ```r
 install.packages("dplyr")
 ```
 
-**Load once** per R work session
+--
+
+*Load once* per R work session
 
 
 ```r
 library(dplyr)
 ```
 
+--
+
 *also: quotes matter, sorry*
 
-This can get to be a long list if we want to use a lot of packages in our work session. We can make a function to load a *list* of packages, and install them if not already installed (more on functions later).
+---
+class: inverse, middle, center
+
+&lt;img src="https://www.tidyverse.org/images/hex-tidyverse.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+## The `tidyverse` package ecosystem
+
+https://www.tidyverse.org
+
+---
+class: inverse, middle, center
+
+
+
+&lt;img src="https://www.tidyverse.org/images/hex-tidyverse.png" width="25%" style="display: block; margin: auto;" /&gt;
+
+
+
+## &lt;small&gt;"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."&lt;/small&gt;
+
+
 
 
 ```r
-pkgs &lt;- c("readr", "readxl", "haven", "dplyr", "tidyr", "stringr") # list packages needed
+install.packages("tidyverse")
+library(tidyverse)
 ```
+
+See packages included here: https://www.tidyverse.org/packages/
+
+
+---
+class: center, middle, inverse
+
+# `%&gt;%`
+
+## The pipe
+
+*"dataframe first, dataframe once"*
+
+--
+
+
+```r
+library(dplyr)
+```
+
+
+--
+
+Keyboard shortcuts:
+
+OSX: `CMD` + `SHIFT` + `M`
+
+Else: `CTRL` + `SHIFT` + `M`
+
+---
+class: middle
+
+*Nesting* a dataframe inside a function is hard to read.
+
+
+```r
+slice(babynames, 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. F     Mary   7065 0.0724
+```
+
+--
+
+Here, the "sentence" starts with a &lt;font color="#ED1941"&gt;verb&lt;/font&gt;.
+
+--
+
+&lt;hr&gt;
+
+*Piping* a dataframe into a function lets you read L to R
+
+
+```r
+babynames %&gt;% slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. F     Mary   7065 0.0724
+```
+
+--
+
+Now, the "sentence" starts with a &lt;font color="#ED1941"&gt;noun&lt;/font&gt;.
+
+
+
+---
+class: middle
+
+Sequences of functions make you read *inside out*
+
+
+```r
+slice(filter(babynames, sex == "M"), 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. M     John   9655 0.0815
+```
+
+--
+
+&lt;hr&gt;
+
+Chaining functions together lets you read *L to R*
+
+
+```r
+babynames %&gt;% filter(sex == "M") %&gt;% slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. M     John   9655 0.0815
+```
+
+
+---
+class: inverse, middle, center
+
+&lt;img src="https://www.rstudio.com/wp-content/uploads/2014/04/magrittr.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+## "dataframe first, dataframe once" 
+
+---
+class: middle
+
+
+```r
+babynames %&gt;% filter(sex == "M") %&gt;% slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. M     John   9655 0.0815
+```
+
+--
+
+&lt;hr&gt;
+
+This does the same thing: 
+
+
+```r
+babynames %&gt;% filter(.data = ., sex == "M") %&gt;% slice(.data = ., 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. M     John   9655 0.0815
+```
+
+--
+
+&lt;hr&gt;
+
+So does this:
+
+
+```r
+babynames %&gt;% filter(., sex == "M") %&gt;% slice(., 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1880. M     John   9655 0.0815
+```
+
+---
+class: inverse, middle, center
+
+
+## I know...
+
+![](https://media.giphy.com/media/uEhLWy2eu87Ly/source.gif)
+
+---
+class: inverse, middle, center
+
+
+## I promise, it gets better.
+
+![](https://media.giphy.com/media/l0MYRzcWP7cjfNQ2I/giphy.gif)
+
+---
+class: inverse, middle, center
+
+
+# 🏃🏽
+
+## Resources for Working in R:
+
+http://r4ds.had.co.nz/workflow-basics.html
+
+http://moderndive.com/2-getting-started.html
+
+https://bookdown.org/chesterismay/rbasics/3-rstudiobasics.html
+
+https://github.com/rstudio/cheatsheets/blob/master/rstudio-ide.pdf
+
+---
+
+## Install &amp; load multiple R packages
+
+
+This can get to be a long list if we want to use a lot of new packages in our work session. We can make a function to load a *list* of packages, and install them if not already installed (more on functions later).
+
+
+```r
+pkgs &lt;- c("readr", "dplyr", "tidyr") # list packages needed
+```
+
+--
 
 
 ```r
@@ -340,154 +867,14 @@ ipak &lt;- function(pkg){
 }
 ```
 
+--
+
 
 ```r
 ipak(pkgs) # take function, and give it that list
 ```
 
----
-
-## Functions 
-
-Sometimes abbreviated `funs` in documentation, which is a little ironic 😉.
-
-Some simple ones:
-
-
-```r
-class_weeks &lt;- seq(1, 12, 1)
-class_labs &lt;- seq(1, 12, 2)
-```
-
-
-Read more: http://r4ds.had.co.nz/workflow-basics.html#calling-functions
-
----
-
-## Piping/chaining with the `%&gt;%` operator
-
-This is the magrittr operator: `%&gt;%`. You can use with the `dplyr` package loaded (which we just did above).
-
-You can check via `sessionInfo()`
-
-```r
-sessionInfo()
-```
-
-```
-R version 3.4.1 (2017-06-30)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: OS X El Capitan 10.11.6
-
-Matrix products: default
-BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
-
-locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
-
-other attached packages:
- [1] babynames_0.3.0    forcats_0.3.0.9000 stringr_1.3.0     
- [4] dplyr_0.7.4.9000   purrr_0.2.4        readr_1.2.0       
- [7] tidyr_0.8.0        tibble_1.4.2       ggplot2_2.2.1.9000
-[10] tidyverse_1.2.1   
-
-loaded via a namespace (and not attached):
- [1] tidyselect_0.2.4.9000 xfun_0.1              reshape2_1.4.3       
- [4] haven_1.1.0           lattice_0.20-35       colorspace_1.3-2     
- [7] htmltools_0.3.6       yaml_2.1.18           utf8_1.1.3           
-[10] rlang_0.2.0.9000      pillar_1.2.1          withr_2.1.2          
-[13] foreign_0.8-69        glue_1.2.0            modelr_0.1.1         
-[16] readxl_1.0.0          bindrcpp_0.2.0.9000   bindr_0.1.0.9000     
-[19] plyr_1.8.4            munsell_0.4.3         gtable_0.2.0         
-[22] cellranger_1.1.0      rvest_0.3.2           psych_1.7.5          
-[25] evaluate_0.10.1       knitr_1.20            parallel_3.4.1       
-[28] broom_0.4.2           Rcpp_0.12.15          backports_1.1.2      
-[31] scales_0.5.0.9000     jsonlite_1.5          mnormt_1.5-5         
-[34] hms_0.4.1             digest_0.6.15         stringi_1.1.6        
-[37] xaringan_0.6.1        grid_3.4.1            rprojroot_1.3-2      
-[40] cli_1.0.0             tools_3.4.1           magrittr_1.5         
-[43] lazyeval_0.2.1        crayon_1.3.4          pkgconfig_2.0.1      
-[46] xml2_1.2.0            lubridate_1.7.3       assertthat_0.2.0     
-[49] rmarkdown_1.9.5       httr_1.3.1            rstudioapi_0.7       
-[52] R6_2.2.2              nlme_3.1-131          compiler_3.4.1       
-```
-
----
-
-## *Nesting* your dataframe in commands is hard to read
-
-
-```r
-head(iris)
-```
-
-```
-  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-1          5.1         3.5          1.4         0.2  setosa
-2          4.9         3.0          1.4         0.2  setosa
-3          4.7         3.2          1.3         0.2  setosa
-4          4.6         3.1          1.5         0.2  setosa
-5          5.0         3.6          1.4         0.2  setosa
-6          5.4         3.9          1.7         0.4  setosa
-```
-
-## *Piping* your dataframe into a command lets you read L to R
-
-
-```r
-iris %&gt;% head(.)
-```
-
-```
-  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-1          5.1         3.5          1.4         0.2  setosa
-2          4.9         3.0          1.4         0.2  setosa
-3          4.7         3.2          1.3         0.2  setosa
-4          4.6         3.1          1.5         0.2  setosa
-5          5.0         3.6          1.4         0.2  setosa
-6          5.4         3.9          1.7         0.4  setosa
-```
-
----
-
-## Sequences of commands are read *inside out*
-
-
-```r
-head(iris[iris$Species == "virginica", ])
-```
-
-```
-    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-101          6.3         3.3          6.0         2.5 virginica
-102          5.8         2.7          5.1         1.9 virginica
-103          7.1         3.0          5.9         2.1 virginica
-104          6.3         2.9          5.6         1.8 virginica
-105          6.5         3.0          5.8         2.2 virginica
-106          7.6         3.0          6.6         2.1 virginica
-```
-
-### Chaining your commands lets you read *L to R*
-
-```r
-iris %&gt;% filter(Species == "virginica") %&gt;% head(.) 
-```
-
-```
-  Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-1          6.3         3.3          6.0         2.5 virginica
-2          5.8         2.7          5.1         1.9 virginica
-3          7.1         3.0          5.9         2.1 virginica
-4          6.3         2.9          5.6         1.8 virginica
-5          6.5         3.0          5.8         2.2 virginica
-6          7.6         3.0          6.6         2.1 virginica
-```
-
-The `(.)` is implicit- try the above code without the parentheses or the `.`. But keep in mind that under the hood, this is what the implied syntax is. It will be useful later on!
+Function from: https://gist.github.com/stevenworthington/3178163
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

@@ -1,6 +1,6 @@
 ---
 title: "Lab 01: CS631"
-subtitle: "R Basics"
+subtitle: "Working in R"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
@@ -21,35 +21,48 @@ library(tidyverse)
 library(babynames)
 ```
 
-# R Basics
+## R Basics
 
 --
 
-* R is an interpreter `>`
+* R is an interpreter (`>`)
 
 --
 
-* You are an object maker & borrower `<-`
+* Make (& borrow) objects in R (`<-`)
 
 --
 
-* Know your data types
+* Name objects in R (`i_like_snake_case`)
 
 --
 
-* Case matters (`i_like_snake_case`)
+* Know your object types (`typeof()`)
 
 --
 
-* Use comments! All text behind a `#` is a comment
+* Case matters (`my_names != My_names`)
+
 
 --
 
-* Use packages; think: *"install once per machine, load once per R session"*
+* Use comments! (`# use the hashtag symbol`) 
 
 --
 
-* Use the `%>%`; think: *"dataframe first, dataframe once"*
+* Functions (`fun`!)
+
+--
+
+* Use packages (*"install once per machine, load once per R session"*)
+
+--
+
+* Use the `%>%` (*"dataframe first, dataframe once"*)
+
+
+
+
 
 ---
 
@@ -71,125 +84,554 @@ You enter commands line-by-line (as opposed to compiled languages).
 
     - If you get stuck with a `+` use your escape key!
 
+
+---
+class: center, middle, inverse
+
+# 🗝
+
+## Make (& Borrow) Objects in R
+
+## `<-`
+
 ---
 
-## You are an object maker
+## Make new objects
 
 
 ```{r}
-data_vis <- c("Steven", "Jackie", "Alison") # c = combine
-data_vis
-num_labs <- c(1:10)
+us <- c("Steven", "Jackie", "Alison") # combine strings
+us
+num_labs <- c(1:10) # combine numbers
 num_labs
-mood <- rep("yippee", sum(num_labs)) # replicate X times
+mood <- rep("yippee", length(num_labs)) # replicate 10 times
 mood
 ```
 
 ---
 
-## You are an object borrower
+## Borrow objects
 
 
 ```{r}
-letters # built-in
+my_alpha <- letters # built-in, no package needed
+my_alpha
 my_names <- babynames # from the babynames package
 my_names
 ```
 
 
+---
+class: center, middle, inverse
+
+# 🐍
+
+## Name Objects in R
+
+
+## `i_like_snake_case`
 
 ---
 
-## Every object has a class
+## Naming objects
 
-Classes:
+```{r}
+?make.names
+```
 
-* Numeric
-* Character
-* Factor
-* Logical
-* Double (`?double`: "identical to numeric", but "double precision")
-* a few others you may run into `?typeof`
+
+.pull-left[
+Object names cannot:
+
+- Start with a number
+- Contain a space
+- Contain ["reserved" words](http://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+]
+
+--
+
+.pull-right[
+Object names must:
+
+- Start with a letter
+- Contain letters, numbers, `_` and `.`
+]
+
+---
+
+## Adopt a consistent naming style
+
+```{r eval = FALSE}
+i_use_snake_case # recommended
+otherPeopleUseCamelCase
+some.people.use.periods
+And_aFew.People_RENOUNCEconvention
+```
+
+From: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
+
+Read more:
+http://style.tidyverse.org/syntax.html#object-names
+
+
+
+---
+class: center, middle, inverse
+
+
+# 🔦
+
+## Know Your Data Types
+
+
+## `typeof()`
+
+---
+
+## Know your data types
+
+
+* Numeric (2 subtypes)
+    - Integers (`1, 50`)
+    - Double (`1.5, 50.25`, `?double`)
+* Character (`"hello"`)
+* Factor (`grade = "A" | grade = "B"`)
+* Logical (`TRUE | FALSE`)
+
+--
 
 ```{r}
 typeof(num_labs) # numeric
 typeof(mood) # "yippee" is a character
+typeof(mood == "yippee") # is mood equal to "yippee"- T or F?
 ```
 
-Vectors can only contain one type of thing.
 
-```{r mixing-types}
-my_things <- c("oh", 1, 2, "hi") 
+
+---
+
+## Characters can be deceiving
+
+
+
+```{r}
+my_things <- c(num_labs, mood)
 my_things
 typeof(my_things) 
 ```
 
-R denotes missing data with a special type of thing, `NA`, which is not a character (and hence not in quotes). It is actually a logical, which returns TRUE or FALSE.
+
+---
+
+## `NA` is special
+
 
 ```{r missing-values-in-vector}
-?logical
-missing <- c(NA, NA, NA)
-typeof(missing)
-is.na(missing)
-dollars <- c(12, 1, 2, 3, NA)
-typeof(dollars)
-is.na(dollars)
-dollars*3
-mean(dollars)
-mean(dollars, na.rm = TRUE)
+num_labs <- c(num_labs, NA) 
+typeof(num_labs)
+num_labs*3
+max(num_labs)
+max(num_labs, na.rm = TRUE)
 ```
 
+
+
+---
+class: center, middle, inverse
+
+
+## Case matters
+
+## `my_names != My_names`
 
 ---
 
 ## Case matters
 
-```{r mean-works}
-# calculate the mean
-mean(dollars) # calculate mean of numbers 
+This works:
+
+```{r works}
+glimpse(babynames)
 ```
 
-```{r mean-wont-work, eval = FALSE}
-Mean(dollars) # no function
-mean(Dollars) # no data 
+--
+
+These do not:
+
+```{r wont-work, error = TRUE}
+Glimpse(babynames) # no function
+glimpse(Babynames) # no data 
 ```
 
-Read more: http://r4ds.had.co.nz/workflow-basics.html#whats-in-a-name
+
+---
+class: center, middle, inverse
+
+# 📢
+
+## Comments
+
+## `# go here`
 
 ---
 
 ## Text behind a `#` is a comment
 
 ```{r}
-2+2 # add 2 + 2 here
+num_labs + 2 # add 2 here
 
-# I can say anything I want here
+num_weeks <- num_labs + 2 # save as new object
 ```
 
+--
+
+```{r}
+# I can say anything I want here...
+num_weeks
+```
+
+--
+
+```{r error = TRUE}
+but not here
+```
+
+---
+class: center, middle, inverse
+
+# 🍰
+
+## Functions
+
+
+
+
+
+
+---
+background-image: url("../images/Slide06.png")
+background-size: cover
+
+---
+background-image: url("../images/Slide07.png")
+background-size: cover
+
+---
+background-image: url("../images/Slide08.png")
+background-size: cover
+
+---
+background-image: url("../images/Slide10.png")
+background-size: cover
+
+
+
+
+
+---
+
+## Functions 
+
+Sometimes abbreviated `funs` in documentation, which is a little ironic 😉.
+
+Functions can come from:
+
+- base R (these functions are "built in")
+- packages
+- you
+
+---
+class: middle
+
+# Base R Functions
+
+```{r}
+seq(1, 12, 1) # base R
+```
+
+---
+class: middle
+
+# Functions from Packages
+
+```{r}
+babynames %>% count(sex) # count is from dplyr
+```
+
+---
+class: middle
+
+# Roll your own functions
+
+```{r}
+greet <- function(name) {
+  glue::glue("Welcome to CS631, {name}!")
+}
+greet("Sloane")
+```
+
+
+
+
+
+
+---
+
+# Function help
+
+```{r eval = FALSE}
+?seq
+?count
+```
+
+
+
+Pay attention to: 
+
+--
+
+* Usage *(recipe)*
+
+--
+
+* Arguments *(ingredients)*
+
+--
+
+* Examples 
+
+
+--
+
+Read more: 
+- http://r4ds.had.co.nz/workflow-basics.html#calling-functions
+- http://socviz.co/appendix.html#a-little-more-about-r
+- http://stat545.com/block011_write-your-own-function-01.html
+- http://stat545.com/block011_write-your-own-function-02.html
+- http://stat545.com/block011_write-your-own-function-03.html
+
+
+
+---
+class: center, middle, inverse
+
+# 📦
+
+## Packages
+
+
+
+*"install once per machine, load once per R session"*
 
 ---
 
 ## Packages! 
 
-**Install once** per machine
+*Install once* per machine
 
 ```{r eval = FALSE}
 install.packages("dplyr")
 ```
 
-**Load once** per R work session
+--
+
+*Load once* per R work session
 
 ```{r eval = FALSE}
 library(dplyr)
 ```
 
+--
+
 *also: quotes matter, sorry*
 
-This can get to be a long list if we want to use a lot of packages in our work session. We can make a function to load a *list* of packages, and install them if not already installed (more on functions later).
+---
+class: inverse, middle, center
+
+```{r out.width = '50%', echo = FALSE}
+knitr::include_graphics("https://www.tidyverse.org/images/hex-tidyverse.png")
+```
+
+## The `tidyverse` package ecosystem
+
+https://www.tidyverse.org
+
+---
+class: inverse, middle, center
+
+
+
+```{r out.width = '25%', echo = FALSE}
+knitr::include_graphics("https://www.tidyverse.org/images/hex-tidyverse.png")
+```
+
+
+
+## <small>"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."</small>
+
+
+
+```{r eval = FALSE}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+See packages included here: https://www.tidyverse.org/packages/
+
+
+---
+class: center, middle, inverse
+
+# `%>%`
+
+## The pipe
+
+*"dataframe first, dataframe once"*
+
+--
+
+```{r eval = FALSE}
+library(dplyr)
+```
+
+
+--
+
+Keyboard shortcuts:
+
+OSX: `CMD` + `SHIFT` + `M`
+
+Else: `CTRL` + `SHIFT` + `M`
+
+---
+class: middle
+
+*Nesting* a dataframe inside a function is hard to read.
+
+```{r}
+slice(babynames, 1)
+```
+
+--
+
+Here, the "sentence" starts with a <font color="#ED1941">verb</font>.
+
+--
+
+<hr>
+
+*Piping* a dataframe into a function lets you read L to R
+
+```{r}
+babynames %>% slice(1)
+```
+
+--
+
+Now, the "sentence" starts with a <font color="#ED1941">noun</font>.
+
+
+
+---
+class: middle
+
+Sequences of functions make you read *inside out*
+
+```{r}
+slice(filter(babynames, sex == "M"), 1)
+```
+
+--
+
+<hr>
+
+Chaining functions together lets you read *L to R*
+
+```{r}
+babynames %>% filter(sex == "M") %>% slice(1)
+```
+
+
+---
+class: inverse, middle, center
+
+```{r out.width = '50%', echo = FALSE}
+knitr::include_graphics("https://www.rstudio.com/wp-content/uploads/2014/04/magrittr.png")
+```
+
+## "dataframe first, dataframe once" 
+
+---
+class: middle
+
+```{r}
+babynames %>% filter(sex == "M") %>% slice(1)
+```
+
+--
+
+<hr>
+
+This does the same thing: 
+
+```{r}
+babynames %>% filter(.data = ., sex == "M") %>% slice(.data = ., 1)
+```
+
+--
+
+<hr>
+
+So does this:
+
+```{r}
+babynames %>% filter(., sex == "M") %>% slice(., 1)
+```
+
+---
+class: inverse, middle, center
+
+
+## I know...
+
+![](https://media.giphy.com/media/uEhLWy2eu87Ly/source.gif)
+
+---
+class: inverse, middle, center
+
+
+## I promise, it gets better.
+
+![](https://media.giphy.com/media/l0MYRzcWP7cjfNQ2I/giphy.gif)
+
+---
+class: inverse, middle, center
+
+
+# 🏃🏽
+
+## Resources for Working in R:
+
+http://r4ds.had.co.nz/workflow-basics.html
+
+http://moderndive.com/2-getting-started.html
+
+https://bookdown.org/chesterismay/rbasics/3-rstudiobasics.html
+
+https://github.com/rstudio/cheatsheets/blob/master/rstudio-ide.pdf
+
+---
+
+## Install & load multiple R packages
+
+
+This can get to be a long list if we want to use a lot of new packages in our work session. We can make a function to load a *list* of packages, and install them if not already installed (more on functions later).
 
 ```{r package-list-to-load}
-pkgs <- c("readr", "readxl", "haven", "dplyr", "tidyr", "stringr") # list packages needed
+pkgs <- c("readr", "dplyr", "tidyr") # list packages needed
 ```
+
+--
 
 ```{r}
 ipak <- function(pkg){
@@ -200,64 +642,11 @@ ipak <- function(pkg){
 }
 ```
 
+--
+
 ```{r run-pkg-function, eval = FALSE}
 ipak(pkgs) # take function, and give it that list
 ```
 
----
-
-## Functions 
-
-Sometimes abbreviated `funs` in documentation, which is a little ironic 😉.
-
-Some simple ones:
-
-```{r}
-
-class_weeks <- seq(1, 12, 1)
-class_labs <- seq(1, 12, 2)
-```
-
-
-Read more: http://r4ds.had.co.nz/workflow-basics.html#calling-functions
-
----
-
-## Piping/chaining with the `%>%` operator
-
-This is the magrittr operator: `%>%`. You can use with the `dplyr` package loaded (which we just did above).
-
-You can check via `sessionInfo()`
-```{r}
-sessionInfo()
-```
-
----
-
-## *Nesting* your dataframe in commands is hard to read
-
-```{r}
-head(iris)
-```
-
-## *Piping* your dataframe into a command lets you read L to R
-
-```{r}
-iris %>% head(.)
-```
-
----
-
-## Sequences of commands are read *inside out*
-
-```{r}
-head(iris[iris$Species == "virginica", ])
-```
-
-### Chaining your commands lets you read *L to R*
-```{r}
-iris %>% filter(Species == "virginica") %>% head(.) 
-```
-
-The `(.)` is implicit- try the above code without the parentheses or the `.`. But keep in mind that under the hood, this is what the implied syntax is. It will be useful later on!
+Function from: https://gist.github.com/stevenworthington/3178163
 
