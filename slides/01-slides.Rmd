@@ -94,6 +94,14 @@ class: center, middle, inverse
 
 ## `<-`
 
+--
+
+RStudio Keyboard Shortcuts:
+
+OSX: `Option` + `-`
+
+Else: `Alt` + `-`
+
 ---
 
 ## Make new objects
@@ -102,8 +110,18 @@ class: center, middle, inverse
 ```{r}
 us <- c("Steven", "Jackie", "Alison") # combine strings
 us
+```
+
+--
+
+```{r}
 num_labs <- c(1:10) # combine numbers
 num_labs
+```
+
+--
+
+```{r}
 mood <- rep("yippee", length(num_labs)) # replicate 10 times
 mood
 ```
@@ -116,6 +134,11 @@ mood
 ```{r}
 my_alpha <- letters # built-in, no package needed
 my_alpha
+```
+
+--
+
+```{r}
 my_names <- babynames # from the babynames package
 my_names
 ```
@@ -217,6 +240,11 @@ typeof(mood == "yippee") # is mood equal to "yippee"- T or F?
 ```{r}
 my_things <- c(num_labs, mood)
 my_things
+```
+
+--
+
+```{r}
 typeof(my_things) 
 ```
 
@@ -228,7 +256,17 @@ typeof(my_things)
 
 ```{r missing-values-in-vector}
 num_labs <- c(num_labs, NA) 
+```
+
+--
+
+```{r}
 typeof(num_labs)
+```
+
+--
+
+```{r}
 num_labs*3
 max(num_labs)
 max(num_labs, na.rm = TRUE)
@@ -361,7 +399,7 @@ babynames %>% count(sex) # count is from dplyr
 ---
 class: middle
 
-# Roll your own functions
+# Roll Your Own Functions
 
 ```{r}
 greet <- function(name) {
@@ -467,7 +505,7 @@ knitr::include_graphics("https://www.tidyverse.org/images/hex-tidyverse.png")
 
 
 
-## <small>"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."</small>
+*"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."*
 
 
 
@@ -497,7 +535,7 @@ library(dplyr)
 
 --
 
-Keyboard shortcuts:
+RStudio Keyboard Shortcuts:
 
 OSX: `CMD` + `SHIFT` + `M`
 

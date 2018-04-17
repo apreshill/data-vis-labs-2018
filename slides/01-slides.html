@@ -94,6 +94,14 @@ class: center, middle, inverse
 
 ## `&lt;-`
 
+--
+
+RStudio Keyboard Shortcuts:
+
+OSX: `Option` + `-`
+
+Else: `Alt` + `-`
+
 ---
 
 ## Make new objects
@@ -109,6 +117,9 @@ us
 [1] "Steven" "Jackie" "Alison"
 ```
 
+--
+
+
 ```r
 num_labs &lt;- c(1:10) # combine numbers
 num_labs
@@ -117,6 +128,9 @@ num_labs
 ```
  [1]  1  2  3  4  5  6  7  8  9 10
 ```
+
+--
+
 
 ```r
 mood &lt;- rep("yippee", length(num_labs)) # replicate 10 times
@@ -143,6 +157,9 @@ my_alpha
  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"
 [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"
 ```
+
+--
+
 
 ```r
 my_names &lt;- babynames # from the babynames package
@@ -293,6 +310,9 @@ my_things
 [15] "yippee" "yippee" "yippee" "yippee" "yippee" "yippee"
 ```
 
+--
+
+
 ```r
 typeof(my_things) 
 ```
@@ -310,12 +330,21 @@ typeof(my_things)
 
 ```r
 num_labs &lt;- c(num_labs, NA) 
+```
+
+--
+
+
+```r
 typeof(num_labs)
 ```
 
 ```
 [1] "integer"
 ```
+
+--
+
 
 ```r
 num_labs*3
@@ -524,7 +553,7 @@ babynames %&gt;% count(sex) # count is from dplyr
 ---
 class: middle
 
-# Roll your own functions
+# Roll Your Own Functions
 
 
 ```r
@@ -634,7 +663,7 @@ class: inverse, middle, center
 
 
 
-## &lt;small&gt;"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."&lt;/small&gt;
+*"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."*
 
 
 
@@ -666,7 +695,7 @@ library(dplyr)
 
 --
 
-Keyboard shortcuts:
+RStudio Keyboard Shortcuts:
 
 OSX: `CMD` + `SHIFT` + `M`
 
