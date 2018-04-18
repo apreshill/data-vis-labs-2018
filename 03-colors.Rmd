@@ -310,7 +310,7 @@ sound_traj +
 <div class="panel panel-success">
   <div class="panel-heading">Challenge #5:</div>
   <div class="panel-body">
-Why do neither of the following code blocks work?
+Why do neither of the following code blocks change the colors of the points and lines?
 
 ```{r}
 ggplot(sounds, aes(x = age, 
