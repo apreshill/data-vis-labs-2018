@@ -310,7 +310,7 @@ sound_traj +
 <div class="panel panel-success">
   <div class="panel-heading">Challenge #5:</div>
   <div class="panel-body">
-Why do neither of the following code blocks change the colors of the points and lines?
+View the code blocks below. Copy and paste the code to run them in your own file. Why do neither of the following code blocks change the colors of the points and lines? Use your words :) *(the answer is below the challenge, but try to trouble-shoot on your own first)*
 
 ```{r}
 ggplot(sounds, aes(x = age, 
