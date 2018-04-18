@@ -13,6 +13,11 @@ output:
 ---
 ```{r setup, include = FALSE, cache = FALSE}
 knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+library(RColorBrewer)
+library(wesanderson)
+library(ggthemes)
+library(beyonce)
+library(viridis)
 ```
 
 # Overview
@@ -21,31 +26,31 @@ There are 10 challenges total- none are in the "continuous colors" section, but 
 
 # Packages
 
+Other packages will be needed to be installed as you go- reveal the first code chunks when in doubt!
+
 ```{r}
 library(tidyverse)
-library(forcats)
-library(RColorBrewer)
-library(viridis)
-library(ggthemes)
-library(wesanderson)
-library(beyonce)
+```
+
+# Read in the data
+
+Use this code chunk to read in the data available at [http://bit.ly/cs631-meow](http://bit.ly/cs631-meow):
+
+```{r}
+sounds <- read_csv("http://bit.ly/cs631-meow")
+```
+
+Or store it locally:
+
+```{r}
+sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
 ```
 
 
 
-
-
-
-
-# Categorical vs continuous
-
-In order to use color with your data, most importantly, you need to know if you’re dealing with a categorical or continuous variable. When working with discrete color palettes, you'll need a categorical qualitative variable. For continuous color palettes, you'll need a continuous quantitative variable.
-
 # Colour vs fill aesthetic
 
 Fill and colour scales in ggplot2 can use the same palettes. Some shapes such as lines only accept the colour aesthetic, while others, such as polygons, accept both colour and fill aesthetics. In the latter case, the colour refers to the border of the shape, and the fill to the interior.
-
-
 
 
 
@@ -76,25 +81,58 @@ s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid")
 ```
 
 
-For the rest of today, we'll play with the `sounds` dataset. 
+# Data
 
-# Read in the data
+For the rest of today, we'll play with the `sounds` dataset. This data was derived from the R package [`wordbankr`](http://langcog.github.io/wordbankr/), an R interface to access [Wordbank](http://wordbank.stanford.edu)- an open source database of children's vocabulary development. The tool used to measure children's language and communicative development is the [MacArthur-Bates Communicative Development Inventories (MB-CDI)](http://mb-cdi.stanford.edu). The MD-CDI is a parent-reported questionnaire.
 
-
-Use this code chunk to read in the data available at [http://bit.ly/cs631-meow](http://bit.ly/cs631-meow):
-
-```{r}
-library(tidyverse)
-sounds <- read_csv("http://bit.ly/cs631-meow")
-```
-
-Or store it locally:
+Here is a glimpse of the data:
 
 ```{r}
-library(tidyverse)
-sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
+glimpse(sounds)
 ```
 
+Variables
+
+- `age`: child age in months
+- `sound`: a string describing a type of animal sound
+- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" (note that if the child produces a sound it is assumed that they understand it as well)
+- `kids_understand`: the number of parents who answered "yes, my child understands what this animal sound means" (note that a child can understand the sound but not produce it)
+- `kids_respond`: the number of parents who responded to this question at all
+- `prop_produce`: the proportion of kids whose parents endorsed that their child produces this animal sound, out of all questionnaires administered (i.e., `kids_produce / kids_respond`)
+- `prop_understand`: the proportion of kids whose parents endorsed that their child understands this animal sound, out of all questionnaires administered (i.e., `kids_understand / kids_respond`)
+
+Note that the unit of observation here is one-row-per-age-group/animal sound.
+
+# A note on discrete vs continuous variables
+
+[WHAT IS THE DIFFERENCE BETWEEN CATEGORICAL, ORDINAL AND INTERVAL VARIABLES?](https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-interval-variables/)
+
+In order to use color with your data, most importantly, you need to know if you’re dealing with discrete or continuous variables. 
+
+## Discrete color palettes
+
+Discrete color palettes work best when you want to color by a qualitative variable. Qualitative variables tend to be either categorical or ordinal. Different variables can be qualitative or quantitative depending on context. 
+
+In this dataset, `sound` is a categorical variable with 3 possible values:
+```{r}
+sounds %>% 
+  distinct(sound) %>% 
+  knitr::kable()
+```
+
+We could map arbitrary numbers onto each of these sounds, like 1, 2, and 3- but the numbers still would not mean anything. That is, there is no intrinsic ordering to these categories. Examples of common pure categorical variables are race or ethnicity, gender, hair color, eye color, etc. Coloring by sound is used as a way to *distinguish* the data for different sounds from each other (read more here: http://serialmentor.com/dataviz/color-basics.html#color-as-a-tool-to-distinguish)
+
+## Continuous color palettes
+
+Continuous color palettes work best when you want to color by a quantitative variable. Quantitative variables tend to be either ordinal or continuous. In this dataset, `age` (in months) can only take on a limited set of values:
+
+```{r}
+sounds %>% 
+  distinct(age) %>% 
+  pull
+```
+
+However, in the following plots, we'll treat age as a continuous variable plotted across the x-axis. In some contexts, this kind of variable could be treated as a ordinal variable. However, for color purposes, this would not ideal here since there are 11 "categories" (see http://serialmentor.com/dataviz/color-pitfalls.html). Age has a natural and meaningful order: a child who is 9 months old is 1 month older than one who is 8 months old. So, we'll use that natural ordering to our advantage and not use color to represent age as a variable. When you *do* apply a continuous color palette, you'll want to use color to your advantage to [represent data values](http://serialmentor.com/dataviz/color-basics.html#color-to-represent-data-values).
 
 # Know your data
 
@@ -103,7 +141,7 @@ sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
   <div class="panel-body">
 - How many variables?
     - Which variables are continuous?
-    - Which ones are categorical (discrete)?
+    - Which ones are categorical or ordinal?
 - How many total kids do we have data for?
 - How many ages (in months)?
   - How many kids per age?
@@ -147,6 +185,8 @@ ggplot(sounds, aes(x = age, y = prop_produce)) +
 ```
 
 That is a little better! Facets allow us to parse the relationship between two quantitative variables (here, age and proportion of kids producing) by a qualitative variable (here, type of sound). Another way we could do this, instead of facetting, is to use color. This would make it easier to compare proportions at each age.
+
+
 
 
 # Discrete colors
@@ -239,7 +279,7 @@ Because `geom_line` understands the `color` aesthetic, it will try to draw separ
 
 ## Brief aside: factors
 
-At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn't match the lines. We can fix that using the [`forcats` package](http://forcats.tidyverse.org), which is `for` `cat`egorical variables. There are lots of functions in `forcats`.
+At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn't match the lines. We can fix that using the [`forcats` package](http://forcats.tidyverse.org), which is `for` `cat`egorical variables. There are lots of functions in `forcats`, and you can install & load it separately, although `forcats` is loaded with the `tidyverse`.
 
 ```{r eval = FALSE}
 install.packages("forcats")
@@ -428,6 +468,8 @@ sound_traj +
 
 ### Colorbrewer
 
+To use Colorbrewer palettes, you'll need to install the `RColorBrewer` package from CRAN. This chunk of code tells you how:
+
 ```{r eval = FALSE}
 install.packages("RColorBrewer")
 library(RColorBrewer)
@@ -450,7 +492,7 @@ sound_traj +
 
 ### Wes Anderson palettes 
 
-My favorite!
+My favorite! To use Wes Anderson palettes, you'll need to install the `wesanderson` package from CRAN. This chunk of code tells you how:
 
 ```{r eval = FALSE}
 install.packages("wesanderson")
@@ -497,6 +539,8 @@ sound_traj +
 
 ### `ggthemes` palettes
 
+To use these palettes, you'll need to install the `ggthemes` package from CRAN. This chunk of code tells you how:
+
 ```{r eval = FALSE}
 install.packages("ggthemes")
 library(ggthemes)
@@ -513,13 +557,17 @@ sound_traj +
 ```
 
 
-### Palettes from [the Queen Bee](https://github.com/dill/beyonce)
+### Palettes from the Queen Bee
+
+To use [Beyonce palettes](https://github.com/dill/beyonce), you'll need to install the `beyonce` package from GitHub using `devtools::install_github()`. This chunk of code tells you how:
 
 ```{r eval = FALSE}
 install.packages("devtools")
 devtools::install_github("dill/beyonce")
 library(beyonce)
 ```
+
+Note that a number of students had installation problems with this package! Move on if you do.
 
 ```{r}
 beyonce_palette(18)
@@ -538,6 +586,8 @@ sound_traj +
 ```
 
 ### Viridis palettes
+
+To use, you'll need to install the `viridis` package from CRAN. This chunk of code tells you how:
 
 ```{r eval = FALSE}
 install.packages("viridis")
@@ -657,9 +707,8 @@ ggplot(sounds, aes(x = age,
 
 ## Colorblind-friendly palettes
 
-The [`colorblindr` package](https://github.com/clauswilke/colorblindr) can be used to "simulate colorblindness in production-ready R figures."
+The [`colorblindr` package](https://github.com/clauswilke/colorblindr) can be used to "simulate colorblindness in production-ready R figures." To use this package, you'll need to first install the `cowplot` package from GitHub using `devtools::install_github()`. You'll also need to install the `colorspace` package from CRAN. Finally, you can then use `devtools::install_github()` again to install the `colorblindr` package. This code chunk shows you how to do all 3 installs to use the `colorblindr` package:
 
-To install the `colorblindr` package:
 ```{r eval = FALSE}
 devtools::install_github("wilkelab/cowplot")
 install.packages("colorspace", repos = "http://R-Forge.R-project.org")
@@ -773,7 +822,13 @@ sound_by_age +
 
 ### Use `RColorBrewer` 
 
-We can also use `scale_color_gradientn`
+Again, to use you need to install and load the `RColorBrewer` palette. 
+
+```{r eval = FALSE}
+library(RColorBrewer)
+```
+
+Then use `scale_color_gradientn`.
 
 ```{r}
 sound_by_age +
@@ -825,7 +880,7 @@ sound_by_age +
   <div class="panel-body">
 Using new data, make three new plots. Use any `geom` that makes sense. The plots should:
 
-- Have x- and y-axes that are each continuous quantitative variables.
+- Have x- and y-axes that are each quantitative variables.
 - Apply a non-default color palette, either coloring by a qualitative variable (discrete colors) or a quantitative variable (continuous colors). This list of [R color palettes](https://github.com/EmilHvitfeldt/r-color-palettes) has even more ideas than we could cover in class.
 
 
@@ -835,7 +890,11 @@ Using new data, make three new plots. Use any `geom` that makes sense. The plots
 
 3. In the third plot, you must **use color badly**. Make a plot where the colors are either redundant, confusing, or just generally non-sensical. Explain why this last visualization fails.
 
-Data ideas:
+    
+    </div>
+</div>
+
+Some data ideas:
 
 - MacArthur-Bates Communicative Development Inventory (MB-CDI), a family of parent-report questionnaires measuring children's vocabulary understanding and production
     - [R package `wordbankr`](https://cran.r-project.org/web/packages/wordbankr/index.html)
@@ -866,9 +925,7 @@ Data ideas:
 - Gapminder
     - [R package `gapminder`](https://cran.r-project.org/web/packages/gapminder/index.html)
     - Some [example plots here](https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md)
-    
-    </div>
-</div>
+
 
 
 
