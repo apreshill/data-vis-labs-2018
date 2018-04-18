@@ -239,7 +239,15 @@ Because `geom_line` understands the `color` aesthetic, it will try to draw separ
 
 ## Brief aside: factors
 
-At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn't match the lines. We can fix that using the [`forcats` package](http://forcats.tidyverse.org), which is `for` `cat`egorical variables. There are lots of functions in `forcats`. We'll use the `fct_reorder2` function, which works for when you have a line chart of two quantitative variables, colored by a factor variable. Let's see the difference.
+At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn't match the lines. We can fix that using the [`forcats` package](http://forcats.tidyverse.org), which is `for` `cat`egorical variables. There are lots of functions in `forcats`.
+
+```{r eval = FALSE}
+install.package("forcats")
+library(forcats)
+```
+
+We'll use the `fct_reorder2` function, which works for when you have a line chart of two quantitative variables, colored by a factor variable. Let's see the difference.
+
 
 ```{r}
 sounds <- sounds %>% 
@@ -420,10 +428,14 @@ sound_traj +
 
 ### Colorbrewer
 
+```{r eval = FALSE}
+install.package("RColorBrewer")
+library(RColorBrewer)
+```
+
 Colorbrewer has a few qualitative palettes named: Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3. Here is how to view them:
 
 ```{r}
-library(RColorBrewer)
 brewer.pal(5, "Dark2") # list 5 hex colors
 display.brewer.pal(5, "Dark2") # view 5 hex colors
 ```
@@ -441,8 +453,10 @@ sound_traj +
 My favorite!
 
 ```{r eval = FALSE}
+install.package("wesanderson")
 library(wesanderson)
 ```
+
 
 
 ```{r}
@@ -484,8 +498,11 @@ sound_traj +
 ### `ggthemes` palettes
 
 ```{r eval = FALSE}
+install.package("ggthemes")
 library(ggthemes)
 ```
+
+
 
 ```{r}
 sound_traj +
@@ -498,7 +515,7 @@ sound_traj +
 
 ### Palettes from [the Queen Bee](https://github.com/dill/beyonce)
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 install.packages("devtools")
 devtools::install_github("dill/beyonce")
 library(beyonce)
@@ -522,6 +539,11 @@ sound_traj +
 
 ### Viridis palettes
 
+```{r eval = FALSE}
+install.package("viridis")
+library(viridis)
+```
+
 Read more here in the [viridis vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). The default argument for `discrete` is FALSE, so to use the discrete palettes you need to set `discrete = TRUE`. There are four colormap options available:
 
 - "magma" (or "A"),
@@ -530,7 +552,6 @@ Read more here in the [viridis vignette](https://cran.r-project.org/web/packages
 - "viridis" (or "D", the default option).
 
 ```{r}
-library(viridis)
 sound_traj +
   scale_color_viridis(discrete = TRUE) +
   theme_minimal()
