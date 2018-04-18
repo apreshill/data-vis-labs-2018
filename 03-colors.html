@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 03: Colors with Animal Sounds</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="slides.html">Slides &amp; Reading</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Lab 03: Colors with Animal Sounds</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="overview" class="section level1">
+<h1><span class="header-section-number">1</span> Overview</h1>
+<p>There are 10 challenges total- none are in the “continuous colors” section, but you can use that section to complete the tenth challenge on your own. Upload your knitted html document by next Wednesday at noon to Sakai!</p>
+</div>
+<div id="packages" class="section level1">
+<h1><span class="header-section-number">2</span> Packages</h1>
+<pre class="r"><code>library(tidyverse)
+library(forcats)
+library(RColorBrewer)
+library(viridis)
+library(ggthemes)
+library(wesanderson)
+library(beyonce)</code></pre>
+</div>
+<div id="categorical-vs-continuous" class="section level1">
+<h1><span class="header-section-number">3</span> Categorical vs continuous</h1>
+<p>In order to use color with your data, most importantly, you need to know if you’re dealing with a categorical or continuous variable. When working with discrete color palettes, you’ll need a categorical qualitative variable. For continuous color palettes, you’ll need a continuous quantitative variable.</p>
+</div>
+<div id="colour-vs-fill-aesthetic" class="section level1">
+<h1><span class="header-section-number">4</span> Colour vs fill aesthetic</h1>
+<p>Fill and colour scales in ggplot2 can use the same palettes. Some shapes such as lines only accept the colour aesthetic, while others, such as polygons, accept both colour and fill aesthetics. In the latter case, the colour refers to the border of the shape, and the fill to the interior.</p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<hr />
+<p>While all symbols have a foreground colour, symbols 21-25 also take a background colour (fill)</p>
+<pre class="r"><code>s + geom_point(aes(shape = z), size = 4, colour = &quot;navy&quot;) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<hr />
+<pre class="r"><code>s + geom_point(aes(shape = z), size = 4, colour = &quot;navy&quot;, fill = &quot;orchid&quot;) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>For the rest of today, we’ll play with the <code>sounds</code> dataset.</p>
+</div>
+<div id="read-in-the-data" class="section level1">
+<h1><span class="header-section-number">5</span> Read in the data</h1>
+<p>Use this code chunk to read in the data available at <a href="http://bit.ly/cs631-meow" class="uri">http://bit.ly/cs631-meow</a>:</p>
+<pre class="r"><code>library(tidyverse)
+sounds &lt;- read_csv(here::here(&quot;data&quot;, &quot;animal_sounds_summary.csv&quot;))</code></pre>
+</div>
+<div id="know-your-data" class="section level1">
+<h1><span class="header-section-number">6</span> Know your data</h1>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #1:
+</div>
+<div class="panel-body">
+<ul>
+<li>How many variables?
+<ul>
+<li>Which variables are continuous?</li>
+<li>Which ones are categorical (discrete)?</li>
+</ul></li>
+<li>How many total kids do we have data for?</li>
+<li>How many ages (in months)?</li>
+<li>How many kids per age?</li>
+<li>How many types of animal sounds? What are they?
+</div></li>
+</ul>
+</div>
+<p>Let’s start just by getting a feel for how many kids produce each kind of sound, across the full age range. We could make a table:</p>
+<pre class="r"><code>sounds %&gt;% 
+  group_by(sound) %&gt;% 
+  summarize(total_produce = sum(kids_produce)) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">sound</th>
+<th align="right">total_produce</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">cockadoodledoo</td>
+<td align="right">148</td>
+</tr>
+<tr class="even">
+<td align="left">meow</td>
+<td align="right">681</td>
+</tr>
+<tr class="odd">
+<td align="left">woof woof</td>
+<td align="right">940</td>
+</tr>
+</tbody>
+</table>
+<p>Or we could make a simple bar plot:</p>
+<pre class="r"><code>ggplot(sounds, aes(x = sound, y = kids_produce)) + 
+  geom_col() +
+  labs(x = &quot;Sound&quot;, y = &quot;Total Children Producing&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>For this kind of plot, we don’t really need color. What if we want to see how the number of kids who produce each sound varies by age? We’ll change the x-axis to age and instead <code>facet_wrap</code> by <code>sound</code>, and make the y-axis a proportion instead of counts.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_col() +
+  labs(x = &quot;Age (mos)&quot;, y = &quot;Proportion of Children Producing&quot;) +
+  facet_wrap(~sound)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The bar geom makes this a little hard to read and compare across facets though. Let’s try points instead.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_point() +
+  labs(x = &quot;Age (mos)&quot;, y = &quot;Proportion of Children Producing&quot;) +
+  facet_wrap(~sound)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>That is a little better! Facets allow us to parse the relationship between two quantitative variables (here, age and proportion of kids producing) by a qualitative variable (here, type of sound). Another way we could do this, instead of facetting, is to use color. This would make it easier to compare proportions at each age.</p>
+</div>
+<div id="discrete-colors" class="section level1">
+<h1><span class="header-section-number">7</span> Discrete colors</h1>
+<p>Let’s start with a base plot with age (in months) along the x-axis and the proportion of children producing each word along the y-axis, using points as the geometric object. Set the size of the points to 2 and change the x- and y-axis labels to “Age (months)” and “Proportion of Children Producing”, respectively.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div id="default-discrete-palette" class="section level2">
+<h2><span class="header-section-number">7.1</span> Default discrete palette</h2>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #2:
+</div>
+<div class="panel-body">
+<p>Take the plot we just made, and edit the code to map the color of the points to the type of sound produced <em>at the geom level</em>. The colors that show up are the default discrete palette in <code>ggplot2</code>.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_point(aes(color = sound), size = 2) +
+  labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;)</code></pre>
+<img src="03-colors_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+</div>
+</div>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #3:
+</div>
+<div class="panel-body">
+<p>Try adding <code>geom_line()</code> to this plot to connect the dots. Does this look right? Use <code>?geom_line</code> to figure out how this geom connects the dots by default, and which aesthetic can be used to connect cases together. Try editing your code to draw 3 black lines- one for each sound.</p>
+<pre class="r"><code># Does this look right? no!
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_line() +
+  geom_point(aes(color = sound), size = 2) +
+  labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code># A possible solution
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_line(aes(group = sound)) +
+  geom_point(aes(color = sound), size = 2) +
+  labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+</div>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #4:
+</div>
+<div class="panel-body">
+<p>Make two plots:</p>
+<ol style="list-style-type: decimal">
+<li><p>Recreate the plot above, but this time map color to the type of sound produced for both the point and line geoms. Pay attention to the order of the layers you are adding- you may wish to place <code>geom_line</code> <em>before</em> <code>geom_point</code> so the lines are always “painted” underneath the points.</p></li>
+<li><p>Instead of <code>geom_line</code>, add a loess line using <code>geom_smooth</code>. Use <code>?geom_smooth</code> to figure out how to get rid of the grey standard error ribbon. You may also want to increase the line width.</p></li>
+</ol>
+<pre class="r"><code># Does this look right? yes!
+ggplot(sounds, aes(x = age, y = prop_produce, color = sound)) + 
+  geom_line() +
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         color = sound)) + 
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2)  +
+  labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+</div>
+</div>
+<p>Why does this work? To tell <code>geom_line</code> how to connect your dots, you can either:</p>
+<ul>
+<li>Map the <code>group</code> aesthetic (so <code>aes(group = sound)</code>), or</li>
+<li>Map the <code>color</code> aesthetic globally (<code>aes(color = sound)</code>.</li>
+</ul>
+<p>Because <code>geom_line</code> understands the <code>color</code> aesthetic, it will try to draw separate lines for each color. Here that translates to three lines, one for each sound, which is what we want!</p>
+</div>
+<div id="brief-aside-factors" class="section level2">
+<h2><span class="header-section-number">7.2</span> Brief aside: factors</h2>
+<p>At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn’t match the lines. We can fix that using the <a href="http://forcats.tidyverse.org"><code>forcats</code> package</a>, which is <code>for</code> <code>cat</code>egorical variables. There are lots of functions in <code>forcats</code>. We’ll use the <code>fct_reorder2</code> function, which works for when you have a line chart of two quantitative variables, colored by a factor variable. Let’s see the difference.</p>
+<pre class="r"><code>sounds &lt;- sounds %&gt;% 
+  mutate(sound = as.factor(sound))
+
+sound_traj &lt;- ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         color = fct_reorder2(sound, age, prop_produce))) +
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       color = &quot;sound&quot;)
+sound_traj</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>MUCH BETTER! Save your plot object as <code>sound_traj</code>. Now we can start playing with the actual colors.</p>
+</div>
+<div id="set-luminance-and-saturation-chromaticity" class="section level2">
+<h2><span class="header-section-number">7.3</span> Set luminance and saturation (chromaticity)</h2>
+<p>The default qualitative palette works fine here. The addition of <a href="http://ggplot2.tidyverse.org/reference/scale_hue.html"><code>scale_color_hue</code></a> changes nothing.</p>
+<pre class="r"><code>sound_traj +
+  scale_color_hue()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>We can also change these settings within the default color palette, where the arguments are:</p>
+<ul>
+<li><code>h</code> = range of hues to use, in [0, 360]</li>
+<li><code>l</code> = luminance (lightness)</li>
+<li><code>c</code> = chroma (intensity of color)</li>
+</ul>
+<pre class="r"><code># Change hue (l and c are defaults)
+sound_traj +
+  scale_color_hue(h = c(0, 90), l = 65, c = 100)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code># Use luminance=45, instead of default 65
+sound_traj +
+  scale_color_hue(l = 45)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<pre class="r"><code># Reduce saturation (chroma) from 100 to 50, and increase luminance
+sound_traj +
+  scale_color_hue(l = 75, c = 50)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+</div>
+<div id="set-discrete-colors" class="section level2">
+<h2><span class="header-section-number">7.4</span> Set discrete colors</h2>
+<p>We can change the actual colors used by adding the layer <code>scale_color_manual</code> or <code>scale_fill_manual</code>. Confusion between which to use when is often the cause of much frustration!</p>
+<p>To name more than one color, which you often want to do, use <code>c()</code>. In the parentheses, named colors and hex colors are always in quotes.</p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = c(&quot;cornflowerblue&quot;, 
+                                &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #5:
+</div>
+<div class="panel-body">
+<p>Why do neither of the following code blocks work?</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         color = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       color = &quot;sound&quot;) +
+  scale_fill_manual(values = c(&quot;cornflowerblue&quot;, 
+                               &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;) +
+  scale_fill_manual(values = c(&quot;cornflowerblue&quot;, 
+                               &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
+<img src="03-colors_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+</div>
+</div>
+<p>Answers:</p>
+<ul>
+<li>In the first, we used <code>scale_fill_manual</code>, but the in the global aesthetics, we mapped the <code>color</code>, not <code>fill</code>, aesthetic onto the <code>sound</code> variable.</li>
+<li>In the second, we did define the <code>fill</code> aesthetic and used <code>scale_fill_manual</code>, so that is good. But <code>geom_line</code> only understands the <code>color</code> aesthetic, not <code>fill</code>. And for <code>geom_point</code>, the default shape for is 20, which does not understand the <code>fill</code> aesthetic.</li>
+</ul>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #6:
+</div>
+<div class="panel-body">
+<p>Start with this plot:</p>
+<pre class="r"><code>sound_traj</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Add a black outline to the points, and color the inside of the points and the lines by <code>sound</code> using the default discrete color palette. You may also wish to edit the legends on this plot: <code>geom_smooth</code> has an argument called <code>show.legend = FALSE</code>. See if you prefer the plot with this change.</p>
+<p>If this was easy, try applying the same custom color palette to the inside of the points and to the lines.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;) +
+  scale_fill_manual(values = c(&quot;cornflowerblue&quot;, 
+                               &quot;seagreen&quot;, &quot;coral&quot;)) +
+  scale_color_manual(values = c(&quot;cornflowerblue&quot;, 
+                               &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+<p>You can also define your color palette as a vector outside of <code>ggplot2</code>. Below, I made an object called <code>my_colors</code> outside of <code>ggplot2</code>. To use it, we call that object within the <code>scale_colour_manual</code> function.</p>
+<pre class="r"><code>my_colors &lt;- c(&quot;cadetblue&quot;, &quot;steelblue&quot;, &quot;salmon&quot;) # quote color names
+sound_traj +
+  scale_color_manual(values = my_colors) # note: not in quotes</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #7:
+</div>
+<div class="panel-body">
+<p>Define a custom color palette using hexadecimal colors (#rrggbb), and apply it using <code>scale_color_manual</code> to your <code>sound_traj</code> plot. Some basic ones are here:</p>
+<p><a href="https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/" class="uri">https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/</a></p>
+<p>Parse the hexadecimal string like so: #rrggbb, where rr, gg, and bb refer to color intensity in the red, green, and blue channels, respectively.</p>
+<pre class="r"><code># from https://github.com/mwaskom/seaborn/blob/master/seaborn/palettes.py
+sb_colorblind &lt;- c(&quot;#0072B2&quot;, &quot;#009E73&quot;, &quot;#D55E00&quot;,
+                        &quot;#CC79A7&quot;, &quot;#F0E442&quot;, &quot;#56B4E9&quot;)
+sound_traj +
+  scale_colour_manual(values = sb_colorblind)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="built-in-discrete-palettes" class="section level2">
+<h2><span class="header-section-number">7.5</span> Built-in discrete palettes</h2>
+<div id="colorbrewer" class="section level3">
+<h3><span class="header-section-number">7.5.1</span> Colorbrewer</h3>
+<p>Colorbrewer has a few qualitative palettes named: Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3. Here is how to view them:</p>
+<pre class="r"><code>library(RColorBrewer)
+brewer.pal(5, &quot;Dark2&quot;) # list 5 hex colors</code></pre>
+<pre><code>[1] &quot;#1B9E77&quot; &quot;#D95F02&quot; &quot;#7570B3&quot; &quot;#E7298A&quot; &quot;#66A61E&quot;</code></pre>
+<pre class="r"><code>display.brewer.pal(5, &quot;Dark2&quot;) # view 5 hex colors</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>And here is how you use them:</p>
+<pre class="r"><code>sound_traj +
+  scale_color_brewer(palette = &quot;Dark2&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
+<div id="wes-anderson-palettes" class="section level3">
+<h3><span class="header-section-number">7.5.2</span> Wes Anderson palettes</h3>
+<p>My favorite!</p>
+<pre class="r"><code>library(wesanderson)</code></pre>
+<pre class="r"><code>names(wes_palettes) # all the palette names</code></pre>
+<pre><code> [1] &quot;GrandBudapest&quot;  &quot;Moonrise1&quot;      &quot;Royal1&quot;         &quot;Moonrise2&quot;     
+ [5] &quot;Cavalcanti&quot;     &quot;Royal2&quot;         &quot;GrandBudapest2&quot; &quot;Moonrise3&quot;     
+ [9] &quot;Chevalier&quot;      &quot;Zissou&quot;         &quot;FantasticFox&quot;   &quot;Darjeeling&quot;    
+[13] &quot;Rushmore&quot;       &quot;BottleRocket&quot;   &quot;Darjeeling2&quot;   </code></pre>
+<pre class="r"><code>wes_palette(&quot;GrandBudapest2&quot;) # view named palette</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>wes_palette(&quot;GrandBudapest2&quot;)[1:4] # list first 4 hex colors</code></pre>
+<pre><code>[1] &quot;#E6A0C4&quot; &quot;#C6CDF7&quot; &quot;#D8A499&quot; &quot;#7294D4&quot;</code></pre>
+<pre class="r"><code>wes_palette(&quot;GrandBudapest2&quot;)[c(1,4)] # list colors 1 and 4</code></pre>
+<pre><code>[1] &quot;#E6A0C4&quot; &quot;#7294D4&quot;</code></pre>
+<p>To use these palettes, use <code>scale_color_manual</code> where <code>values</code> is set to <code>wes_palette(&quot;name&quot;)</code>. For example:</p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = wes_palette(&quot;Darjeeling&quot;))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = wes_palette(&quot;FantasticFox&quot;))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #8:
+</div>
+<div class="panel-body">
+<p>What if you just don’t want to use the colors in the order they are in? Use a <code>wes_palette</code> of your choice. Using our code from above, try picking the last 3 colors of a palette. Add it to your <code>sound_traj</code> plot.</p>
+<p>If this was easy, try using colors 2, 3, and 5 instead.</p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = wes_palette(&quot;Darjeeling&quot;)[3:5])</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = wes_palette(&quot;FantasticFox&quot;)[c(2, 3, 5)])</code></pre>
+<img src="03-colors_files/figure-html/unnamed-chunk-31-2.png" width="672" />
+</div>
+</div>
+</div>
+<div id="ggthemes-palettes" class="section level3">
+<h3><span class="header-section-number">7.5.3</span> <code>ggthemes</code> palettes</h3>
+<pre class="r"><code>library(ggthemes)</code></pre>
+<pre class="r"><code>sound_traj +
+  scale_color_fivethirtyeight()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre class="r"><code>sound_traj +
+  scale_color_economist()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
+</div>
+<div id="palettes-from-the-queen-bee" class="section level3">
+<h3><span class="header-section-number">7.5.4</span> Palettes from <a href="https://github.com/dill/beyonce">the Queen Bee</a></h3>
+<pre class="r"><code>install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;dill/beyonce&quot;)
+library(beyonce)</code></pre>
+<pre class="r"><code>beyonce_palette(18)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = beyonce_palette(18)[3:5])</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>Here we’ll only use the first, fourth, and fifth colors in the palette.</p>
+<pre class="r"><code>sound_traj +
+  scale_color_manual(values = beyonce_palette(18)[c(1, 4, 5)])</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+</div>
+<div id="viridis-palettes" class="section level3">
+<h3><span class="header-section-number">7.5.5</span> Viridis palettes</h3>
+<p>Read more here in the <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">viridis vignette</a>. The default argument for <code>discrete</code> is FALSE, so to use the discrete palettes you need to set <code>discrete = TRUE</code>. There are four colormap options available:</p>
+<ul>
+<li>“magma” (or “A”),</li>
+<li>“inferno” (or “B”),</li>
+<li>“plasma” (or “C”),</li>
+<li>“viridis” (or “D”, the default option).</li>
+</ul>
+<pre class="r"><code>library(viridis)
+sound_traj +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<pre class="r"><code>sound_traj +
+  scale_color_viridis(discrete = TRUE, option = &quot;plasma&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-38-2.png" width="672" /></p>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #9:
+</div>
+<div class="panel-body">
+<p>Use the <code>viridis</code> package to color the points by and the lines by <code>sound</code>; make the outline of the points “midnightblue”. Pick any colormap option, and play with <code>theme_bw</code> or <code>theme_minimal</code> to see what you like.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21, colour = &quot;midnightblue&quot;) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;) +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()</code></pre>
+<img src="03-colors_files/figure-html/unnamed-chunk-39-1.png" width="672" />
+</div>
+</div>
+</div>
+</div>
+<div id="greyscale-for-discrete" class="section level2">
+<h2><span class="header-section-number">7.6</span> Greyscale for discrete</h2>
+<p>Use <code>scale_color_grey</code> or <code>scale_fill_grey</code>, or sometimes both depending on your geoms and the aesthetics they understand.</p>
+<pre class="r"><code>sound_traj +
+  scale_color_grey() +
+  theme_minimal()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p>Set start and end</p>
+<pre class="r"><code>sound_traj +
+  scale_color_grey(start = 0.2, end = .8) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>Make the same plot but make points outlined in black</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;) +
+  scale_fill_grey(start = 0.3, end = 1) +
+  scale_color_grey(start = 0.3, end = 1) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p>Suggest redundancy in greyscale- try changing line type instead of line (or in addition to) line color.</p>
+<p>Change line type by <code>sound</code>, set color to black.</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(lty = fct_reorder2(sound, age, prop_produce)), color = &quot;black&quot;,
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;) +
+  scale_fill_grey(start = 0.3, end = 1) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p>Change both!</p>
+<pre class="r"><code>ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce),
+                  lty = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;, 
+       fill = &quot;sound&quot;) +
+  scale_fill_grey(start = 0.3, end = .8) +
+  scale_color_grey(start = 0.3, end = .8) </code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+</div>
+<div id="colorblind-friendly-palettes" class="section level2">
+<h2><span class="header-section-number">7.7</span> Colorblind-friendly palettes</h2>
+<p>The <a href="https://github.com/clauswilke/colorblindr"><code>colorblindr</code> package</a> can be used to “simulate colorblindness in production-ready R figures.”</p>
+<p>To install the <code>colorblindr</code> package:</p>
+<pre class="r"><code>devtools::install_github(&quot;wilkelab/cowplot&quot;)
+install.packages(&quot;colorspace&quot;, repos = &quot;http://R-Forge.R-project.org&quot;)
+devtools::install_github(&quot;clauswilke/colorblindr&quot;)</code></pre>
+<p>To use:</p>
+<pre class="r"><code># save a ggplot object
+my_sound_traj &lt;- sound_traj +
+  scale_color_manual(values = beyonce_palette(18)[c(1, 4, 5)])</code></pre>
+<p>View that figure after color-vision-deficiency simulation:</p>
+<pre class="r"><code>library(colorblindr)
+cvd_grid(my_sound_traj)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p>You can also use the colorblind-friendly palette in this package using <code>scale_color_OkabeIto</code> and <code>scale_fill_OkabeIto</code>:</p>
+<pre class="r"><code>cb_sound_traj &lt;- sound_traj +
+  scale_color_OkabeIto()
+
+cb_sound_traj</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<pre class="r"><code>cvd_grid(cb_sound_traj)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-48-2.png" width="672" /></p>
+<p>You can still use this colorblind-friendly palette without the <code>colorblindr</code> package though. <a href="http://jfly.iam.u-tokyo.ac.jp/color/">Here</a> are the colors!</p>
+<div class="figure">
+<img src="http://jfly.iam.u-tokyo.ac.jp/color/image/pallete.jpg" />
+
+</div>
+<p>The <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette">Cookbook for R</a> provided the matching hex colors too to make life easier:</p>
+<pre class="r"><code>cbbPalette &lt;- c(&quot;#000000&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
+
+# To use for line and point colors, add
+sound_traj +
+  scale_colour_manual(values = cbbPalette[c(3, 7, 8)])</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+</div>
+</div>
+<div id="continuous-colors" class="section level1">
+<h1><span class="header-section-number">8</span> Continuous colors</h1>
+<div id="default-continuous-palette" class="section level2">
+<h2><span class="header-section-number">8.1</span> Default continuous palette</h2>
+<p>Let’s map color to a continuous variable. For this, we are returning to <code>geom_line</code> instead of <code>geom_smooth</code>, because the latter doesn’t respond to continuous color palettes.</p>
+<pre class="r"><code>sound_by_age &lt;- ggplot(sounds, aes(x = age, 
+                                   y = prop_produce, 
+                                   color = age)) +
+  geom_line(aes(group = sound), lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;)
+sound_by_age</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+</div>
+<div id="color-choice-with-continuous-variables" class="section level2">
+<h2><span class="header-section-number">8.2</span> Color choice with continuous variables</h2>
+<p>With discrete colors, we used either <code>scale_color_manual</code> or <code>scale_fill_manual</code> (and sometimes both were needed!). For continuous colors, we use either <code>scale_color_gradient</code> or <code>scale_fill_gradient</code>.</p>
+<pre class="r"><code>sound_by_age +
+  scale_color_gradient()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p>You can reverse the gradient scale…</p>
+<pre class="r"><code>sound_by_age +
+  scale_color_gradient(trans = &quot;reverse&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<pre class="r"><code>sound_by_age +
+  scale_color_gradient(low = &quot;white&quot;, high = &quot;red&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p>We can make this same plot using a custom greyscale gradient.</p>
+<pre class="r"><code>sound_by_age +
+  scale_color_gradient(low = &quot;grey90&quot;, high = &quot;black&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p>So <code>scale_color_gradient</code> gives you a sequential gradient, but you may want a diverging color scheme instead. For that, you can use <code>scale_color_gradient2</code></p>
+<pre class="r"><code># Diverging color scheme
+med_age &lt;- sounds %&gt;% 
+  summarize(mos = median(age)) %&gt;% 
+  pull()
+sound_by_age +
+  scale_color_gradient2(midpoint = med_age,
+                      low=&quot;blue&quot;, mid=&quot;white&quot;, high=&quot;red&quot; )</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+</div>
+<div id="built-in-continuous-palettes" class="section level2">
+<h2><span class="header-section-number">8.3</span> Built-in continuous palettes</h2>
+<div id="use-rcolorbrewer" class="section level3">
+<h3><span class="header-section-number">8.3.1</span> Use <code>RColorBrewer</code></h3>
+<p>We can also use <code>scale_color_gradientn</code></p>
+<pre class="r"><code>sound_by_age +
+  scale_color_gradientn(colours = brewer.pal(n=5, name=&quot;PuBuGn&quot;))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p>Reverse the colors…</p>
+<pre class="r"><code>sound_by_age +
+  scale_color_gradientn(colours = rev(brewer.pal(n=5, name=&quot;PuBuGn&quot;)))</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+</div>
+<div id="viridis" class="section level3">
+<h3><span class="header-section-number">8.3.2</span> Viridis</h3>
+<p>Read more here in the <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">viridis vignette</a></p>
+<pre class="r"><code>library(viridis)</code></pre>
+<p>The default is the <code>viridis</code> palette within the <code>viridis</code> package!</p>
+<p>Note! For discrete == FALSE (the default) all other arguments are as to <code>scale_fill_gradientn</code> or <code>scale_color_gradientn</code>.</p>
+<pre class="r"><code>sound_by_age +
+  scale_color_viridis()</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<pre class="r"><code>sound_by_age +
+  scale_color_viridis(option = &quot;magma&quot;)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p>Read the help function for <code>?scale_color_viridis</code>. We’ll use the “inferno” palette <em>in reverse</em>.</p>
+<pre class="r"><code>sound_by_age +
+  scale_color_viridis(option = &quot;inferno&quot;, begin = 1, end = 0)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="final-challenge-10" class="section level1">
+<h1><span class="header-section-number">9</span> Final challenge (#10)</h1>
+<div class="panel panel-success">
+<div class="panel-heading">
+Challenge #10:
+</div>
+<div class="panel-body">
+<p>Using new data, make three new plots. Use any <code>geom</code> that makes sense. The plots should:</p>
+<ul>
+<li>Have x- and y-axes that are each continuous quantitative variables.</li>
+<li>Apply a non-default color palette, either coloring by a qualitative variable (discrete colors) or a quantitative variable (continuous colors). This list of <a href="https://github.com/EmilHvitfeldt/r-color-palettes">R color palettes</a> has even more ideas than we could cover in class.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>In the first plot, you must <strong>wield color carefully and effectively</strong>. The addition of the color/fill aesthetics must be done in a way that the interpretation of the plot improves. Also, you must show how your colors fare for colorblind viewers. Include 2-3 sentences about why you made the plot that you did. What questions does your plot answers (or perhaps what questions does your plot raise)?</p></li>
+<li><p>In the second plot, you must <strong>make a greyscale version of your first plot!</strong> And again, it must look good and make sense.</p></li>
+<li><p>In the third plot, you must <strong>use color badly</strong>. Make a plot where the colors are either redundant, confusing, or just generally non-sensical. Explain why this last visualization fails.</p></li>
+</ol>
+<p>Data ideas:</p>
+<ul>
+<li>MacArthur-Bates Communicative Development Inventory (MB-CDI), a family of parent-report questionnaires measuring children’s vocabulary understanding and production
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/wordbankr/index.html">R package <code>wordbankr</code></a></li>
+<li>See my code <a href="03a-meow-cleaning.html">here</a></li>
+</ul></li>
+<li>National Electronic Injury Surveillance System (NEISS)
+<ul>
+<li><a href="https://github.com/hadley/neiss">R package <code>neiss</code></a></li>
+<li>Follow Julia Silge’s code-through <a href="https://juliasilge.com/blog/your-floor/">here</a></li>
+</ul></li>
+<li>Flights
+<ul>
+<li><a href="https://github.com/ismayc/pnwflights14">R package <code>pnwflights14</code></a></li>
+<li><a href="https://github.com/hadley/nycflights13">R package <code>nycflights13</code></a></li>
+</ul></li>
+<li>Building Permits
+<ul>
+<li>See code <a href="https://github.com/hadley/building-permits">here</a></li>
+<li>Watch YouTube code-through <a href="https://www.youtube.com/watch?v=go5Au01Jrvs">here</a></li>
+</ul></li>
+<li>Cocktail Balance
+<ul>
+<li><a href="https://github.com/karnesky/cocktail-balance">Data</a></li>
+</ul></li>
+<li>NASA Weather
+<ul>
+<li><a href="https://github.com/hadley/nasaweather">Data</a></li>
+</ul></li>
+<li>Social Security Administration Baby Names
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/babynames/index.html">R package <code>babynames</code></a></li>
+<li>Follow Julia Silge <em>‘My Baby Boomer Name Might Have Been “Debbie”’</em>: <a href="https://juliasilge.com/blog/my-baby-boomer-name/" class="uri">https://juliasilge.com/blog/my-baby-boomer-name/</a></li>
+<li>Follow Hilary Parker: <em>Hilary: The Most Poisoned Baby Name in US History</em>: <a href="https://hilaryparker.com/2013/01/30/hilary-the-most-poisoned-baby-name-in-us-history/" class="uri">https://hilaryparker.com/2013/01/30/hilary-the-most-poisoned-baby-name-in-us-history/</a></li>
+</ul></li>
+<li>Youth Behavior Risk Surveillance System
+<ul>
+<li><a href="https://github.com/hadley/yrbss">R package <code>yrbss</code></a></li>
+<li>Some <a href="https://www.cdc.gov/nchhstp/newsroom/2012/yrbs-graphics2012.html">good ideas here</a></li>
+</ul></li>
+<li>Gun sales
+<ul>
+<li><a href="https://github.com/hadley/gun-sales">Data</a></li>
+<li>Some <a href="https://github.com/NYTimes/gunsales/blob/master/out/plots.pdf">example plots here</a></li>
+</ul></li>
+<li>Gapminder
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/gapminder/index.html">R package <code>gapminder</code></a></li>
+<li>Some <a href="https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md">example plots here</a></li>
+</ul>
+</div></li>
+</ul>
+</div>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

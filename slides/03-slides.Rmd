@@ -21,10 +21,8 @@ library(tidyverse)
 ```
 
 ```{r include = FALSE}
-animal_words <- read_csv(here::here("data",
-                                    "animal_age_summary.csv")) %>% 
-  select(-prop_produced) %>% 
-  rename(kids_produced = kids_produced_either)
+sounds <- read_csv(here::here("data", "animal_sounds_summary.csv")) %>% 
+  select(-prop_produce, -contains("understand"))
 ```
 
 
@@ -55,7 +53,7 @@ class: middle, center, inverse
 --
 
 ```{r}
-animal_words %>% 
+sounds %>% 
   mutate(form = "WS")
 ```
 
@@ -72,8 +70,8 @@ animal_words %>%
 --
 
 ```{r}
-animal_words %>% 
-  mutate(prop_produced = kids_produced / kids_responded)
+sounds %>% 
+  mutate(prop_produce = kids_produce / kids_respond)
 ```
 
 ---
@@ -88,13 +86,13 @@ animal_words %>%
 --
 
 ```{r include = FALSE}
-animal_words <- animal_words %>% 
-  mutate(prop_produced = kids_produced / kids_responded)
+sounds <- sounds %>% 
+  mutate(prop_produce = kids_produce / kids_respond)
 ```
 
 ```{r}
-animal_words %>% 
-  mutate(prop_produced = prop_produced * 100)
+sounds %>% 
+  mutate(prop_produce = prop_produce * 100)
 ```
 
 ---
@@ -102,7 +100,7 @@ class: middle, center, inverse
 
 # ⌛️
 
-## Let's review some helpful functions for `mutate`
+## Let's review some helpful functions for `mutate` + `summarize`
 
 ---
 class: inverse, bottom, center
@@ -121,6 +119,8 @@ class: middle, center, inverse
 #💡
 
 ## First: Arithmetic
+
+*especially useful for `mutate`*
 
 ---
 
@@ -162,13 +162,37 @@ class: middle, center, inverse
 
 ## Summaries
 
+*especially useful for `summarize`*
+*even more useful after a `group_by`*
+
 
 
 ---
 
-All very useful in a mutate!
+All very useful in a `summarize`!
 
 sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!
+
+Especially useful after `group_by`
+
+Look at the RStudio Base R Cheatsheet:
+
+https://github.com/rstudio/cheatsheets/blob/master/base-r.pdf
+
+---
+class: inverse, middle, center
+
+![](../images/alicedata-lego-colors.jpg)
+## <small>"Spent day pondering grayscale vs colourscale using `ggplot`"</small>
+
+*photo and caption courtesy [@alice-data](https://twitter.com/alice_data)*
+
+---
+# Today's lab: COLORS
+
+Specifically, discrete colors.
+
+At the end of today's lab, you'll see an extra section on continuous colors. 
 
 
 ---
@@ -183,6 +207,8 @@ https://www.markdowntutorial.com
 https://andrewbtran.github.io/NICAR/2018/workflow/docs/02-rmarkdown.html
 
 https://yihui.name/tinytex/ *(install!)*
+
+https://github.com/rstudio/cheatsheets/blob/master/rmarkdown-2.0.pdf
 
 https://rmarkdown.rstudio.com/html_document_format.html
 

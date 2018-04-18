@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lab 03: CS631
-## Data Basics
+## Working with Data
 ### Alison Hill
 
 ---
@@ -50,25 +50,25 @@ class: middle, center, inverse
 
 
 ```r
-animal_words %&gt;% 
+sounds %&gt;% 
   mutate(form = "WS")
 ```
 
 ```
-# A tibble: 45 x 5
-     age animal_word kids_produced kids_responded form 
-   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;
- 1   16. cat                  565.           956. WS   
- 2   16. chicken               83.           956. WS   
- 3   16. dog                  684.           956. WS   
- 4   17. cat                  158.           273. WS   
- 5   17. chicken               31.           273. WS   
- 6   17. dog                  202.           273. WS   
- 7   18. cat                  317.           442. WS   
- 8   18. chicken              112.           442. WS   
- 9   18. dog                  365.           442. WS   
-10   19. cat                  259.           328. WS   
-# ... with 35 more rows
+# A tibble: 33 x 5
+     age sound          kids_produce kids_respond form 
+   &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;
+ 1    8. cockadoodledoo           1.          35. WS   
+ 2    8. meow                     0.          35. WS   
+ 3    8. woof woof                3.          35. WS   
+ 4    9. cockadoodledoo           0.          91. WS   
+ 5    9. meow                     2.          93. WS   
+ 6    9. woof woof                2.          93. WS   
+ 7   10. cockadoodledoo           0.         139. WS   
+ 8   10. meow                     5.         145. WS   
+ 9   10. woof woof                4.         143. WS   
+10   11. cockadoodledoo           0.          94. WS   
+# ... with 23 more rows
 ```
 
 ---
@@ -85,25 +85,25 @@ animal_words %&gt;%
 
 
 ```r
-animal_words %&gt;% 
-  mutate(prop_produced = kids_produced / kids_responded)
+sounds %&gt;% 
+  mutate(prop_produce = kids_produce / kids_respond)
 ```
 
 ```
-# A tibble: 45 x 5
-     age animal_word kids_produced kids_responded prop_produced
-   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
- 1   16. cat                  565.           956.        0.591 
- 2   16. chicken               83.           956.        0.0868
- 3   16. dog                  684.           956.        0.715 
- 4   17. cat                  158.           273.        0.579 
- 5   17. chicken               31.           273.        0.114 
- 6   17. dog                  202.           273.        0.740 
- 7   18. cat                  317.           442.        0.717 
- 8   18. chicken              112.           442.        0.253 
- 9   18. dog                  365.           442.        0.826 
-10   19. cat                  259.           328.        0.790 
-# ... with 35 more rows
+# A tibble: 33 x 5
+     age sound          kids_produce kids_respond prop_produce
+   &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+ 1    8. cockadoodledoo           1.          35.       0.0286
+ 2    8. meow                     0.          35.       0.    
+ 3    8. woof woof                3.          35.       0.0857
+ 4    9. cockadoodledoo           0.          91.       0.    
+ 5    9. meow                     2.          93.       0.0215
+ 6    9. woof woof                2.          93.       0.0215
+ 7   10. cockadoodledoo           0.         139.       0.    
+ 8   10. meow                     5.         145.       0.0345
+ 9   10. woof woof                4.         143.       0.0280
+10   11. cockadoodledoo           0.          94.       0.    
+# ... with 23 more rows
 ```
 
 ---
@@ -121,25 +121,25 @@ animal_words %&gt;%
 
 
 ```r
-animal_words %&gt;% 
-  mutate(prop_produced = prop_produced * 100)
+sounds %&gt;% 
+  mutate(prop_produce = prop_produce * 100)
 ```
 
 ```
-# A tibble: 45 x 5
-     age animal_word kids_produced kids_responded prop_produced
-   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
- 1   16. cat                  565.           956.         59.1 
- 2   16. chicken               83.           956.          8.68
- 3   16. dog                  684.           956.         71.5 
- 4   17. cat                  158.           273.         57.9 
- 5   17. chicken               31.           273.         11.4 
- 6   17. dog                  202.           273.         74.0 
- 7   18. cat                  317.           442.         71.7 
- 8   18. chicken              112.           442.         25.3 
- 9   18. dog                  365.           442.         82.6 
-10   19. cat                  259.           328.         79.0 
-# ... with 35 more rows
+# A tibble: 33 x 5
+     age sound          kids_produce kids_respond prop_produce
+   &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+ 1    8. cockadoodledoo           1.          35.         2.86
+ 2    8. meow                     0.          35.         0.  
+ 3    8. woof woof                3.          35.         8.57
+ 4    9. cockadoodledoo           0.          91.         0.  
+ 5    9. meow                     2.          93.         2.15
+ 6    9. woof woof                2.          93.         2.15
+ 7   10. cockadoodledoo           0.         139.         0.  
+ 8   10. meow                     5.         145.         3.45
+ 9   10. woof woof                4.         143.         2.80
+10   11. cockadoodledoo           0.          94.         0.  
+# ... with 23 more rows
 ```
 
 ---
@@ -147,7 +147,17 @@ class: middle, center, inverse
 
 # ⌛️
 
-## Let's review some helpful functions for `mutate`
+## Let's review some helpful functions for `mutate` + `summarize`
+
+---
+class: inverse, bottom, center
+background-image: url("../images/peapod.png")
+background-size: 25%
+
+
+## Remember:
+
+## Base R + Tidyverse
 
 
 ---
@@ -156,6 +166,8 @@ class: middle, center, inverse
 #💡
 
 ## First: Arithmetic
+
+*especially useful for `mutate`*
 
 ---
 
@@ -246,13 +258,53 @@ class: middle, center, inverse
 
 ## Summaries
 
+*especially useful for `summarize`*
+*even more useful after a `group_by`*
+
 
 
 ---
 
-All very useful in a mutate!
+All very useful in a `summarize`!
 
 sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!
+
+Especially useful after `group_by`
+
+---
+class: inverse, middle, center
+
+![](../images/alicedata-lego-colors.jpg)
+## &lt;small&gt;"Spent day pondering grayscale vs colourscale using `ggplot`"&lt;/small&gt;
+
+*photo and caption courtesy [@alice-data](https://twitter.com/alice_data)*
+
+---
+# Today's lab: COLORS
+
+Specifically, discrete colors.
+
+At the end of today's lab, you'll see an extra section on continuous colors. 
+
+
+---
+class: inverse, middle, center
+
+# 👇🏽
+
+## R Markdown:
+
+https://www.markdowntutorial.com
+
+https://andrewbtran.github.io/NICAR/2018/workflow/docs/02-rmarkdown.html
+
+https://yihui.name/tinytex/ *(install!)*
+
+https://github.com/rstudio/cheatsheets/blob/master/rmarkdown-2.0.pdf
+
+https://rmarkdown.rstudio.com/html_document_format.html
+
+https://rmarkdown.rstudio.com/pdf_document_format.html
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

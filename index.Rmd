@@ -13,6 +13,10 @@ This is the site for sharing our Data Visualization Labs for CS631 at Oregon Hea
 - [Lab 02: MoMA Museum Tour](02-moma.html)
     - [Slides](slides/02-slides.html)
     - Dataset: [http://bit.ly/cs631-moma](http://bit.ly/cs631-moma)
-    - Dataset Cleaning *(optional)*: [https://apreshill.github.io/data-vis-labs-2018/02a-moma-cleaning.html](https://apreshill.github.io/data-vis-labs-2018/02a-moma-cleaning.html) 
+    - Dataset Cleaning *(optional)*: [02a-moma-cleaning.html](02a-moma-cleaning.html) 
     - Addendum: [02-addendum.html](02-addendum.html)
+- [Lab 03: Colors with Animal Sounds](03-colors.html)
+    - [Slides](slides/03-slides.html)
+    - Dataset: [http://bit.ly/cs631-moma](http://bit.ly/cs631-meow)
+    - Dataset Cleaning *(optional)*: [03a-meow-cleaning.html](03a-meow-cleaning.html) 
 

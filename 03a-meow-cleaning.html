@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Alison Hill" />
 
 
-<title>Principles &amp; Practice of Data Visualization</title>
+<title>Lab 03a: Animal Word Cleaning</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -200,35 +201,59 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Principles &amp; Practice of Data Visualization</h1>
+<h1 class="title toc-ignore">Lab 03a: Animal Word Cleaning</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
 
 </div>
 
 
-<p>This is the site for sharing our Data Visualization Labs for CS631 at Oregon Health &amp; Science University.</p>
-<ul>
-<li><a href="00-install_name_plot.html">Lab 00: Introduce Yourself</a></li>
-<li><a href="01-eda_hot_dogs.html">Lab 01: Nathan’s Hot Dog Eating Context</a>
-<ul>
-<li><a href="slides/01-slides.html">Slides</a></li>
-<li>Dataset 1: <a href="http://bit.ly/cs631-hotdog" class="uri">http://bit.ly/cs631-hotdog</a></li>
-<li>Dataset 2: <a href="http://bit.ly/cs631-hotdog-affiliated" class="uri">http://bit.ly/cs631-hotdog-affiliated</a></li>
-<li>Addendum: <a href="01-addendum.html" class="uri">01-addendum.html</a></li>
-</ul></li>
-<li><a href="02-moma.html">Lab 02: MoMA Museum Tour</a>
-<ul>
-<li><a href="slides/02-slides.html">Slides</a></li>
-<li>Dataset: <a href="http://bit.ly/cs631-moma" class="uri">http://bit.ly/cs631-moma</a></li>
-<li>Dataset Cleaning <em>(optional)</em>: <a href="02a-moma-cleaning.html" class="uri">02a-moma-cleaning.html</a></li>
-<li>Addendum: <a href="02-addendum.html" class="uri">02-addendum.html</a></li>
-</ul></li>
-<li><a href="03-colors.html">Lab 03: Colors with Animal Sounds</a>
-<ul>
-<li><a href="slides/03-slides.html">Slides</a></li>
-<li>Dataset: <a href="http://bit.ly/cs631-meow">http://bit.ly/cs631-moma</a></li>
-<li>Dataset Cleaning <em>(optional)</em>: <a href="03a-meow-cleaning.html" class="uri">03a-meow-cleaning.html</a></li>
-</ul></li>
-</ul>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p><a href="http://langcog.github.io/wordbankr/" class="uri">http://langcog.github.io/wordbankr/</a></p>
+</div>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<pre class="r"><code>library(tidyverse)
+library(wordbankr)
+library(here)</code></pre>
+<pre class="r"><code>my_sounds &lt;- c(&quot;meow&quot;, &quot;woof woof&quot;, &quot;cockadoodledoo&quot;)
+
+# first get the items in the animal category
+sounds &lt;- get_item_data(language = &quot;English (American)&quot;, 
+                         form = &quot;WG&quot;) %&gt;%
+  filter(definition %in% my_sounds) 
+
+# then get instrument data for those items
+sounds_data &lt;- get_instrument_data(
+  language = &quot;English (American)&quot;,
+  form = &quot;WG&quot;,
+  items = sounds$item_id,
+  administrations = TRUE,
+  iteminfo = TRUE
+  ) %&gt;% 
+  mutate(produces = value == &quot;produces&quot;,
+         understands = case_when(
+           produces == TRUE | value == &quot;understands&quot; ~ TRUE,
+           TRUE ~ FALSE
+         )) %&gt;% 
+  drop_na(produces) %&gt;% 
+  rename(sound = uni_lemma)
+
+# what proportion of kids at each age understand/produce each word?
+sounds_summary &lt;- sounds_data %&gt;% 
+  group_by(age, sound) %&gt;%
+  summarise(kids_produce = sum(produces, na.rm = TRUE),
+            kids_understand = sum(understands, na.rm = TRUE),
+            kids_respond = n_distinct(data_id),
+            prop_produce = kids_produce / kids_respond,
+            prop_understand = kids_understand / kids_respond)</code></pre>
+<p>Now let’s export both data frames for the lab.</p>
+<pre class="r"><code>write_csv(sounds_data, here::here(&quot;data&quot;,
+                                       &quot;animal_sounds_data.csv&quot;))
+write_csv(sounds_summary, here::here(&quot;data&quot;,
+                                        &quot;animal_sounds_summary.csv&quot;))</code></pre>
+</div>
 
 <p>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">

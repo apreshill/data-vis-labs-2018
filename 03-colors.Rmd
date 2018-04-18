@@ -1,0 +1,846 @@
+---
+title: "Lab 03: Colors with Animal Sounds"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+    code_folding: hide
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+# Overview
+
+There are 10 challenges total- none are in the "continuous colors" section, but you can use that section to complete the tenth challenge on your own. Upload your knitted html document by next Wednesday at noon to Sakai!
+
+# Packages
+
+```{r}
+library(tidyverse)
+library(forcats)
+library(RColorBrewer)
+library(viridis)
+library(ggthemes)
+library(wesanderson)
+library(beyonce)
+```
+
+
+
+
+
+
+
+# Categorical vs continuous
+
+In order to use color with your data, most importantly, you need to know if you’re dealing with a categorical or continuous variable. When working with discrete color palettes, you'll need a categorical qualitative variable. For continuous color palettes, you'll need a continuous quantitative variable.
+
+# Colour vs fill aesthetic
+
+Fill and colour scales in ggplot2 can use the same palettes. Some shapes such as lines only accept the colour aesthetic, while others, such as polygons, accept both colour and fill aesthetics. In the latter case, the colour refers to the border of the shape, and the fill to the interior.
+
+
+
+
+
+```{r echo = FALSE}
+## A look at all 25 symbols
+df <- data.frame(x = 1:5, 
+                  y = rep(rev(seq(0, 24, by = 5)), each = 5), 
+                  z = 1:25)
+s <- ggplot(df, aes(x = x, y = y)) + 
+  scale_shape_identity() + 
+  geom_text(aes(label = z, y = y - 1)) + 
+  theme_void()
+s + geom_point(aes(shape = z), size = 4) 
+```
+
+---
+
+While all symbols have a foreground colour, symbols 21-25 also take a background colour (fill)
+
+```{r}
+s + geom_point(aes(shape = z), size = 4, colour = "navy") 
+```
+
+---
+
+```{r}
+s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid") 
+```
+
+
+For the rest of today, we'll play with the `sounds` dataset. 
+
+# Read in the data
+
+
+Use this code chunk to read in the data available at [http://bit.ly/cs631-meow](http://bit.ly/cs631-meow):
+
+```{r}
+library(tidyverse)
+sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
+```
+
+
+# Know your data
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #1:</div>
+  <div class="panel-body">
+- How many variables?
+    - Which variables are continuous?
+    - Which ones are categorical (discrete)?
+- How many total kids do we have data for?
+- How many ages (in months)?
+  - How many kids per age?
+- How many types of animal sounds? What are they?
+  </div>
+</div>
+
+Let's start just by getting a feel for how many kids produce each kind of sound, across the full age range. We could make a table:
+
+```{r}
+sounds %>% 
+  group_by(sound) %>% 
+  summarize(total_produce = sum(kids_produce)) %>% 
+  knitr::kable()
+```
+
+Or we could make a simple bar plot:
+
+```{r}
+ggplot(sounds, aes(x = sound, y = kids_produce)) + 
+  geom_col() +
+  labs(x = "Sound", y = "Total Children Producing")
+```
+
+For this kind of plot, we don't really need color. What if we want to see how the number of kids who produce each sound varies by age? We'll change the x-axis to age and instead `facet_wrap` by `sound`, and make the y-axis a proportion instead of counts.
+
+```{r}
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_col() +
+  labs(x = "Age (mos)", y = "Proportion of Children Producing") +
+  facet_wrap(~sound)
+```
+
+The bar geom makes this a little hard to read and compare across facets though. Let's try points instead.
+
+```{r}
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_point() +
+  labs(x = "Age (mos)", y = "Proportion of Children Producing") +
+  facet_wrap(~sound)
+```
+
+That is a little better! Facets allow us to parse the relationship between two quantitative variables (here, age and proportion of kids producing) by a qualitative variable (here, type of sound). Another way we could do this, instead of facetting, is to use color. This would make it easier to compare proportions at each age.
+
+
+# Discrete colors
+
+Let's start with a base plot with age (in months) along the x-axis and the proportion of children producing each word along the y-axis, using points as the geometric object. Set the size of the points to 2 and change the x- and y-axis labels to "Age (months)" and "Proportion of Children Producing", respectively. 
+
+```{r}
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_point(size = 2) +
+  labs(x = "Age (months)", y = "Proportion of Children Producing")
+```
+
+
+
+## Default discrete palette
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #2:</div>
+  <div class="panel-body">
+Take the plot we just made, and edit the code to map the color of the points to the type of sound produced *at the geom level*. The colors that show up are the default discrete palette in `ggplot2`.
+
+```{r}
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_point(aes(color = sound), size = 2) +
+  labs(x = "Age (months)", y = "Proportion of Children Producing")
+```
+  </div>
+</div>
+
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #3:</div>
+  <div class="panel-body">
+Try adding `geom_line()` to this plot to connect the dots. Does this look right? Use `?geom_line` to figure out how this geom connects the dots by default, and which aesthetic can be used to connect cases together. Try editing your code to draw 3 black lines- one for each sound.
+
+
+```{r}
+# Does this look right? no!
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_line() +
+  geom_point(aes(color = sound), size = 2) +
+  labs(x = "Age (months)", y = "Proportion of Children Producing") 
+```
+
+
+```{r}
+# A possible solution
+ggplot(sounds, aes(x = age, y = prop_produce)) + 
+  geom_line(aes(group = sound)) +
+  geom_point(aes(color = sound), size = 2) +
+  labs(x = "Age (months)", y = "Proportion of Children Producing") 
+```
+
+  </div>
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #4:</div>
+  <div class="panel-body">
+Make two plots:
+
+1. Recreate the plot above, but this time map color to the type of sound produced for both the point and line geoms. Pay attention to the order of the layers you are adding- you may wish to place `geom_line` *before* `geom_point` so the lines are always "painted" underneath the points.
+
+2. Instead of `geom_line`, add a loess line using `geom_smooth`. Use `?geom_smooth` to figure out how to get rid of the grey standard error ribbon. You may also want to increase the line width. 
+
+```{r}
+# Does this look right? yes!
+ggplot(sounds, aes(x = age, y = prop_produce, color = sound)) + 
+  geom_line() +
+  geom_point(size = 2) +
+  labs(x = "Age (months)", y = "Proportion of Children Producing") 
+
+ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         color = sound)) + 
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2)  +
+  labs(x = "Age (months)", y = "Proportion of Children Producing") 
+```
+
+  </div>
+</div>
+
+Why does this work? To tell `geom_line` how to connect your dots, you can either:
+
+- Map the `group` aesthetic (so `aes(group = sound)`), or 
+- Map the `color` aesthetic globally (`aes(color = sound)`. 
+
+Because `geom_line` understands the `color` aesthetic, it will try to draw separate lines for each color. Here that translates to three lines, one for each sound, which is what we want!
+
+## Brief aside: factors
+
+At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn't match the lines. We can fix that using the [`forcats` package](http://forcats.tidyverse.org), which is `for` `cat`egorical variables. There are lots of functions in `forcats`. We'll use the `fct_reorder2` function, which works for when you have a line chart of two quantitative variables, colored by a factor variable. Let's see the difference.
+
+```{r}
+sounds <- sounds %>% 
+  mutate(sound = as.factor(sound))
+
+sound_traj <- ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         color = fct_reorder2(sound, age, prop_produce))) +
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       color = "sound")
+sound_traj
+```
+
+MUCH BETTER! Save your plot object as `sound_traj`. Now we can start playing with the actual colors.
+
+## Set luminance and saturation (chromaticity)
+
+The default qualitative palette works fine here. The addition of [`scale_color_hue`](http://ggplot2.tidyverse.org/reference/scale_hue.html) changes nothing.
+
+```{r}
+sound_traj +
+  scale_color_hue()
+```
+
+We can also change these settings within the default color palette, where the arguments are:
+
+- `h` = range of hues to use, in [0, 360]
+- `l` = luminance (lightness)
+- `c` = chroma (intensity of color)
+
+```{r}
+# Change hue (l and c are defaults)
+sound_traj +
+  scale_color_hue(h = c(0, 90), l = 65, c = 100)
+
+# Use luminance=45, instead of default 65
+sound_traj +
+  scale_color_hue(l = 45)
+
+# Reduce saturation (chroma) from 100 to 50, and increase luminance
+sound_traj +
+  scale_color_hue(l = 75, c = 50)
+```
+
+## Set discrete colors
+
+We can change the actual colors used by adding the layer `scale_color_manual` or `scale_fill_manual`. Confusion between which to use when is often the cause of much frustration!
+
+To name more than one color, which you often want to do, use `c()`. In the parentheses, named colors and hex colors are always in quotes.
+
+```{r}
+sound_traj +
+  scale_color_manual(values = c("cornflowerblue", 
+                                "seagreen", "coral"))
+```
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #5:</div>
+  <div class="panel-body">
+Why do neither of the following code blocks work?
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         color = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       color = "sound") +
+  scale_fill_manual(values = c("cornflowerblue", 
+                               "seagreen", "coral"))
+```
+
+
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                         y = prop_produce, 
+                         fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound") +
+  scale_fill_manual(values = c("cornflowerblue", 
+                               "seagreen", "coral"))
+```
+  </div>
+</div>
+
+Answers: 
+
+- In the first, we used `scale_fill_manual`, but the in the global aesthetics, we mapped the `color`, not `fill`, aesthetic onto the `sound` variable.
+- In the second, we did define the `fill` aesthetic and used `scale_fill_manual`, so that is good. But `geom_line` only understands the `color` aesthetic, not `fill`. And for `geom_point`, the default shape for is 20, which does not understand the `fill` aesthetic.
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #6:</div>
+  <div class="panel-body">
+Start with this plot:
+
+```{r}
+sound_traj
+```
+
+Add a black outline to the points, and color the inside of the points and the lines by `sound` using the default discrete color palette. You may also wish to edit the legends on this plot: `geom_smooth` has an argument called `show.legend = FALSE`. See if you prefer the plot with this change. 
+
+If this was easy, try applying the same custom color palette to the inside of the points and to the lines. 
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound")
+```
+
+
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound") +
+  scale_fill_manual(values = c("cornflowerblue", 
+                               "seagreen", "coral")) +
+  scale_color_manual(values = c("cornflowerblue", 
+                               "seagreen", "coral"))
+```
+
+
+  </div>
+</div>
+
+You can also define your color palette as a vector outside of `ggplot2`. Below, I made an object called `my_colors` outside of `ggplot2`. To use it, we call that object within the `scale_colour_manual` function.
+
+```{r}
+my_colors <- c("cadetblue", "steelblue", "salmon") # quote color names
+sound_traj +
+  scale_color_manual(values = my_colors) # note: not in quotes
+```
+
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #7:</div>
+  <div class="panel-body">
+Define a custom color palette using hexadecimal colors (#rrggbb), and apply it using `scale_color_manual` to your `sound_traj` plot. Some basic ones are here: 
+
+https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
+
+Parse the hexadecimal string like so: #rrggbb, where rr, gg, and bb refer to color intensity in the red, green, and blue channels, respectively. 
+
+
+```{r}
+# from https://github.com/mwaskom/seaborn/blob/master/seaborn/palettes.py
+sb_colorblind <- c("#0072B2", "#009E73", "#D55E00",
+                        "#CC79A7", "#F0E442", "#56B4E9")
+sound_traj +
+  scale_colour_manual(values = sb_colorblind)
+```
+
+  </div>
+</div>
+
+## Built-in discrete palettes
+
+### Colorbrewer
+
+Colorbrewer has a few qualitative palettes named: Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3. Here is how to view them:
+
+```{r}
+library(RColorBrewer)
+brewer.pal(5, "Dark2") # list 5 hex colors
+display.brewer.pal(5, "Dark2") # view 5 hex colors
+```
+
+And here is how you use them:
+
+```{r}
+sound_traj +
+  scale_color_brewer(palette = "Dark2")
+```
+
+
+### Wes Anderson palettes 
+
+My favorite!
+
+```{r eval = FALSE}
+library(wesanderson)
+```
+
+
+```{r}
+names(wes_palettes) # all the palette names
+wes_palette("GrandBudapest2") # view named palette
+wes_palette("GrandBudapest2")[1:4] # list first 4 hex colors
+wes_palette("GrandBudapest2")[c(1,4)] # list colors 1 and 4
+```
+
+To use these palettes, use `scale_color_manual` where `values` is set to `wes_palette("name")`. For example:
+
+```{r}
+sound_traj +
+  scale_color_manual(values = wes_palette("Darjeeling"))
+
+sound_traj +
+  scale_color_manual(values = wes_palette("FantasticFox"))
+```
+
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #8:</div>
+  <div class="panel-body">
+What if you just don't want to use the colors in the order they are in? Use a `wes_palette` of your choice. Using our code from above, try picking the last 3 colors of a palette. Add it to your `sound_traj` plot.
+
+If this was easy, try using colors 2, 3, and 5 instead.
+
+```{r}
+sound_traj +
+  scale_color_manual(values = wes_palette("Darjeeling")[3:5])
+
+sound_traj +
+  scale_color_manual(values = wes_palette("FantasticFox")[c(2, 3, 5)])
+```
+  </div>
+</div>
+
+
+### `ggthemes` palettes
+
+```{r eval = FALSE}
+library(ggthemes)
+```
+
+```{r}
+sound_traj +
+  scale_color_fivethirtyeight()
+
+sound_traj +
+  scale_color_economist()
+```
+
+
+### Palettes from [the Queen Bee](https://github.com/dill/beyonce)
+
+```{r eval=FALSE}
+install.packages("devtools")
+devtools::install_github("dill/beyonce")
+library(beyonce)
+```
+
+```{r}
+beyonce_palette(18)
+```
+
+```{r}
+sound_traj +
+  scale_color_manual(values = beyonce_palette(18)[3:5])
+```
+
+Here we'll only use the first, fourth, and fifth colors in the palette.
+
+```{r}
+sound_traj +
+  scale_color_manual(values = beyonce_palette(18)[c(1, 4, 5)])
+```
+
+### Viridis palettes
+
+Read more here in the [viridis vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). The default argument for `discrete` is FALSE, so to use the discrete palettes you need to set `discrete = TRUE`. There are four colormap options available:
+
+- "magma" (or "A"),
+- "inferno" (or "B"),
+- "plasma" (or "C"),
+- "viridis" (or "D", the default option).
+
+```{r}
+library(viridis)
+sound_traj +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+
+sound_traj +
+  scale_color_viridis(discrete = TRUE, option = "plasma") +
+  theme_minimal()
+```
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #9:</div>
+  <div class="panel-body">
+Use the `viridis` package to color the points by and the lines by `sound`; make the outline of the points "midnightblue". Pick any colormap option, and play with `theme_bw` or `theme_minimal` to see what you like.
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21, colour = "midnightblue") +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound") +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+  </div>
+</div>
+
+
+
+
+## Greyscale for discrete
+
+Use `scale_color_grey` or `scale_fill_grey`, or sometimes both depending on your geoms and the aesthetics they understand.
+
+```{r}
+sound_traj +
+  scale_color_grey() +
+  theme_minimal()
+```
+
+Set start and end
+
+```{r}
+sound_traj +
+  scale_color_grey(start = 0.2, end = .8) 
+```
+
+
+Make the same plot but make points outlined in black
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound") +
+  scale_fill_grey(start = 0.3, end = 1) +
+  scale_color_grey(start = 0.3, end = 1) 
+```
+
+Suggest redundancy in greyscale- try changing line type instead of line (or in addition to) line color.
+
+
+Change line type by `sound`, set color to black.
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(lty = fct_reorder2(sound, age, prop_produce)), color = "black",
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound") +
+  scale_fill_grey(start = 0.3, end = 1) 
+```
+
+Change both!
+
+```{r}
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   fill = fct_reorder2(sound, age, prop_produce))) + 
+  geom_smooth(aes(color = fct_reorder2(sound, age, prop_produce),
+                  lty = fct_reorder2(sound, age, prop_produce)),
+              se = FALSE, lwd = .5, show.legend = FALSE) +
+  geom_point(size = 2, shape = 21) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing", 
+       fill = "sound") +
+  scale_fill_grey(start = 0.3, end = .8) +
+  scale_color_grey(start = 0.3, end = .8) 
+```
+
+## Colorblind-friendly palettes
+
+The [`colorblindr` package](https://github.com/clauswilke/colorblindr) can be used to "simulate colorblindness in production-ready R figures."
+
+To install the `colorblindr` package:
+```{r eval = FALSE}
+devtools::install_github("wilkelab/cowplot")
+install.packages("colorspace", repos = "http://R-Forge.R-project.org")
+devtools::install_github("clauswilke/colorblindr")
+```
+
+To use:
+```{r}
+# save a ggplot object
+my_sound_traj <- sound_traj +
+  scale_color_manual(values = beyonce_palette(18)[c(1, 4, 5)])
+```
+
+View that figure after color-vision-deficiency simulation:
+
+```{r}
+library(colorblindr)
+cvd_grid(my_sound_traj)
+```
+
+You can also use the colorblind-friendly palette in this package using `scale_color_OkabeIto` and `scale_fill_OkabeIto`:
+
+```{r}
+cb_sound_traj <- sound_traj +
+  scale_color_OkabeIto()
+
+cb_sound_traj
+cvd_grid(cb_sound_traj)
+```
+
+You can still use this colorblind-friendly palette without the `colorblindr` package though. [Here](http://jfly.iam.u-tokyo.ac.jp/color/) are the colors!
+
+![](http://jfly.iam.u-tokyo.ac.jp/color/image/pallete.jpg)
+
+The [Cookbook for R](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette) provided the matching hex colors too to make life easier:
+```{r}
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# To use for line and point colors, add
+sound_traj +
+  scale_colour_manual(values = cbbPalette[c(3, 7, 8)])
+```
+
+
+
+
+# Continuous colors
+
+## Default continuous palette
+
+Let’s map color to a continuous variable. For this, we are returning to `geom_line` instead of `geom_smooth`, because the latter doesn't respond to continuous color palettes.
+
+```{r}
+sound_by_age <- ggplot(sounds, aes(x = age, 
+                                   y = prop_produce, 
+                                   color = age)) +
+  geom_line(aes(group = sound), lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing")
+sound_by_age
+```
+
+
+
+## Color choice with continuous variables 
+
+With discrete colors, we used either `scale_color_manual` or `scale_fill_manual` (and sometimes both were needed!). For continuous colors, we use either `scale_color_gradient` or `scale_fill_gradient`.
+
+```{r}
+sound_by_age +
+  scale_color_gradient()
+```
+
+You can reverse the gradient scale...
+
+```{r}
+sound_by_age +
+  scale_color_gradient(trans = "reverse")
+```
+
+
+```{r}
+sound_by_age +
+  scale_color_gradient(low = "white", high = "red")
+```
+
+We can make this same plot using a custom greyscale gradient.
+
+```{r}
+sound_by_age +
+  scale_color_gradient(low = "grey90", high = "black")
+```
+
+
+
+So `scale_color_gradient` gives you a sequential gradient, but you may want a diverging color scheme instead. For that, you can use `scale_color_gradient2`
+
+
+```{r}
+# Diverging color scheme
+med_age <- sounds %>% 
+  summarize(mos = median(age)) %>% 
+  pull()
+sound_by_age +
+  scale_color_gradient2(midpoint = med_age,
+                      low="blue", mid="white", high="red" )
+```
+
+## Built-in continuous palettes
+
+### Use `RColorBrewer` 
+
+We can also use `scale_color_gradientn`
+
+```{r}
+sound_by_age +
+  scale_color_gradientn(colours = brewer.pal(n=5, name="PuBuGn"))
+```
+
+Reverse the colors...
+
+```{r}
+sound_by_age +
+  scale_color_gradientn(colours = rev(brewer.pal(n=5, name="PuBuGn")))
+```
+
+### Viridis
+
+Read more here in the [viridis vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)
+
+```{r eval = FALSE}
+library(viridis)
+```
+
+The default is the `viridis` palette within the `viridis` package!
+
+Note! For discrete == FALSE (the default) all other arguments are as to `scale_fill_gradientn` or `scale_color_gradientn`. 
+
+```{r}
+sound_by_age +
+  scale_color_viridis()
+```
+
+```{r}
+sound_by_age +
+  scale_color_viridis(option = "magma")
+```
+
+Read the help function for `?scale_color_viridis`. We'll use the "inferno" palette _in reverse_.
+
+```{r}
+sound_by_age +
+  scale_color_viridis(option = "inferno", begin = 1, end = 0)
+```
+
+
+
+# Final challenge (#10)
+
+<div class="panel panel-success">
+  <div class="panel-heading">Challenge #10:</div>
+  <div class="panel-body">
+Using new data, make three new plots. Use any `geom` that makes sense. The plots should:
+
+- Have x- and y-axes that are each continuous quantitative variables.
+- Apply a non-default color palette, either coloring by a qualitative variable (discrete colors) or a quantitative variable (continuous colors). This list of [R color palettes](https://github.com/EmilHvitfeldt/r-color-palettes) has even more ideas than we could cover in class.
+
+
+1. In the first plot, you must **wield color carefully and effectively**. The addition of the color/fill aesthetics must be done in a way that the interpretation of the plot improves. Also, you must show how your colors fare for colorblind viewers. Include 2-3 sentences about why you made the plot that you did. What questions does your plot answers (or perhaps what questions does your plot raise)?
+
+2. In the second plot, you must **make a greyscale version of your first plot!** And again, it must look good and make sense.
+
+3. In the third plot, you must **use color badly**. Make a plot where the colors are either redundant, confusing, or just generally non-sensical. Explain why this last visualization fails.
+
+Data ideas:
+
+- MacArthur-Bates Communicative Development Inventory (MB-CDI), a family of parent-report questionnaires measuring children's vocabulary understanding and production
+    - [R package `wordbankr`](https://cran.r-project.org/web/packages/wordbankr/index.html)
+    - See my code [here](03a-meow-cleaning.html)
+- National Electronic Injury Surveillance System (NEISS)
+    - [R package `neiss`](https://github.com/hadley/neiss)
+    - Follow Julia Silge's code-through [here](https://juliasilge.com/blog/your-floor/)
+- Flights
+    - [R package `pnwflights14`](https://github.com/ismayc/pnwflights14)
+    - [R package `nycflights13`](https://github.com/hadley/nycflights13)
+- Building Permits
+    - See code [here](https://github.com/hadley/building-permits)
+    - Watch YouTube code-through [here](https://www.youtube.com/watch?v=go5Au01Jrvs)
+- Cocktail Balance
+    - [Data](https://github.com/karnesky/cocktail-balance)
+- NASA Weather
+    - [Data](https://github.com/hadley/nasaweather)
+- Social Security Administration Baby Names
+    - [R package `babynames`](https://cran.r-project.org/web/packages/babynames/index.html)
+    - Follow Julia Silge *'My Baby Boomer Name Might Have Been "Debbie"'*: https://juliasilge.com/blog/my-baby-boomer-name/
+    - Follow Hilary Parker: *Hilary: The Most Poisoned Baby Name in US History*: https://hilaryparker.com/2013/01/30/hilary-the-most-poisoned-baby-name-in-us-history/
+- Youth Behavior Risk Surveillance System
+    - [R package `yrbss`](https://github.com/hadley/yrbss)
+    - Some [good ideas here](https://www.cdc.gov/nchhstp/newsroom/2012/yrbs-graphics2012.html)
+- Gun sales
+    - [Data](https://github.com/hadley/gun-sales)
+    - Some [example plots here](https://github.com/NYTimes/gunsales/blob/master/out/plots.pdf)
+- Gapminder
+    - [R package `gapminder`](https://cran.r-project.org/web/packages/gapminder/index.html)
+    - Some [example plots here](https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md)
+    
+    </div>
+</div>
+
+
+
