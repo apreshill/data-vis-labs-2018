@@ -17,6 +17,6 @@ This is the site for sharing our Data Visualization Labs for CS631 at Oregon Hea
     - Addendum: [02-addendum.html](02-addendum.html)
 - [Lab 03: Colors with Animal Sounds](03-colors.html)
     - [Slides](slides/03-slides.html)
-    - Dataset: [http://bit.ly/cs631-moma](http://bit.ly/cs631-meow)
+    - Dataset: [http://bit.ly/cs631-meow](http://bit.ly/cs631-meow)
     - Dataset Cleaning *(optional)*: [03a-meow-cleaning.html](03a-meow-cleaning.html) 
 

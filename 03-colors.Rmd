@@ -85,6 +85,13 @@ Use this code chunk to read in the data available at [http://bit.ly/cs631-meow](
 
 ```{r}
 library(tidyverse)
+sounds <- read_csv("http://bit.ly/cs631-meow")
+```
+
+Or store it locally:
+
+```{r}
+library(tidyverse)
 sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
 ```
 

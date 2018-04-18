@@ -358,6 +358,9 @@ library(beyonce)</code></pre>
 <h1><span class="header-section-number">5</span> Read in the data</h1>
 <p>Use this code chunk to read in the data available at <a href="http://bit.ly/cs631-meow" class="uri">http://bit.ly/cs631-meow</a>:</p>
 <pre class="r"><code>library(tidyverse)
+sounds &lt;- read_csv(&quot;http://bit.ly/cs631-meow&quot;)</code></pre>
+<p>Or store it locally:</p>
+<pre class="r"><code>library(tidyverse)
 sounds &lt;- read_csv(here::here(&quot;data&quot;, &quot;animal_sounds_summary.csv&quot;))</code></pre>
 </div>
 <div id="know-your-data" class="section level1">
@@ -411,19 +414,19 @@ Challenge #1:
 <pre class="r"><code>ggplot(sounds, aes(x = sound, y = kids_produce)) + 
   geom_col() +
   labs(x = &quot;Sound&quot;, y = &quot;Total Children Producing&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>For this kind of plot, we don’t really need color. What if we want to see how the number of kids who produce each sound varies by age? We’ll change the x-axis to age and instead <code>facet_wrap</code> by <code>sound</code>, and make the y-axis a proportion instead of counts.</p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
   geom_col() +
   labs(x = &quot;Age (mos)&quot;, y = &quot;Proportion of Children Producing&quot;) +
   facet_wrap(~sound)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>The bar geom makes this a little hard to read and compare across facets though. Let’s try points instead.</p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
   geom_point() +
   labs(x = &quot;Age (mos)&quot;, y = &quot;Proportion of Children Producing&quot;) +
   facet_wrap(~sound)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>That is a little better! Facets allow us to parse the relationship between two quantitative variables (here, age and proportion of kids producing) by a qualitative variable (here, type of sound). Another way we could do this, instead of facetting, is to use color. This would make it easier to compare proportions at each age.</p>
 </div>
 <div id="discrete-colors" class="section level1">
@@ -432,7 +435,7 @@ Challenge #1:
 <pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
   geom_point(size = 2) +
   labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <div id="default-discrete-palette" class="section level2">
 <h2><span class="header-section-number">7.1</span> Default discrete palette</h2>
 <div class="panel panel-success">
@@ -444,7 +447,7 @@ Challenge #2:
 <pre class="r"><code>ggplot(sounds, aes(x = age, y = prop_produce)) + 
   geom_point(aes(color = sound), size = 2) +
   labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;)</code></pre>
-<img src="03-colors_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="03-colors_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 </div>
 </div>
 <div class="panel panel-success">
@@ -458,13 +461,13 @@ ggplot(sounds, aes(x = age, y = prop_produce)) +
   geom_line() +
   geom_point(aes(color = sound), size = 2) +
   labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code># A possible solution
 ggplot(sounds, aes(x = age, y = prop_produce)) + 
   geom_line(aes(group = sound)) +
   geom_point(aes(color = sound), size = 2) +
   labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 </div>
 <div class="panel panel-success">
@@ -482,14 +485,14 @@ ggplot(sounds, aes(x = age, y = prop_produce, color = sound)) +
   geom_line() +
   geom_point(size = 2) +
   labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
                          y = prop_produce, 
                          color = sound)) + 
   geom_smooth(se = FALSE, lwd = .5) +
   geom_point(size = 2)  +
   labs(x = &quot;Age (months)&quot;, y = &quot;Proportion of Children Producing&quot;) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 </div>
 </div>
 <p>Why does this work? To tell <code>geom_line</code> how to connect your dots, you can either:</p>
@@ -514,7 +517,7 @@ sound_traj &lt;- ggplot(sounds, aes(x = age,
        y = &quot;Proportion of Children Producing&quot;, 
        color = &quot;sound&quot;)
 sound_traj</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>MUCH BETTER! Save your plot object as <code>sound_traj</code>. Now we can start playing with the actual colors.</p>
 </div>
 <div id="set-luminance-and-saturation-chromaticity" class="section level2">
@@ -522,7 +525,7 @@ sound_traj</code></pre>
 <p>The default qualitative palette works fine here. The addition of <a href="http://ggplot2.tidyverse.org/reference/scale_hue.html"><code>scale_color_hue</code></a> changes nothing.</p>
 <pre class="r"><code>sound_traj +
   scale_color_hue()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>We can also change these settings within the default color palette, where the arguments are:</p>
 <ul>
 <li><code>h</code> = range of hues to use, in [0, 360]</li>
@@ -532,15 +535,15 @@ sound_traj</code></pre>
 <pre class="r"><code># Change hue (l and c are defaults)
 sound_traj +
   scale_color_hue(h = c(0, 90), l = 65, c = 100)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code># Use luminance=45, instead of default 65
 sound_traj +
   scale_color_hue(l = 45)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 <pre class="r"><code># Reduce saturation (chroma) from 100 to 50, and increase luminance
 sound_traj +
   scale_color_hue(l = 75, c = 50)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-18-3.png" width="672" /></p>
 </div>
 <div id="set-discrete-colors" class="section level2">
 <h2><span class="header-section-number">7.4</span> Set discrete colors</h2>
@@ -549,7 +552,7 @@ sound_traj +
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = c(&quot;cornflowerblue&quot;, 
                                 &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #5:
@@ -566,7 +569,7 @@ Challenge #5:
        color = &quot;sound&quot;) +
   scale_fill_manual(values = c(&quot;cornflowerblue&quot;, 
                                &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
                          y = prop_produce, 
                          fill = fct_reorder2(sound, age, prop_produce))) + 
@@ -577,7 +580,7 @@ Challenge #5:
        fill = &quot;sound&quot;) +
   scale_fill_manual(values = c(&quot;cornflowerblue&quot;, 
                                &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
-<img src="03-colors_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="03-colors_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 </div>
 </div>
 <p>Answers:</p>
@@ -592,7 +595,7 @@ Challenge #6:
 <div class="panel-body">
 <p>Start with this plot:</p>
 <pre class="r"><code>sound_traj</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Add a black outline to the points, and color the inside of the points and the lines by <code>sound</code> using the default discrete color palette. You may also wish to edit the legends on this plot: <code>geom_smooth</code> has an argument called <code>show.legend = FALSE</code>. See if you prefer the plot with this change.</p>
 <p>If this was easy, try applying the same custom color palette to the inside of the points and to the lines.</p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
@@ -604,7 +607,7 @@ Challenge #6:
   labs(x = &quot;Age (months)&quot;, 
        y = &quot;Proportion of Children Producing&quot;, 
        fill = &quot;sound&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
                    y = prop_produce, 
                    fill = fct_reorder2(sound, age, prop_produce))) + 
@@ -618,14 +621,14 @@ Challenge #6:
                                &quot;seagreen&quot;, &quot;coral&quot;)) +
   scale_color_manual(values = c(&quot;cornflowerblue&quot;, 
                                &quot;seagreen&quot;, &quot;coral&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
 <p>You can also define your color palette as a vector outside of <code>ggplot2</code>. Below, I made an object called <code>my_colors</code> outside of <code>ggplot2</code>. To use it, we call that object within the <code>scale_colour_manual</code> function.</p>
 <pre class="r"><code>my_colors &lt;- c(&quot;cadetblue&quot;, &quot;steelblue&quot;, &quot;salmon&quot;) # quote color names
 sound_traj +
   scale_color_manual(values = my_colors) # note: not in quotes</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #7:
@@ -639,7 +642,7 @@ sb_colorblind &lt;- c(&quot;#0072B2&quot;, &quot;#009E73&quot;, &quot;#D55E00&qu
                         &quot;#CC79A7&quot;, &quot;#F0E442&quot;, &quot;#56B4E9&quot;)
 sound_traj +
   scale_colour_manual(values = sb_colorblind)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -652,11 +655,11 @@ sound_traj +
 brewer.pal(5, &quot;Dark2&quot;) # list 5 hex colors</code></pre>
 <pre><code>[1] &quot;#1B9E77&quot; &quot;#D95F02&quot; &quot;#7570B3&quot; &quot;#E7298A&quot; &quot;#66A61E&quot;</code></pre>
 <pre class="r"><code>display.brewer.pal(5, &quot;Dark2&quot;) # view 5 hex colors</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>And here is how you use them:</p>
 <pre class="r"><code>sound_traj +
   scale_color_brewer(palette = &quot;Dark2&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
 <div id="wes-anderson-palettes" class="section level3">
 <h3><span class="header-section-number">7.5.2</span> Wes Anderson palettes</h3>
@@ -668,7 +671,7 @@ brewer.pal(5, &quot;Dark2&quot;) # list 5 hex colors</code></pre>
  [9] &quot;Chevalier&quot;      &quot;Zissou&quot;         &quot;FantasticFox&quot;   &quot;Darjeeling&quot;    
 [13] &quot;Rushmore&quot;       &quot;BottleRocket&quot;   &quot;Darjeeling2&quot;   </code></pre>
 <pre class="r"><code>wes_palette(&quot;GrandBudapest2&quot;) # view named palette</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre class="r"><code>wes_palette(&quot;GrandBudapest2&quot;)[1:4] # list first 4 hex colors</code></pre>
 <pre><code>[1] &quot;#E6A0C4&quot; &quot;#C6CDF7&quot; &quot;#D8A499&quot; &quot;#7294D4&quot;</code></pre>
 <pre class="r"><code>wes_palette(&quot;GrandBudapest2&quot;)[c(1,4)] # list colors 1 and 4</code></pre>
@@ -676,10 +679,10 @@ brewer.pal(5, &quot;Dark2&quot;) # list 5 hex colors</code></pre>
 <p>To use these palettes, use <code>scale_color_manual</code> where <code>values</code> is set to <code>wes_palette(&quot;name&quot;)</code>. For example:</p>
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = wes_palette(&quot;Darjeeling&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = wes_palette(&quot;FantasticFox&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #8:
@@ -689,10 +692,10 @@ Challenge #8:
 <p>If this was easy, try using colors 2, 3, and 5 instead.</p>
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = wes_palette(&quot;Darjeeling&quot;)[3:5])</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = wes_palette(&quot;FantasticFox&quot;)[c(2, 3, 5)])</code></pre>
-<img src="03-colors_files/figure-html/unnamed-chunk-31-2.png" width="672" />
+<img src="03-colors_files/figure-html/unnamed-chunk-32-2.png" width="672" />
 </div>
 </div>
 </div>
@@ -701,10 +704,10 @@ Challenge #8:
 <pre class="r"><code>library(ggthemes)</code></pre>
 <pre class="r"><code>sound_traj +
   scale_color_fivethirtyeight()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <pre class="r"><code>sound_traj +
   scale_color_economist()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
 </div>
 <div id="palettes-from-the-queen-bee" class="section level3">
 <h3><span class="header-section-number">7.5.4</span> Palettes from <a href="https://github.com/dill/beyonce">the Queen Bee</a></h3>
@@ -712,14 +715,14 @@ Challenge #8:
 devtools::install_github(&quot;dill/beyonce&quot;)
 library(beyonce)</code></pre>
 <pre class="r"><code>beyonce_palette(18)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = beyonce_palette(18)[3:5])</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>Here we’ll only use the first, fourth, and fifth colors in the palette.</p>
 <pre class="r"><code>sound_traj +
   scale_color_manual(values = beyonce_palette(18)[c(1, 4, 5)])</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 </div>
 <div id="viridis-palettes" class="section level3">
 <h3><span class="header-section-number">7.5.5</span> Viridis palettes</h3>
@@ -734,11 +737,11 @@ library(beyonce)</code></pre>
 sound_traj +
   scale_color_viridis(discrete = TRUE) +
   theme_minimal()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <pre class="r"><code>sound_traj +
   scale_color_viridis(discrete = TRUE, option = &quot;plasma&quot;) +
   theme_minimal()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-38-2.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-39-2.png" width="672" /></p>
 <div class="panel panel-success">
 <div class="panel-heading">
 Challenge #9:
@@ -757,7 +760,7 @@ Challenge #9:
   scale_fill_viridis(discrete = TRUE) +
   scale_color_viridis(discrete = TRUE) +
   theme_minimal()</code></pre>
-<img src="03-colors_files/figure-html/unnamed-chunk-39-1.png" width="672" />
+<img src="03-colors_files/figure-html/unnamed-chunk-40-1.png" width="672" />
 </div>
 </div>
 </div>
@@ -768,11 +771,11 @@ Challenge #9:
 <pre class="r"><code>sound_traj +
   scale_color_grey() +
   theme_minimal()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>Set start and end</p>
 <pre class="r"><code>sound_traj +
   scale_color_grey(start = 0.2, end = .8) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>Make the same plot but make points outlined in black</p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
                    y = prop_produce, 
@@ -785,7 +788,7 @@ Challenge #9:
        fill = &quot;sound&quot;) +
   scale_fill_grey(start = 0.3, end = 1) +
   scale_color_grey(start = 0.3, end = 1) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <p>Suggest redundancy in greyscale- try changing line type instead of line (or in addition to) line color.</p>
 <p>Change line type by <code>sound</code>, set color to black.</p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
@@ -798,7 +801,7 @@ Challenge #9:
        y = &quot;Proportion of Children Producing&quot;, 
        fill = &quot;sound&quot;) +
   scale_fill_grey(start = 0.3, end = 1) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 <p>Change both!</p>
 <pre class="r"><code>ggplot(sounds, aes(x = age, 
                    y = prop_produce, 
@@ -812,7 +815,7 @@ Challenge #9:
        fill = &quot;sound&quot;) +
   scale_fill_grey(start = 0.3, end = .8) +
   scale_color_grey(start = 0.3, end = .8) </code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 </div>
 <div id="colorblind-friendly-palettes" class="section level2">
 <h2><span class="header-section-number">7.7</span> Colorblind-friendly palettes</h2>
@@ -828,15 +831,15 @@ my_sound_traj &lt;- sound_traj +
 <p>View that figure after color-vision-deficiency simulation:</p>
 <pre class="r"><code>library(colorblindr)
 cvd_grid(my_sound_traj)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>You can also use the colorblind-friendly palette in this package using <code>scale_color_OkabeIto</code> and <code>scale_fill_OkabeIto</code>:</p>
 <pre class="r"><code>cb_sound_traj &lt;- sound_traj +
   scale_color_OkabeIto()
 
 cb_sound_traj</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 <pre class="r"><code>cvd_grid(cb_sound_traj)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-48-2.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-49-2.png" width="672" /></p>
 <p>You can still use this colorblind-friendly palette without the <code>colorblindr</code> package though. <a href="http://jfly.iam.u-tokyo.ac.jp/color/">Here</a> are the colors!</p>
 <div class="figure">
 <img src="http://jfly.iam.u-tokyo.ac.jp/color/image/pallete.jpg" />
@@ -848,7 +851,7 @@ cb_sound_traj</code></pre>
 # To use for line and point colors, add
 sound_traj +
   scale_colour_manual(values = cbbPalette[c(3, 7, 8)])</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 </div>
 </div>
 <div id="continuous-colors" class="section level1">
@@ -864,25 +867,25 @@ sound_traj +
   labs(x = &quot;Age (months)&quot;, 
        y = &quot;Proportion of Children Producing&quot;)
 sound_by_age</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 </div>
 <div id="color-choice-with-continuous-variables" class="section level2">
 <h2><span class="header-section-number">8.2</span> Color choice with continuous variables</h2>
 <p>With discrete colors, we used either <code>scale_color_manual</code> or <code>scale_fill_manual</code> (and sometimes both were needed!). For continuous colors, we use either <code>scale_color_gradient</code> or <code>scale_fill_gradient</code>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <p>You can reverse the gradient scale…</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient(trans = &quot;reverse&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient(low = &quot;white&quot;, high = &quot;red&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p>We can make this same plot using a custom greyscale gradient.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient(low = &quot;grey90&quot;, high = &quot;black&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <p>So <code>scale_color_gradient</code> gives you a sequential gradient, but you may want a diverging color scheme instead. For that, you can use <code>scale_color_gradient2</code></p>
 <pre class="r"><code># Diverging color scheme
 med_age &lt;- sounds %&gt;% 
@@ -891,7 +894,7 @@ med_age &lt;- sounds %&gt;%
 sound_by_age +
   scale_color_gradient2(midpoint = med_age,
                       low=&quot;blue&quot;, mid=&quot;white&quot;, high=&quot;red&quot; )</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 </div>
 <div id="built-in-continuous-palettes" class="section level2">
 <h2><span class="header-section-number">8.3</span> Built-in continuous palettes</h2>
@@ -900,11 +903,11 @@ sound_by_age +
 <p>We can also use <code>scale_color_gradientn</code></p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradientn(colours = brewer.pal(n=5, name=&quot;PuBuGn&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <p>Reverse the colors…</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradientn(colours = rev(brewer.pal(n=5, name=&quot;PuBuGn&quot;)))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
 </div>
 <div id="viridis" class="section level3">
 <h3><span class="header-section-number">8.3.2</span> Viridis</h3>
@@ -914,14 +917,14 @@ sound_by_age +
 <p>Note! For discrete == FALSE (the default) all other arguments are as to <code>scale_fill_gradientn</code> or <code>scale_color_gradientn</code>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_viridis()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 <pre class="r"><code>sound_by_age +
   scale_color_viridis(option = &quot;magma&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 <p>Read the help function for <code>?scale_color_viridis</code>. We’ll use the “inferno” palette <em>in reverse</em>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_viridis(option = &quot;inferno&quot;, begin = 1, end = 0)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
 </div>
 </div>
 </div>
