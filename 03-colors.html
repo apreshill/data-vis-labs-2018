@@ -505,7 +505,7 @@ ggplot(sounds, aes(x = age, y = prop_produce, color = sound)) +
 <div id="brief-aside-factors" class="section level2">
 <h2><span class="header-section-number">7.2</span> Brief aside: factors</h2>
 <p>At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn’t match the lines. We can fix that using the <a href="http://forcats.tidyverse.org"><code>forcats</code> package</a>, which is <code>for</code> <code>cat</code>egorical variables. There are lots of functions in <code>forcats</code>.</p>
-<pre class="r"><code>install.package(&quot;forcats&quot;)
+<pre class="r"><code>install.packages(&quot;forcats&quot;)
 library(forcats)</code></pre>
 <p>We’ll use the <code>fct_reorder2</code> function, which works for when you have a line chart of two quantitative variables, colored by a factor variable. Let’s see the difference.</p>
 <pre class="r"><code>sounds &lt;- sounds %&gt;% 
@@ -653,7 +653,7 @@ sound_traj +
 <h2><span class="header-section-number">7.5</span> Built-in discrete palettes</h2>
 <div id="colorbrewer" class="section level3">
 <h3><span class="header-section-number">7.5.1</span> Colorbrewer</h3>
-<pre class="r"><code>install.package(&quot;RColorBrewer&quot;)
+<pre class="r"><code>install.packages(&quot;RColorBrewer&quot;)
 library(RColorBrewer)</code></pre>
 <p>Colorbrewer has a few qualitative palettes named: Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3. Here is how to view them:</p>
 <pre class="r"><code>brewer.pal(5, &quot;Dark2&quot;) # list 5 hex colors</code></pre>
@@ -668,7 +668,7 @@ library(RColorBrewer)</code></pre>
 <div id="wes-anderson-palettes" class="section level3">
 <h3><span class="header-section-number">7.5.2</span> Wes Anderson palettes</h3>
 <p>My favorite!</p>
-<pre class="r"><code>install.package(&quot;wesanderson&quot;)
+<pre class="r"><code>install.packages(&quot;wesanderson&quot;)
 library(wesanderson)</code></pre>
 <pre class="r"><code>names(wes_palettes) # all the palette names</code></pre>
 <pre><code> [1] &quot;GrandBudapest&quot;  &quot;Moonrise1&quot;      &quot;Royal1&quot;         &quot;Moonrise2&quot;     
@@ -706,7 +706,7 @@ Challenge #8:
 </div>
 <div id="ggthemes-palettes" class="section level3">
 <h3><span class="header-section-number">7.5.3</span> <code>ggthemes</code> palettes</h3>
-<pre class="r"><code>install.package(&quot;ggthemes&quot;)
+<pre class="r"><code>install.packages(&quot;ggthemes&quot;)
 library(ggthemes)</code></pre>
 <pre class="r"><code>sound_traj +
   scale_color_fivethirtyeight()</code></pre>
@@ -732,7 +732,7 @@ library(beyonce)</code></pre>
 </div>
 <div id="viridis-palettes" class="section level3">
 <h3><span class="header-section-number">7.5.5</span> Viridis palettes</h3>
-<pre class="r"><code>install.package(&quot;viridis&quot;)
+<pre class="r"><code>install.packages(&quot;viridis&quot;)
 library(viridis)</code></pre>
 <p>Read more here in the <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">viridis vignette</a>. The default argument for <code>discrete</code> is FALSE, so to use the discrete palettes you need to set <code>discrete = TRUE</code>. There are four colormap options available:</p>
 <ul>

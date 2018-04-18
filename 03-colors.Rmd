@@ -242,7 +242,7 @@ Because `geom_line` understands the `color` aesthetic, it will try to draw separ
 At this point, our plot is looking pretty good. But you may have noticed that the legend order doesn't match the lines. We can fix that using the [`forcats` package](http://forcats.tidyverse.org), which is `for` `cat`egorical variables. There are lots of functions in `forcats`.
 
 ```{r eval = FALSE}
-install.package("forcats")
+install.packages("forcats")
 library(forcats)
 ```
 
@@ -429,7 +429,7 @@ sound_traj +
 ### Colorbrewer
 
 ```{r eval = FALSE}
-install.package("RColorBrewer")
+install.packages("RColorBrewer")
 library(RColorBrewer)
 ```
 
@@ -453,7 +453,7 @@ sound_traj +
 My favorite!
 
 ```{r eval = FALSE}
-install.package("wesanderson")
+install.packages("wesanderson")
 library(wesanderson)
 ```
 
@@ -498,7 +498,7 @@ sound_traj +
 ### `ggthemes` palettes
 
 ```{r eval = FALSE}
-install.package("ggthemes")
+install.packages("ggthemes")
 library(ggthemes)
 ```
 
@@ -540,7 +540,7 @@ sound_traj +
 ### Viridis palettes
 
 ```{r eval = FALSE}
-install.package("viridis")
+install.packages("viridis")
 library(viridis)
 ```
 
