@@ -97,12 +97,30 @@ typeof(sounds$sound == "meow")
 ```
 
 ---
+# Even better: `glimpse`
+
+
+```r
+glimpse(sounds)
+```
+
+```
+Observations: 33
+Variables: 4
+$ age          &lt;dbl&gt; 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,...
+$ sound        &lt;chr&gt; "cockadoodledoo", "meow", "woof woof", "cockadood...
+$ kids_produce &lt;dbl&gt; 1, 0, 3, 0, 2, 2, 0, 5, 4, 0, 5, 12, 0, 12, 28, 9...
+$ kids_respond &lt;dbl&gt; 35, 35, 35, 91, 93, 93, 139, 145, 143, 94, 94, 94...
+```
+
+
+---
 # `sounds` (a subset)
 
 
 - `age`: child age in months
 - `sound`: a string describing a type of animal sound
-- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" (note that if the child produces a sound it is assumed that they understand it as well)
+- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" 
 - `kids_respond`: the number of parents who responded to this question at all
 
 &lt;table&gt;
@@ -474,20 +492,20 @@ At the end of today's lab, you'll see an extra section on continuous colors.
 ---
 ## But first: `shape`
 
-&lt;img src="03-slides_files/figure-html/unnamed-chunk-15-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-16-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Shapes with `color = "navy"`
 
 
-&lt;img src="03-slides_files/figure-html/unnamed-chunk-16-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-17-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 ## Shapes with `fill = "orchid"`
 
 
-&lt;img src="03-slides_files/figure-html/unnamed-chunk-17-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-18-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Default shape for `geom_point`

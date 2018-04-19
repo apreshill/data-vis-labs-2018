@@ -81,12 +81,20 @@ typeof(sounds$sound == "meow")
 ```
 
 ---
+# Even better: `glimpse`
+
+```{r}
+glimpse(sounds)
+```
+
+
+---
 # `sounds` (a subset)
 
 
 - `age`: child age in months
 - `sound`: a string describing a type of animal sound
-- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" (note that if the child produces a sound it is assumed that they understand it as well)
+- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" 
 - `kids_respond`: the number of parents who responded to this question at all
 
 ```{r echo = FALSE}
