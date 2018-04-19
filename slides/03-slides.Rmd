@@ -295,14 +295,28 @@ class: middle, center, inverse
 
 ---
 
-All very useful in a `summarize`!
+```{r include = FALSE}
+summary_table <- tibble::tribble(
+  ~Description, ~Usage,
+  "sum", "sum(x)",
+  "minimum", "min(x)",
+  "maximum", "max(x)",
+  "mean", "mean(x)",
+  "median", "mean(x)",
+  "standard deviation", "sd(x)",
+  "variance", "var(x)",
+  "rank", "rank(x)"
+)
+```
 
-sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!
 
-Especially useful after `group_by`
+```{r echo = FALSE, results = 'asis'}
+knitr::kable(summary_table, format = "html")
+```
 
-Look at the RStudio Base R Cheatsheet:
+* All allow for `na.rm` argument to remove `NA` values before summarizing. The default setting for this argument is *always* `na.rm = FALSE`, so if there is one `NA` value the summary will be `NA`.
 
+* See "Maths Functions" in the RStudio Base R Cheatsheet:
 https://github.com/rstudio/cheatsheets/blob/master/base-r.pdf
 
 ---

@@ -464,14 +464,55 @@ class: middle, center, inverse
 
 ---
 
-All very useful in a `summarize`!
 
-sum, min, max, var, sd, range, mean, median, min, max, quantile, so many!
 
-Especially useful after `group_by`
 
-Look at the RStudio Base R Cheatsheet:
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Description &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Usage &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sum &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; sum(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; minimum &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; min(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; maximum &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; max(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; mean &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; mean(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; median &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; mean(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; standard deviation &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; sd(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; variance &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; var(x) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rank &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; rank(x) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
+* All allow for `na.rm` argument to remove `NA` values before summarizing. The default setting for this argument is *always* `na.rm = FALSE`, so if there is one `NA` value the summary will be `NA`.
+
+* See "Maths Functions" in the RStudio Base R Cheatsheet:
 https://github.com/rstudio/cheatsheets/blob/master/base-r.pdf
 
 ---
@@ -492,20 +533,20 @@ At the end of today's lab, you'll see an extra section on continuous colors.
 ---
 ## But first: `shape`
 
-&lt;img src="03-slides_files/figure-html/unnamed-chunk-16-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-18-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Shapes with `color = "hotpink"`
 
 
-&lt;img src="03-slides_files/figure-html/unnamed-chunk-17-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-19-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 ## Shapes with `fill = "gold"`
 
 
-&lt;img src="03-slides_files/figure-html/unnamed-chunk-18-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-20-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Default shape for `geom_point`
