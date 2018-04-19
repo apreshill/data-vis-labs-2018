@@ -332,24 +332,24 @@ s <- ggplot(df, aes(x = x, y = y)) +
   scale_shape_identity() + 
   geom_text(aes(label = z, y = y - 1)) + 
   theme_void()
-s + geom_point(aes(shape = z), size = 4) 
+s + geom_point(aes(shape = z), size = 6) 
 ```
 
 ---
-## Shapes with `color = "navy"`
+## Shapes with `color = "hotpink"`
 
 
 ```{r echo = FALSE}
-s + geom_point(aes(shape = z), size = 4, colour = "navy") 
+s + geom_point(aes(shape = z), size = 6, colour = "hotpink") 
 ```
 
 
 ---
-## Shapes with `fill = "orchid"`
+## Shapes with `fill = "gold"`
 
 
 ```{r echo = FALSE}
-s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid") 
+s + geom_point(aes(shape = z), size = 6, colour = "hotpink", fill = "gold") 
 ```
 
 ---
