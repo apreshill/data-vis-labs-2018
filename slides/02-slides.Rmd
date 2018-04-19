@@ -93,6 +93,15 @@ From Lab 01
 ---
 class: middle, center, inverse
 
+![](../images/rladylego-pipe.jpg)
+
+## Plus: `%>%`
+
+*image courtesy [@LegoRLady](https://twitter.com/LEGO_RLady/status/986661916855754752)*
+
+---
+class: middle, center, inverse
+
 # ⌛️
 
 ## Let's review some helpful functions for `filter`

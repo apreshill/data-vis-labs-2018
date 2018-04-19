@@ -19,13 +19,13 @@ knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALS
 
 - Review `dplyr` functions learned in last lab and DataCamp course
 - Practice using `dplyr` functions to get to know a new dataset
-- Be able to map global plot aesthetics to variables in `ggplot2`
-- Be able to create facetted plots with `ggplot2`
+- Map global plot aesthetics to variables in `ggplot2`
+- Create facetted plots with `ggplot2`
 
 # Slides for today
 
 ```{r}
-knitr::include_url("https://apreshill.github.io/data-vis-labs-2018/slides/02-slides.html")
+knitr::include_url("slides/02-slides.html")
 ```
 
 

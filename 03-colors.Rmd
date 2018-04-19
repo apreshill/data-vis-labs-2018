@@ -24,6 +24,12 @@ library(viridis)
 
 There are 10 challenges total- none are in the "continuous colors" section, but you can use that section to complete the tenth challenge on your own. Upload your knitted html document by next Wednesday at noon to Sakai!
 
+# Slides for today
+
+```{r}
+knitr::include_url("slides/03-slides.html")
+```
+
 # Packages
 
 Other packages will be needed to be installed as you go- reveal the first code chunks when in doubt!
@@ -68,13 +74,15 @@ s + geom_point(aes(shape = z), size = 4)
 
 ---
 
-While all symbols have a foreground colour, symbols 21-25 also take a background colour (fill)
+All symbols have a foreground colour, so if we add `color = "navy"`, they all are affected.
 
 ```{r}
 s + geom_point(aes(shape = z), size = 4, colour = "navy") 
 ```
 
 ---
+
+While all symbols have a foreground colour, symbols 21-25 also take a background colour (fill). So if we add `fill = "orchid"`, only the last row of symbols are affected.
 
 ```{r}
 s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid") 
@@ -83,7 +91,7 @@ s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid")
 
 # Data
 
-For the rest of today, we'll play with the `sounds` dataset. This data was derived from the R package [`wordbankr`](http://langcog.github.io/wordbankr/), an R interface to access [Wordbank](http://wordbank.stanford.edu)- an open source database of children's vocabulary development. The tool used to measure children's language and communicative development is the [MacArthur-Bates Communicative Development Inventories (MB-CDI)](http://mb-cdi.stanford.edu). The MD-CDI is a parent-reported questionnaire.
+For the rest of today, we'll play with the `sounds` dataset. This data was derived from the R package [`wordbankr`](http://langcog.github.io/wordbankr/), an R interface to access [Wordbank](http://wordbank.stanford.edu)- an open source database of children's vocabulary development. The tool used to measure children's language and communicative development in this database is the [MacArthur-Bates Communicative Development Inventories (MB-CDI)](http://mb-cdi.stanford.edu). The MD-CDI is a parent-reported questionnaire.
 
 Here is a glimpse of the data:
 
@@ -91,19 +99,26 @@ Here is a glimpse of the data:
 glimpse(sounds)
 ```
 
-Variables
+
+Note that the unit of observation here is one-row-per-age-group/animal sound.
+
+
+Variables you need for this lab:
 
 - `age`: child age in months
 - `sound`: a string describing a type of animal sound
 - `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" (note that if the child produces a sound it is assumed that they understand it as well)
-- `kids_understand`: the number of parents who answered "yes, my child understands what this animal sound means" (note that a child can understand the sound but not produce it)
 - `kids_respond`: the number of parents who responded to this question at all
 - `prop_produce`: the proportion of kids whose parents endorsed that their child produces this animal sound, out of all questionnaires administered (i.e., `kids_produce / kids_respond`)
+
+Other variables in this dataset:
+
+- `kids_understand`: the number of parents who answered "yes, my child understands what this animal sound means" (note that a child can understand the sound but not produce it)
 - `prop_understand`: the proportion of kids whose parents endorsed that their child understands this animal sound, out of all questionnaires administered (i.e., `kids_understand / kids_respond`)
 
-Note that the unit of observation here is one-row-per-age-group/animal sound.
 
-# A note on discrete vs continuous variables
+
+# Discrete vs continuous variables
 
 [WHAT IS THE DIFFERENCE BETWEEN CATEGORICAL, ORDINAL AND INTERVAL VARIABLES?](https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-interval-variables/)
 
@@ -385,7 +400,7 @@ ggplot(sounds, aes(x = age,
 Answers: 
 
 - In the first, we used `scale_fill_manual`, but the in the global aesthetics, we mapped the `color`, not `fill`, aesthetic onto the `sound` variable.
-- In the second, we did define the `fill` aesthetic and used `scale_fill_manual`, so that is good. But `geom_line` only understands the `color` aesthetic, not `fill`. And for `geom_point`, the default shape for is 20, which does not understand the `fill` aesthetic.
+- In the second, we did define the `fill` aesthetic and used `scale_fill_manual`, so that is good. But `geom_line` only understands the `color` aesthetic, not `fill`. And for `geom_point`, the default shape for is 19, which does not understand the `fill` aesthetic.
 
 <div class="panel panel-success">
   <div class="panel-heading">Challenge #6:</div>

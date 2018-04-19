@@ -24,10 +24,142 @@ class: center, middle, inverse, title-slide
 
 
 
+# Data for today
 
+We'll use data from [Wordbank](http://wordbank.stanford.edu)- an open source database of children's vocabulary development. The tool used to measure children's language and communicative development in this database is the [MacArthur-Bates Communicative Development Inventories (MB-CDI)](http://mb-cdi.stanford.edu). The MB-CDI is a parent-reported questionnaire.
+
+- R package [`wordbankr`](https://cran.r-project.org/web/packages/wordbankr/index.html)
+- [`wordbankr` vignette](https://cran.r-project.org/web/packages/wordbankr/vignettes/wordbankr.html)
+- More about [Wordbank](http://wordbank.stanford.edu)
+- More about [MB-CDI](http://mb-cdi.stanford.edu)
+
+
+---
+# Get the data
+
+Use this code chunk to import my cleaned CSV file:
+
+
+```r
+library(readr)
+sounds &lt;- read_csv("http://bit.ly/cs631-meow")
+```
+
+
+---
+class: inverse, middle, center
+
+&lt;img src="../images/r-data-types.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+
+## RStudio Base R Cheatsheet
+
+https://github.com/rstudio/cheatsheets/blob/master/base-r.pdf
+
+
+---
+
+## Know your data types
+
+
+* Numeric (2 subtypes)
+    - Integers (`1, 50`)
+    - Double (`1.5, 50.25`, `?double`)
+* Character (`"hello"`)
+* Factor (`grade = "A" | grade = "B"`)
+* Logical (`TRUE | FALSE`)
+
+--
+
+
+```r
+typeof(sounds$age)
+```
+
+```
+[1] "double"
+```
+
+```r
+typeof(sounds$sound)
+```
+
+```
+[1] "character"
+```
+
+```r
+typeof(sounds$sound == "meow")
+```
+
+```
+[1] "logical"
+```
+
+---
+# `sounds` (a subset)
+
+
+- `age`: child age in months
+- `sound`: a string describing a type of animal sound
+- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" (note that if the child produces a sound it is assumed that they understand it as well)
+- `kids_respond`: the number of parents who responded to this question at all
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sound &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; kids_produce &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; kids_respond &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cockadoodledoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; meow &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; woof woof &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cockadoodledoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; meow &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; woof woof &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
 # Data types
 
-&lt;img src="http://r4ds.had.co.nz/diagrams/data-structures-overview.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="http://r4ds.had.co.nz/diagrams/data-structures-overview.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -38,13 +170,59 @@ class: middle, center, inverse
 ## Let's review 
 
 ---
-# Mutate
 
-- &lt;font color="#ED1941"&gt;Create a new variable with a specific value&lt;/font&gt;  
+# Data wrangling with `dplyr` 
 
-- Create a new variable based on other variables 
 
-- Change the contents of an existing variable
+.pull-left[
+From DataCamp Chapter 3
+
+- `group_by`
+
+- `summarize`
+
+
+]
+
+--
+
+.pull-right[
+Adding onto your arsenal of...
+
+- `filter`
+
+- `arrange`
+
+- `mutate`
+
+- `glimpse`
+
+- `distinct`
+
+- `count`
+
+- `tally`
+
+- `pull`
+
+- `top_n`
+]
+
+---
+class: middle, center, inverse
+
+# 😈
+
+## More on `mutate`
+
+---
+# 3 ways to `mutate` 
+
+1. &lt;font color="#ED1941"&gt;Create a new variable with a specific value&lt;/font&gt;  
+
+1. Create a new variable based on other variables 
+
+1. Change an existing variable
 
 --
 
@@ -72,14 +250,14 @@ sounds %&gt;%
 ```
 
 ---
-# Mutate
+# 3 ways to `mutate`
 
 
-- Create a new variable with a specific value
+1. Create a new variable with a specific value
 
-- &lt;font color="#ED1941"&gt;Create a new variable based on other variables&lt;/font&gt; 
+1. &lt;font color="#ED1941"&gt;Create a new variable based on other variables&lt;/font&gt; 
 
-- Change the contents of an existing variable
+1. Change an existing variable
 
 --
 
@@ -107,13 +285,13 @@ sounds %&gt;%
 ```
 
 ---
-# Mutate
+# 3 ways to `mutate`
 
-- Create a new variable with a specific value
+1. Create a new variable with a specific value
 
-- Create a new variable based on other variables
+1. Create a new variable based on other variables
 
-- &lt;font color="#ED1941"&gt;Change the contents of an existing variable&lt;/font&gt; 
+1. &lt;font color="#ED1941"&gt;Change an existing variable&lt;/font&gt; 
 
 --
 
@@ -165,7 +343,9 @@ class: middle, center, inverse
 
 #💡
 
-## First: Arithmetic
+## First: 
+
+## Arithmetic
 
 *especially useful for `mutate`*
 
@@ -259,6 +439,7 @@ class: middle, center, inverse
 ## Summaries
 
 *especially useful for `summarize`*
+
 *even more useful after a `group_by`*
 
 
@@ -290,8 +471,41 @@ Specifically, discrete colors.
 
 At the end of today's lab, you'll see an extra section on continuous colors. 
 
+---
+## But first: `shape`
+
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-15-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
+## Shapes with `color = "navy"`
+
+
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-16-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## Shapes with `fill = "orchid"`
+
+
+&lt;img src="03-slides_files/figure-html/unnamed-chunk-17-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+## Default shape for `geom_point`
+
+🕵🏽 Requires spelunking into the dark corners of the `ggplot2` code on [GitHub](https://github.com/tidyverse/ggplot2/blob/master/R/geom-point.r):
+
+
+```r
+default_aes = aes(
+    shape = 19, colour = "black", size = 1.5, fill = NA,
+    alpha = NA, stroke = 0.5
+  )
+```
+
+So, the default for `geom_point(shape = 19)`! This is important to remember: this shape only "understands" the *color* aesthetic, but not the *fill* aesthetic.
+
+---
+
 class: inverse, middle, center
 
 # 👇🏽

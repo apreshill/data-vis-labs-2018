@@ -16,7 +16,7 @@ output:
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
   comment = NA, dpi = 300,
-  fig.align = "center", out.width = "80%", cache = FALSE)
+  fig.align = "center", out.width = "65%", cache = FALSE)
 library(tidyverse)
 ```
 
@@ -26,7 +26,76 @@ sounds <- read_csv(here::here("data", "animal_sounds_summary.csv")) %>%
 ```
 
 
+# Data for today
 
+We'll use data from [Wordbank](http://wordbank.stanford.edu)- an open source database of children's vocabulary development. The tool used to measure children's language and communicative development in this database is the [MacArthur-Bates Communicative Development Inventories (MB-CDI)](http://mb-cdi.stanford.edu). The MB-CDI is a parent-reported questionnaire.
+
+- R package [`wordbankr`](https://cran.r-project.org/web/packages/wordbankr/index.html)
+- [`wordbankr` vignette](https://cran.r-project.org/web/packages/wordbankr/vignettes/wordbankr.html)
+- More about [Wordbank](http://wordbank.stanford.edu)
+- More about [MB-CDI](http://mb-cdi.stanford.edu)
+
+
+---
+# Get the data
+
+Use this code chunk to import my cleaned CSV file:
+
+```{r eval = FALSE}
+library(readr)
+sounds <- read_csv("http://bit.ly/cs631-meow")
+```
+
+
+---
+class: inverse, middle, center
+
+```{r echo = FALSE}
+knitr::include_graphics("../images/r-data-types.png")
+```
+
+
+## RStudio Base R Cheatsheet
+
+https://github.com/rstudio/cheatsheets/blob/master/base-r.pdf
+
+
+---
+
+## Know your data types
+
+
+* Numeric (2 subtypes)
+    - Integers (`1, 50`)
+    - Double (`1.5, 50.25`, `?double`)
+* Character (`"hello"`)
+* Factor (`grade = "A" | grade = "B"`)
+* Logical (`TRUE | FALSE`)
+
+--
+
+```{r}
+typeof(sounds$age)
+typeof(sounds$sound)
+typeof(sounds$sound == "meow")
+```
+
+---
+# `sounds` (a subset)
+
+
+- `age`: child age in months
+- `sound`: a string describing a type of animal sound
+- `kids_produce`: the number of parents who answered "yes, my child produces this animal sound" (note that if the child produces a sound it is assumed that they understand it as well)
+- `kids_respond`: the number of parents who responded to this question at all
+
+```{r echo = FALSE}
+head(sounds) %>% knitr::kable(format = "html")
+```
+
+
+
+---
 # Data types
 
 ```{r echo = FALSE}
@@ -42,13 +111,59 @@ class: middle, center, inverse
 ## Let's review 
 
 ---
-# Mutate
 
-- <font color="#ED1941">Create a new variable with a specific value</font>  
+# Data wrangling with `dplyr` 
 
-- Create a new variable based on other variables 
 
-- Change the contents of an existing variable
+.pull-left[
+From DataCamp Chapter 3
+
+- `group_by`
+
+- `summarize`
+
+
+]
+
+--
+
+.pull-right[
+Adding onto your arsenal of...
+
+- `filter`
+
+- `arrange`
+
+- `mutate`
+
+- `glimpse`
+
+- `distinct`
+
+- `count`
+
+- `tally`
+
+- `pull`
+
+- `top_n`
+]
+
+---
+class: middle, center, inverse
+
+# 😈
+
+## More on `mutate`
+
+---
+# 3 ways to `mutate` 
+
+1. <font color="#ED1941">Create a new variable with a specific value</font>  
+
+1. Create a new variable based on other variables 
+
+1. Change an existing variable
 
 --
 
@@ -58,14 +173,14 @@ sounds %>%
 ```
 
 ---
-# Mutate
+# 3 ways to `mutate`
 
 
-- Create a new variable with a specific value
+1. Create a new variable with a specific value
 
-- <font color="#ED1941">Create a new variable based on other variables</font> 
+1. <font color="#ED1941">Create a new variable based on other variables</font> 
 
-- Change the contents of an existing variable
+1. Change an existing variable
 
 --
 
@@ -75,13 +190,13 @@ sounds %>%
 ```
 
 ---
-# Mutate
+# 3 ways to `mutate`
 
-- Create a new variable with a specific value
+1. Create a new variable with a specific value
 
-- Create a new variable based on other variables
+1. Create a new variable based on other variables
 
-- <font color="#ED1941">Change the contents of an existing variable</font> 
+1. <font color="#ED1941">Change an existing variable</font> 
 
 --
 
@@ -118,7 +233,9 @@ class: middle, center, inverse
 
 #💡
 
-## First: Arithmetic
+## First: 
+
+## Arithmetic
 
 *especially useful for `mutate`*
 
@@ -163,6 +280,7 @@ class: middle, center, inverse
 ## Summaries
 
 *especially useful for `summarize`*
+
 *even more useful after a `group_by`*
 
 
@@ -194,8 +312,54 @@ Specifically, discrete colors.
 
 At the end of today's lab, you'll see an extra section on continuous colors. 
 
+---
+## But first: `shape`
+
+```{r echo = FALSE}
+## A look at all 25 symbols
+df <- data.frame(x = 1:5, 
+                  y = rep(rev(seq(0, 24, by = 5)), each = 5), 
+                  z = 1:25)
+s <- ggplot(df, aes(x = x, y = y)) + 
+  scale_shape_identity() + 
+  geom_text(aes(label = z, y = y - 1)) + 
+  theme_void()
+s + geom_point(aes(shape = z), size = 4) 
+```
 
 ---
+## Shapes with `color = "navy"`
+
+
+```{r echo = FALSE}
+s + geom_point(aes(shape = z), size = 4, colour = "navy") 
+```
+
+
+---
+## Shapes with `fill = "orchid"`
+
+
+```{r echo = FALSE}
+s + geom_point(aes(shape = z), size = 4, colour = "navy", fill = "orchid") 
+```
+
+---
+## Default shape for `geom_point`
+
+🕵🏽 Requires spelunking into the dark corners of the `ggplot2` code on [GitHub](https://github.com/tidyverse/ggplot2/blob/master/R/geom-point.r):
+
+```{r eval = FALSE}
+default_aes = aes(
+    shape = 19, colour = "black", size = 1.5, fill = NA,
+    alpha = NA, stroke = 0.5
+  )
+```
+
+So, the default for `geom_point(shape = 19)`! This is important to remember: this shape only "understands" the *color* aesthetic, but not the *fill* aesthetic.
+
+---
+
 class: inverse, middle, center
 
 # 👇🏽
