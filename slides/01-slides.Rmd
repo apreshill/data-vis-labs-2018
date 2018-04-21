@@ -88,7 +88,7 @@ You enter commands line-by-line (as opposed to compiled languages).
 ---
 class: center, middle, inverse
 
-# 🗝
+# 🔓
 
 ## Make (& Borrow) Objects in R
 
@@ -101,6 +101,8 @@ RStudio Keyboard Shortcuts:
 OSX: `Option` + `-`
 
 Else: `Alt` + `-`
+
+*(the + means and, not the + key)*
 
 ---
 

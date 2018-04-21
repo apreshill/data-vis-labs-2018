@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 04: CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 04: CS631
+## Working with Tidy Data
+### Alison Hill
+
+---
+
+
+
+
+---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review 
+
+---
+
+## Data wrangling to date! 
+
+
+.pull-left[
+
+From `dplyr`:
+- `filter`
+- `arrange`
+- `mutate`
+- `group_by`
+- `summarize`
+- `glimpse`
+- `distinct`
+- `count`
+- `tally`
+- `pull`
+- `top_n`
+
+]
+
+--
+
+.pull-right[
+Let's add from `dplyr`:
+
+- `select`
+- `rename`
+- `recode`
+- `case_when`
+
+From `tidyr`:
+
+- `gather`
+- `separate`
+- `spread`
+- `unite`
+
+Plus 1 other package:
+
+- `skimr::skim`
+
+]
+---
+class: middle, inverse, center
+
+# 🌊
+
+## Workflows:
+
+http://r4ds.had.co.nz/workflow-projects.html
+
+https://www.tidyverse.org/articles/2017/12/workflow-vs-script/
+
+https://andrewbtran.github.io/NICAR/2018/workflow/docs/01-workflow_intro.html
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

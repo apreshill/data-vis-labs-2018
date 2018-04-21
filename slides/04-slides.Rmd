@@ -1,6 +1,6 @@
 ---
 title: "Lab 04: CS631"
-subtitle: ""
+subtitle: "Working with Tidy Data"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
@@ -19,6 +19,60 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE,
 library(tidyverse)
 ```
 
+
+---
+class: middle, center, inverse
+
+# ⌛️
+
+## Let's review 
+
+---
+
+## Data wrangling to date! 
+
+
+.pull-left[
+
+From `dplyr`:
+- `filter`
+- `arrange`
+- `mutate`
+- `group_by`
+- `summarize`
+- `glimpse`
+- `distinct`
+- `count`
+- `tally`
+- `pull`
+- `top_n`
+
+]
+
+--
+
+.pull-right[
+Let's add from `dplyr`:
+
+- `select`
+- `rename`
+- `recode`
+- `case_when`
+
+From `tidyr`:
+
+- `gather`
+- `separate`
+- `spread`
+- `unite`
+
+Plus 1 other package:
+
+- `skimr::skim`
+
+]
+---
+class: middle, inverse, center
 
 # 🌊
 

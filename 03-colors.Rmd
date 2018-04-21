@@ -767,10 +767,34 @@ sound_traj +
   scale_colour_manual(values = cbbPalette[c(3, 7, 8)])
 ```
 
+## Repel labels
+
+```{r}
+library(ggrepel)
+
+sounds <- sounds %>%
+  mutate(label = case_when(
+    age == max(age) ~ sound))
+
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   color = fct_reorder2(sound, age, prop_produce))) +
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = "Age (months)", 
+       y = "Proportion of Children Producing") +
+  geom_text_repel(aes(label = label),
+                  nudge_x = 1,
+                  direction = "y",
+                  na.rm = TRUE) +
+  guides(color = FALSE)
+```
 
 
 
 # Continuous colors
+
+*N.B. All of the example plots below are great examples of how **not** to use continuous colors. I'm showing these so you can see how to work with continuous color palettes, and to make this topic flow easier for you I'm sticking with original dataset.*
 
 ## Default continuous palette
 
@@ -914,6 +938,9 @@ Some data ideas:
 - MacArthur-Bates Communicative Development Inventory (MB-CDI), a family of parent-report questionnaires measuring children's vocabulary understanding and production
     - [R package `wordbankr`](https://cran.r-project.org/web/packages/wordbankr/index.html)
     - See my code [here](03a-meow-cleaning.html)
+- POTUS Executive Orders
+    - [Data](https://www.federalregister.gov/executive-orders)
+    - Follow Bob Rudis' code-through [here](https://rud.is/b/2018/04/18/examining-potus-executive-orders/)
 - National Electronic Injury Surveillance System (NEISS)
     - [R package `neiss`](https://github.com/hadley/neiss)
     - Follow Julia Silge's code-through [here](https://juliasilge.com/blog/your-floor/)

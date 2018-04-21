@@ -245,7 +245,11 @@ class: middle, center, inverse
 
 ## Arithmetic
 
-*especially useful for `mutate`*
+*especially useful for* `mutate`
+
+See:
+
+http://r4ds.had.co.nz/transform.html#mutate-funs
 
 ---
 
@@ -287,9 +291,13 @@ class: middle, center, inverse
 
 ## Summaries
 
-*especially useful for `summarize`*
+*especially useful for* `summarize`
 
-*even more useful after a `group_by`*
+*even more useful after a* `group_by`
+
+See:
+
+http://r4ds.had.co.nz/transform.html#summarise-funs
 
 
 

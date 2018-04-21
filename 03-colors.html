@@ -929,9 +929,32 @@ sound_traj +
   scale_colour_manual(values = cbbPalette[c(3, 7, 8)])</code></pre>
 <p><img src="03-colors_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 </div>
+<div id="repel-labels" class="section level2">
+<h2><span class="header-section-number">9.8</span> Repel labels</h2>
+<pre class="r"><code>library(ggrepel)
+
+sounds &lt;- sounds %&gt;%
+  mutate(label = case_when(
+    age == max(age) ~ sound))
+
+ggplot(sounds, aes(x = age, 
+                   y = prop_produce, 
+                   color = fct_reorder2(sound, age, prop_produce))) +
+  geom_smooth(se = FALSE, lwd = .5) +
+  geom_point(size = 2) +
+  labs(x = &quot;Age (months)&quot;, 
+       y = &quot;Proportion of Children Producing&quot;) +
+  geom_text_repel(aes(label = label),
+                  nudge_x = 1,
+                  direction = &quot;y&quot;,
+                  na.rm = TRUE) +
+  guides(color = FALSE)</code></pre>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+</div>
 </div>
 <div id="continuous-colors" class="section level1">
 <h1><span class="header-section-number">10</span> Continuous colors</h1>
+<p><em>N.B. All of the example plots below are great examples of how <strong>not</strong> to use continuous colors. I’m showing these so you can see how to work with continuous color palettes, and to make this topic flow easier for you I’m sticking with original dataset.</em></p>
 <div id="default-continuous-palette" class="section level2">
 <h2><span class="header-section-number">10.1</span> Default continuous palette</h2>
 <p>Let’s map color to a continuous variable. For this, we are returning to <code>geom_line</code> instead of <code>geom_smooth</code>, because the latter doesn’t respond to continuous color palettes.</p>
@@ -943,25 +966,25 @@ sound_traj +
   labs(x = &quot;Age (months)&quot;, 
        y = &quot;Proportion of Children Producing&quot;)
 sound_by_age</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
 </div>
 <div id="color-choice-with-continuous-variables" class="section level2">
 <h2><span class="header-section-number">10.2</span> Color choice with continuous variables</h2>
 <p>With discrete colors, we used either <code>scale_color_manual</code> or <code>scale_fill_manual</code> (and sometimes both were needed!). For continuous colors, we use either <code>scale_color_gradient</code> or <code>scale_fill_gradient</code>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 <p>You can reverse the gradient scale…</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient(trans = &quot;reverse&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient(low = &quot;white&quot;, high = &quot;red&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
 <p>We can make this same plot using a custom greyscale gradient.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradient(low = &quot;grey90&quot;, high = &quot;black&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
 <p>So <code>scale_color_gradient</code> gives you a sequential gradient, but you may want a diverging color scheme instead. For that, you can use <code>scale_color_gradient2</code></p>
 <pre class="r"><code># Diverging color scheme
 med_age &lt;- sounds %&gt;% 
@@ -970,7 +993,7 @@ med_age &lt;- sounds %&gt;%
 sound_by_age +
   scale_color_gradient2(midpoint = med_age,
                       low=&quot;blue&quot;, mid=&quot;white&quot;, high=&quot;red&quot; )</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 </div>
 <div id="built-in-continuous-palettes" class="section level2">
 <h2><span class="header-section-number">10.3</span> Built-in continuous palettes</h2>
@@ -981,11 +1004,11 @@ sound_by_age +
 <p>Then use <code>scale_color_gradientn</code>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradientn(colours = brewer.pal(n=5, name=&quot;PuBuGn&quot;))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
 <p>Reverse the colors…</p>
 <pre class="r"><code>sound_by_age +
   scale_color_gradientn(colours = rev(brewer.pal(n=5, name=&quot;PuBuGn&quot;)))</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 </div>
 <div id="viridis" class="section level3">
 <h3><span class="header-section-number">10.3.2</span> Viridis</h3>
@@ -995,14 +1018,14 @@ sound_by_age +
 <p>Note! For discrete == FALSE (the default) all other arguments are as to <code>scale_fill_gradientn</code> or <code>scale_color_gradientn</code>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_viridis()</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <pre class="r"><code>sound_by_age +
   scale_color_viridis(option = &quot;magma&quot;)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
 <p>Read the help function for <code>?scale_color_viridis</code>. We’ll use the “inferno” palette <em>in reverse</em>.</p>
 <pre class="r"><code>sound_by_age +
   scale_color_viridis(option = &quot;inferno&quot;, begin = 1, end = 0)</code></pre>
-<p><img src="03-colors_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="03-colors_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -1031,6 +1054,11 @@ Challenge #10:
 <ul>
 <li><a href="https://cran.r-project.org/web/packages/wordbankr/index.html">R package <code>wordbankr</code></a></li>
 <li>See my code <a href="03a-meow-cleaning.html">here</a></li>
+</ul></li>
+<li>POTUS Executive Orders
+<ul>
+<li><a href="https://www.federalregister.gov/executive-orders">Data</a></li>
+<li>Follow Bob Rudis’ code-through <a href="https://rud.is/b/2018/04/18/examining-potus-executive-orders/">here</a></li>
 </ul></li>
 <li>National Electronic Injury Surveillance System (NEISS)
 <ul>
