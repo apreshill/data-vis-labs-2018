@@ -29,6 +29,7 @@ New ones to install:
 install.packages("ggbeeswarm")
 install.packages("skimr")
 install.packages("janitor")
+install.packages("ggridges")
 ```
 
 
@@ -39,6 +40,7 @@ library(tidyverse)
 library(ggbeeswarm)
 library(skimr)
 library(janitor)
+library(ggridges)
 ```
 
 # Make the data
@@ -505,6 +507,33 @@ ggplot(four, aes(x = dist, y = vals)) +
     coord_flip()
 ```
 
+
+# Ridgeline plots
+
+Typically makes the most sense to have the factor variable like `dist` on the y-axis for these.
+
+https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+
+```{r}
+# scale = 0.9, not quite touching
+ggplot(four, aes(x = vals, y = dist)) +
+  geom_density_ridges(scale = 0.9, 
+                      fill = "lightseagreen", 
+                      alpha = .5)
+```
+
+# Raincloud plots
+
+https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+
+```{r}
+ggplot(four, aes(x = vals, y = dist)) +
+  geom_density_ridges(jittered_points = TRUE, 
+                      position = "raincloud",
+                      fill = "lightseagreen", 
+                      alpha = 0.7, 
+                      scale = 0.7)
+```
 
 
 

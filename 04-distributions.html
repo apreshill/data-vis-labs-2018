@@ -316,12 +316,14 @@ div.tocify {
 <p>New ones to install:</p>
 <pre class="r"><code>install.packages(&quot;ggbeeswarm&quot;)
 install.packages(&quot;skimr&quot;)
-install.packages(&quot;janitor&quot;)</code></pre>
+install.packages(&quot;janitor&quot;)
+install.packages(&quot;ggridges&quot;)</code></pre>
 <p>To load:</p>
 <pre class="r"><code>library(tidyverse)
 library(ggbeeswarm)
 library(skimr)
-library(janitor)</code></pre>
+library(janitor)
+library(ggridges)</code></pre>
 </div>
 <div id="make-the-data" class="section level1">
 <h1><span class="header-section-number">3</span> Make the data</h1>
@@ -671,11 +673,33 @@ ggplot(four, aes(x = vals, fill = dist)) +
     coord_flip()</code></pre>
 <p><img src="04-distributions_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
+<div id="ridgeline-plots" class="section level1">
+<h1><span class="header-section-number">12</span> Ridgeline plots</h1>
+<p>Typically makes the most sense to have the factor variable like <code>dist</code> on the y-axis for these.</p>
+<p><a href="https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html" class="uri">https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html</a></p>
+<pre class="r"><code># scale = 0.9, not quite touching
+ggplot(four, aes(x = vals, y = dist)) +
+  geom_density_ridges(scale = 0.9, 
+                      fill = &quot;lightseagreen&quot;, 
+                      alpha = .5)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="raincloud-plots" class="section level1">
+<h1><span class="header-section-number">13</span> Raincloud plots</h1>
+<p><a href="https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html" class="uri">https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html</a></p>
+<pre class="r"><code>ggplot(four, aes(x = vals, y = dist)) +
+  geom_density_ridges(jittered_points = TRUE, 
+                      position = &quot;raincloud&quot;,
+                      fill = &quot;lightseagreen&quot;, 
+                      alpha = 0.7, 
+                      scale = 0.7)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
 <div id="plotting-summary-statistics" class="section level1">
-<h1><span class="header-section-number">12</span> Plotting summary statistics</h1>
+<h1><span class="header-section-number">14</span> Plotting summary statistics</h1>
 <p>The more general <code>stat_summary</code> function applies a summary function to the variable mapped to y at each x value.</p>
 <div id="means-and-error-bars" class="section level2">
-<h2><span class="header-section-number">12.1</span> Means and error bars</h2>
+<h2><span class="header-section-number">14.1</span> Means and error bars</h2>
 <p>The simplest summary function is <code>mean_se</code>, which returns the mean and the mean plus its standard error on each side. Thus, <code>stat_summary</code> will calculate and plot the mean and standard errors for the y variable at each x value.</p>
 <p>The default geom is “pointrange” which places a dot at the central y value and extends lines to the minimum and maximum y values. Other geoms you might consider to display summarized data:</p>
 <ul>
@@ -705,14 +729,14 @@ ggplot(four, aes(x = vals, fill = dist)) +
 </ul>
 <pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
   stat_summary(fun.data = &quot;mean_se&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
   stat_summary(fun.y = &quot;mean&quot;, geom = &quot;point&quot;) +
   stat_summary(fun.y = &quot;max&quot;, geom = &quot;point&quot;, shape = 21)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
   stat_summary(fun.data = median_hilow)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>You may have noticed two different arguments that are potentially confusing: <code>fun.data</code> and <code>fun.y</code>. If the function returns three values, specify the function with the argument <code>fun.data</code>. If the function returns one value, specify <code>fun.y</code>. See below.</p>
 <pre class="r"><code>x &lt;- c(1, 2, 3)
 mean(x) # use fun.y</code></pre>
@@ -723,7 +747,7 @@ mean(x) # use fun.y</code></pre>
 <p>Confidence limits may give us a better idea than standard error limits of whether two means would be deemed statistically different when modeling, so we frequently use <code>mean_cl_normal</code> or <code>mean_cl_boot</code> in addition to <code>mean_se</code>.</p>
 </div>
 <div id="connecting-means-with-lines" class="section level2">
-<h2><span class="header-section-number">12.2</span> Connecting means with lines</h2>
+<h2><span class="header-section-number">14.2</span> Connecting means with lines</h2>
 <p>Using the <code>ToothGrowth</code> dataset</p>
 <pre class="r"><code>data(ToothGrowth)
 tg &lt;- ToothGrowth</code></pre>
@@ -731,19 +755,19 @@ tg &lt;- ToothGrowth</code></pre>
 ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
   stat_summary(fun.data = &quot;mean_se&quot;) +
   ggtitle(&quot;Mean +/- SE&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code># Connect the points with lines
 ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
   stat_summary(fun.data = &quot;mean_se&quot;) +
   stat_summary(fun.y = mean, geom = &quot;line&quot;) +
   ggtitle(&quot;Mean +/- SE&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 <pre class="r"><code># Use 95% confidence interval instead of SEM
 ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
   stat_summary(fun.data = &quot;mean_cl_normal&quot;) +
   stat_summary(fun.y = mean, geom = &quot;line&quot;) +
   ggtitle(&quot;Mean with 95% confidence intervals&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
 <pre class="r"><code># The errorbars overlapped, so use position_dodge to move them horizontally
 pd &lt;- position_dodge(0.1) # move them .05 to the left and right
 
@@ -751,29 +775,29 @@ ggplot(tg, aes(x = dose, y = len, colour = supp)) +
   stat_summary(fun.data = &quot;mean_cl_normal&quot;, position = pd) +
   stat_summary(fun.y = mean, geom = &quot;line&quot;, position = pd) +
   ggtitle(&quot;Mean with 95% confidence intervals&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-4.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-4.png" width="672" /></p>
 <p>Not the best example for this geom, but another good one for showing variability…</p>
 <pre class="r"><code># ribbon geom
 ggplot(tg, aes(x = dose, y = len, colour = supp, fill = supp)) + 
   stat_summary(fun.y = mean, geom = &quot;line&quot;) +
   stat_summary(fun.data = mean_se, geom = &quot;ribbon&quot;, alpha = .5)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 <div id="bars-with-error-bars" class="section level2">
-<h2><span class="header-section-number">12.3</span> Bars with error bars</h2>
+<h2><span class="header-section-number">14.3</span> Bars with error bars</h2>
 <p>If you must…</p>
 <pre class="r"><code># Standard error of the mean; note positioning
 ggplot(tg, aes(x = factor(dose), y = len, fill = supp)) + 
   stat_summary(fun.y = mean, geom = &quot;bar&quot;, position = position_dodge(width = .9)) +
   stat_summary(fun.data = mean_se, geom = &quot;linerange&quot;, position = position_dodge(width = .9)) +
   ggtitle(&quot;Mean +/- SE&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code># Use 95% confidence interval instead of SEM
 ggplot(tg, aes(x = factor(dose), y = len, fill = supp)) + 
   stat_summary(fun.y = mean, geom = &quot;bar&quot;, position = position_dodge(width = .9)) +
   stat_summary(fun.data = mean_cl_boot, geom = &quot;linerange&quot;, position = position_dodge(width = .9)) +
   ggtitle(&quot;Mean with 95% confidence intervals&quot;)</code></pre>
-<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <p>More help here: <a href="http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/" class="uri">http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/</a></p>
 </div>
 </div>
