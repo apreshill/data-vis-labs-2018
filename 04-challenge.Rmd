@@ -24,7 +24,7 @@ Both challenges are due by noon via Sakai on Wednesday May 2. For the first tidy
 
 Install and load the `gapminder` data package. This is the same data that was used in your Datacamp "Introduction to the Tidyverse" course!
 
-``` r
+```{r eval = FALSE}
 install.packages("gapminder")
 library(gapminder)
 ?gapminder
