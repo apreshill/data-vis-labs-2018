@@ -514,8 +514,8 @@ Typically makes the most sense to have the factor variable like `dist` on the y-
 
 https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
 
-```{r}
-# scale = 0.9, not quite touching
+```{r ggridgeline}
+# play with scale
 ggplot(four, aes(x = vals, y = dist)) +
   geom_density_ridges(scale = 0.9, 
                       fill = "lightseagreen", 
@@ -526,7 +526,7 @@ ggplot(four, aes(x = vals, y = dist)) +
 
 https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
 
-```{r}
+```{r ggraincloud}
 ggplot(four, aes(x = vals, y = dist)) +
   geom_density_ridges(jittered_points = TRUE, 
                       position = "raincloud",
