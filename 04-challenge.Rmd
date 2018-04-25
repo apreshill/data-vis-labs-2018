@@ -17,6 +17,7 @@ Both challenges are due by noon via Sakai on Wednesday May 2. For the first tidy
     - http://bit.ly/cs631-lotr-fship
     - http://bit.ly/cs631-lotr-ttow
     - http://bit.ly/cs631-lotr-rking
+    - The columsn `male` and `female` are *number of words spoken*
 
 
 
