@@ -1,0 +1,303 @@
+---
+title: "Lab 04: Distributions & Summary Statistics"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    theme: flatly
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 2
+    number_sections: TRUE
+    code_folding: hide
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+library(RColorBrewer)
+library(wesanderson)
+library(ggthemes)
+library(beyonce)
+library(viridis)
+```
+
+# Overview
+
+There are 10 challenges total- none are in the "continuous colors" section, but you can use that section to complete the tenth challenge on your own. Upload your knitted html document by next Wednesday at noon to Sakai!
+
+# Slides for today
+
+```{r}
+knitr::include_url("slides/03-slides.html")
+```
+
+# Packages
+
+Other packages will be needed to be installed as you go- reveal the first code chunks when in doubt!
+
+```{r}
+library(tidyverse)
+```
+
+# Read in the data
+
+Use this code chunk to read in the data available at [http://bit.ly/cs631-meow](http://bit.ly/cs631-meow):
+
+```{r}
+sounds <- read_csv("http://bit.ly/cs631-meow")
+```
+
+Or store it locally:
+
+```{r}
+sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
+```
+
+
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, eval = TRUE)
+```
+
+```{r load_packages, include = FALSE}
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(moments)))
+suppressWarnings(suppressMessages(library(psych)))
+suppressWarnings(suppressMessages(library(tidyr)))
+suppressWarnings(suppressMessages(library(beeswarm)))
+suppressWarnings(suppressMessages(library(SuppDists)))
+suppressWarnings(suppressMessages(library(vioplot)))
+suppressWarnings(suppressMessages(library(beanplot)))
+suppressWarnings(suppressMessages(library(ggbeeswarm)))
+suppressWarnings(suppressMessages(library(Rmisc)))
+```
+
+
+Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes. 
+
+1. A standard normal (`n`);
+2. A skew-right distribution (`s`, Johnson distribution with skewness 2.2 and kurtosis 13);
+3. A leptikurtic distribution (`k`, Johnson distribution with skewness 0
+and kurtosis 30);
+4. A bimodal distribution (`mm`, two normals with mean -0.95 and 0.95 and standard deviation 0.31). 
+
+```{r find_params}
+#install.packages("SuppDists")
+#library(SuppDists)
+# this is used later to generate the s and k distributions
+findParams <- function(mu, sigma, skew, kurt) {
+  value <- .C("JohnsonMomentFitR", as.double(mu), as.double(sigma), 
+    as.double(skew), as.double(kurt - 3), gamma = double(1), 
+    delta = double(1), xi = double(1), lambda = double(1), 
+    type = integer(1), PACKAGE = "SuppDists")
+   list(gamma = value$gamma, delta = value$delta, 
+    xi = value$xi, lambda = value$lambda, 
+    type = c("SN", "SL", "SU", "SB")[value$type])  
+}
+```
+
+
+```{r make_data}
+# Generate sample data -------------------------------------------------------
+set.seed(141079)
+# normal
+n <- rnorm(100)
+# right-skew
+s <- rJohnson(100, findParams(0, 1, 2.2, 13))
+# leptikurtic
+k <- rJohnson(100, findParams(0, 1, 0, 30))
+# mixture
+mm <- rnorm(100, rep(c(-1, 1), each = 50) * sqrt(0.9), sqrt(0.1))
+```
+
+Let's see what our descriptive statistics look like:
+
+```{r desc_stats}
+four_wide <- data.frame(cbind(n, s, k, mm))
+psych::describe(four_wide)
+```
+
+What do you notice? For which distributions are the standard measures of central tendency, spread, and shape more accurate?
+
+# Histograms
+
+What you want to look for:
+
+* How many "mounds" do you see? (modality)
+* If 1 mound, find the peak: are the areas to the left and right of the peak symmetrical? (skewness)
+* Notice that kurtosis (peakedness) of the distribution is difficult to judge here, especially given the effects of differing binwidths.
+
+## Base R: `hist()`
+
+```{r base_hist}
+#2 x 2 histograms in base r graphics
+par(mar = c(3.0, 3.0, 1, 1))
+par(mfrow=c(2,2))
+hist(n)
+hist(s)
+hist(k)
+hist(mm)
+```
+
+What makes these histograms difficult to compare? A few things:
+
+* Differing y-axes
+* Differing x-axes
+* Differing bin size
+
+
+
+# Boxplots (medium to large N)
+
+What you want to look for:
+
+* The center line is the median: does the length of the distance to the upper hinge appear equal to the length to the lower hinge? (symmetry/skewness: Q3 - Q2/Q2 - Q1)
+* Are there many outliers? 
+* Notice that modality of the distribution is difficult to judge here.
+
+## Base R: `boxplot()`
+
+Note that if `varwidth` is TRUE, the boxes are drawn with widths proportional to the square-roots of the number of observations in the groups. It doesn't matter here since all 4 distributions contain 100 values.
+
+```{r base_box}
+#Just Boxplot
+par(mar = c(2.1, 2.1, .1, .1))
+boxplot(vals ~ dist, 
+        data = four, 
+        ylim = c(-4,4),
+        varwidth = TRUE) #vary width by n
+```
+
+
+# Univariate scatterplots (small to medium n)
+
+Options:
+
+* [Stripchart](http://stat.ethz.ch/R-manual/R-patched/library/graphics/html/stripchart.html): "one dimensional scatter plots (or dot plots) of the given data. These plots are a good alternative to boxplots when sample sizes are small."
+* [Beeswarm](https://cran.r-project.org/web/packages/beeswarm/beeswarm.pdf): "A bee swarm plot is a one-dimensional scatter plot similar to 'stripchart', except that would-be overlapping points are separated such that each is visible."
+
+
+
+## Base R: `stripchart()`
+
+```{r basestrip}
+par(mar = c(2.1, 2.1, .1, .1))
+stripchart(vals ~ dist, 
+           data = four, 
+           pch = 16, 
+           ylim = c(-4,4),
+           method = "jitter",
+           vertical = TRUE,
+           col = rgb(32, 178, 170, 100, max = 255))
+```
+
+[From statmethods.net](http://www.statmethods.net/graphs/scatterplot.html): You can use the `col2rgb()` function to get the rbg values for R colors. For example, `col2rgb("lightseagreen")` yeilds r = 32, g = 178, b = 170. Then add the alpha transparency level as the 4th number in the color vector. Alpha values range from 0 (fully transparent) to 255 (opaque). You must also specify max = 255. See `help(rgb)` for more information.
+
+
+## Beeswarm package: `beeswarm()`
+
+```{r beeswarm}
+# install.packages("beeswarm")
+# library(beeswarm)
+#par(mfrow = c(1,1))
+par(mar = c(2.1, 2.1, .1, .1))
+beeswarm(vals ~ dist, 
+         data = four, 
+         pch = 20, 
+         col="lightseagreen",
+         ylim=c(-4,4))
+```
+
+
+Note that these recommendations do not apply if your data is "big". You will know your data is too big if you try the below methods and you can't see many of the individual points (typically, N > 100). 
+
+# Boxplots + univariate scatterplots (small to medium n)
+
+## Base R plus beeswarm package: `boxplot()`, `beeswarm(add = TRUE)`
+
+```{r basebox_bee}
+#install.packages("beeswarm")
+#library(beeswarm)
+par(mar = c(2.1, 2.1, .1, .1))
+boxplot(vals ~ dist, #make the boxplot first
+        data = four, 
+        outline = FALSE, #avoid double-plotting outliers-beeswarm will plot them too
+        ylim = c(-4, 4))    
+beeswarm(vals ~ dist, 
+         data = four, 
+         pch = 20, 
+         col = "lightseagreen",
+         ylim = c(-4, 4), 
+         add = TRUE) #this is how you layer on top of the boxplot
+```
+
+## Base R: `boxplot()`, `stripchart(add = TRUE)`
+
+```{r basebox_strip}
+par(mar = c(2.1, 2.1, .1, .1))
+boxplot(vals ~ dist, #make the boxplot first
+        data = four, 
+        outline = FALSE, #avoid double-plotting outliers-beeswarm will plot them too
+        ylim = c(-4, 4))  
+stripchart(vals ~ dist, 
+           data = four, 
+           vertical = TRUE, 
+           method = "jitter", 
+           pch = 16, 
+           add = TRUE, 
+           ylim = c(-4, 4), 
+           col = rgb(32, 178, 170, 100, max = 255))
+```
+
+
+
+# Density plots (medium to large n)
+
+A few ways to do this:
+
+* [Kernel density](https://chemicalstatistician.wordpress.com/2013/06/09/exploratory-data-analysis-kernel-density-estimation-in-r-on-ozone-pollution-data-in-new-york-and-ozonopolis/): "Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable. Kernel density estimation is a fundamental data smoothing problem where inferences about the population are made, based on a finite data sample." - from [wikipedia](https://en.wikipedia.org/wiki/Kernel_density_estimation)
+* [Violin plots](https://cran.r-project.org/web/packages/UsingR/UsingR.pdf): "This function serves the same utility as side-by-side boxplots, only it provides more detail about the different distribution. It plots violinplots instead of boxplots. That is, instead of a box, it uses the density function to plot the density. For skewed distributions, the results look like "violins". Hence the name." 
+    - Some violin plots also include the boxplot so you can see Q1/Q2/Q3.
+* [Beanplots](https://cran.r-project.org/web/packages/beanplot/vignettes/beanplot.pdf): "The name beanplot stems from green beans. The density shape can be seen as the pod of a green bean, while the scatter plot shows the seeds inside the pod."
+
+
+## Vioplot package: `vioplot()`
+
+Includes equivalent of boxplot.
+
+```{r vioplot}
+#install.packages("vioplot")
+#library(vioplot)
+par(mar = c(2.1, 2.1, .1, .1))
+with(four, vioplot(vals[dist == "n"], 
+                   vals[dist == "s"], 
+                   vals[dist == "k"], 
+                   vals[dist == "mm"],
+                   horizontal = FALSE,
+                   names = c("n", "s", "k", "mm"),
+                   col = "lightseagreen",
+                   ylim = c(-4, 4)))
+```
+
+
+## Beanplot package: `beanplot()`
+
+The default `beanlines` for each bean is the mean- you can also use the median or quantiles. The default `overallline` is the mean, again you can use the median instead.
+
+```{r beanplot}
+#install.packages("beanplot")
+#library(beanplot)
+par(mar = c(2.1, 2.1, .1, .1))
+beanplot(vals ~ dist, 
+         data = four, 
+         ylim = c(-4, 4),
+         method = "jitter", #handling overlapping beans
+         col = c("lightblue", "lightseagreen", "lightseagreen"), 
+         border = "lightblue")
+```
+
+
+
+
+
+
+

@@ -21,7 +21,6 @@ class: center, middle, inverse, title-slide
 
 
 
----
 class: middle, center, inverse
 
 # ⌛️
@@ -72,18 +71,345 @@ Plus 1 other package:
 - `skimr::skim`
 
 ]
+
+---
+
+# Un-tidy cakes
+
+
+
+
+.pull-left[
+
+```
+# A tibble: 2 x 4
+  series challenge    cake pie_tart
+  &lt;fct&gt;  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+1 1      showstopper    5.       5.
+2 1      signature     12.       4.
+```
+
+```
+# A tibble: 2 x 4
+  series challenge    cake pie_tart
+  &lt;fct&gt;  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+1 2      showstopper    8.      17.
+2 2      signature     21.       7.
+```
+]
+
+--
+
+
+.pull-right[
+
+```
+# A tibble: 2 x 4
+  series challenge    cake pie_tart
+  &lt;fct&gt;  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+1 3      showstopper   12.      17.
+2 3      signature     24.      12.
+```
+
+```
+# A tibble: 2 x 4
+  series challenge    cake pie_tart
+  &lt;fct&gt;  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+1 4      showstopper   27.       9.
+2 4      signature     11.      15.
+```
+]
+
+---
+
+# Still un-tidy cakes
+
+
+
+```r
+cakes_untidy %&gt;% 
+  bind_rows()
+```
+
+```
+# A tibble: 16 x 4
+   series challenge    cake pie_tart
+   &lt;fct&gt;  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+ 1 1      showstopper    5.       5.
+ 2 1      signature     12.       4.
+ 3 2      showstopper    8.      17.
+ 4 2      signature     21.       7.
+ 5 3      showstopper   12.      17.
+ 6 3      signature     24.      12.
+ 7 4      showstopper   27.       9.
+ 8 4      signature     11.      15.
+ 9 5      showstopper   20.       6.
+10 5      signature      4.       7.
+11 6      showstopper   12.       0.
+12 6      signature     20.      17.
+13 7      showstopper   19.       3.
+14 7      signature     11.      10.
+15 8      showstopper   26.      12.
+16 8      signature     21.       8.
+```
+
+
+---
+
+# Finally tidy cakes
+
+
+```r
+cakes_tidy &lt;- cakes_untidy %&gt;% 
+  gather(bake_type, num_bakes, cake:pie_tart, 
+         factor_key = TRUE) %&gt;% 
+  arrange(series)
+cakes_tidy
+```
+
+```
+# A tibble: 32 x 4
+   series challenge   bake_type num_bakes
+   &lt;fct&gt;  &lt;chr&gt;       &lt;fct&gt;         &lt;dbl&gt;
+ 1 1      showstopper cake             5.
+ 2 1      signature   cake            12.
+ 3 1      showstopper pie_tart         5.
+ 4 1      signature   pie_tart         4.
+ 5 2      showstopper cake             8.
+ 6 2      signature   cake            21.
+ 7 2      showstopper pie_tart        17.
+ 8 2      signature   pie_tart         7.
+ 9 3      showstopper cake            12.
+10 3      signature   cake            24.
+# ... with 22 more rows
+```
+
 ---
 class: middle, inverse, center
 
-# 🌊
+## Know Your Tidy Data
 
-## Workflows:
+---
 
-http://r4ds.had.co.nz/workflow-projects.html
 
-https://www.tidyverse.org/articles/2017/12/workflow-vs-script/
+```r
+glimpse(cakes_tidy)
+```
 
-https://andrewbtran.github.io/NICAR/2018/workflow/docs/01-workflow_intro.html
+```
+Observations: 32
+Variables: 4
+$ series    &lt;fct&gt; 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5...
+$ challenge &lt;chr&gt; "showstopper", "signature", "showstopper", "signatur...
+$ bake_type &lt;fct&gt; cake, cake, pie_tart, pie_tart, cake, cake, pie_tart...
+$ num_bakes &lt;dbl&gt; 5, 12, 5, 4, 8, 21, 17, 7, 12, 24, 17, 12, 27, 11, 9...
+```
+
+
+---
+
+
+```r
+library(skimr)
+skim(cakes_tidy)
+```
+
+```
+Skim summary statistics
+ n obs: 32 
+ n variables: 4 
+
+Variable type: character 
+   variable missing complete  n min max empty n_unique
+1 challenge       0       32 32   9  11     0        2
+
+Variable type: factor 
+   variable missing complete  n n_unique              top_counts ordered
+1 bake_type       0       32 32        2 cak: 16, pie: 16, NA: 0   FALSE
+2    series       0       32 32        8  1: 4, 2: 4, 3: 4, 4: 4   FALSE
+
+Variable type: numeric 
+   variable missing complete  n  mean  sd min p25 median  p75 max     hist
+1 num_bakes       0       32 32 12.56 7.1   0   7     12 17.5  27 ▂▆▇▇▁▇▂▃
+```
+
+---
+
+
+```r
+skim(cakes_tidy) %&gt;% 
+  summary() 
+```
+
+```
+A skim object    
+
+Name: cakes_tidy   
+Number of Rows: 32   
+Number of Columns: 4    
+    
+Column type frequency    
+character: 1   
+factor: 2   
+numeric: 1
+```
+
+
+---
+class: middle, inverse, center
+
+## Benefits of Tidy Data
+
+
+---
+
+
+
+```r
+cakes_tidy %&gt;% 
+  count(challenge, bake_type, wt = num_bakes, sort = TRUE)
+```
+
+```
+# A tibble: 4 x 3
+  challenge   bake_type     n
+  &lt;chr&gt;       &lt;fct&gt;     &lt;dbl&gt;
+1 showstopper cake       129.
+2 signature   cake       124.
+3 signature   pie_tart    80.
+4 showstopper pie_tart    69.
+```
+
+---
+
+
+
+```r
+cakes_tidy %&gt;% 
+  count(series, bake_type, wt = num_bakes)
+```
+
+```
+# A tibble: 16 x 3
+   series bake_type     n
+   &lt;fct&gt;  &lt;fct&gt;     &lt;dbl&gt;
+ 1 1      cake        17.
+ 2 1      pie_tart     9.
+ 3 2      cake        29.
+ 4 2      pie_tart    24.
+ 5 3      cake        36.
+ 6 3      pie_tart    29.
+ 7 4      cake        38.
+ 8 4      pie_tart    24.
+ 9 5      cake        24.
+10 5      pie_tart    13.
+11 6      cake        32.
+12 6      pie_tart    17.
+13 7      cake        30.
+14 7      pie_tart    13.
+15 8      cake        47.
+16 8      pie_tart    20.
+```
+
+---
+
+
+```r
+library(skimr)
+cakes_tidy %&gt;% 
+  group_by(bake_type) %&gt;% 
+  select_if(is.numeric) %&gt;% 
+  skim()
+```
+
+```
+Skim summary statistics
+ n obs: 32 
+ n variables: 2 
+ group variables: bake_type 
+
+Variable type: numeric 
+  bake_type  variable missing complete  n  mean   sd min   p25 median
+1      cake num_bakes       0       16 16 15.81 7.31   4 11      15.5
+2  pie_tart num_bakes       0       16 16  9.31 5.3    0  5.75    8.5
+    p75 max     hist
+1 21     27 ▃▂▇▁▁▇▂▃
+2 12.75  17 ▂▃▃▆▃▃▁▇
+```
+
+See: https://suzanbaert.netlify.com/2018/01/dplyr-tutorial-1/
+
+---
+
+
+
+```r
+cakes_by_series &lt;- cakes_tidy %&gt;% 
+  count(series, bake_type, wt = num_bakes) 
+cakes_by_series
+```
+
+```
+# A tibble: 16 x 3
+   series bake_type     n
+   &lt;fct&gt;  &lt;fct&gt;     &lt;dbl&gt;
+ 1 1      cake        17.
+ 2 1      pie_tart     9.
+ 3 2      cake        29.
+ 4 2      pie_tart    24.
+ 5 3      cake        36.
+ 6 3      pie_tart    29.
+ 7 4      cake        38.
+ 8 4      pie_tart    24.
+ 9 5      cake        24.
+10 5      pie_tart    13.
+11 6      cake        32.
+12 6      pie_tart    17.
+13 7      cake        30.
+14 7      pie_tart    13.
+15 8      cake        47.
+16 8      pie_tart    20.
+```
+
+---
+
+
+
+```r
+ggplot(cakes_by_series, aes(x = series, y = n, 
+                            color = bake_type,
+                            group = bake_type)) +
+  geom_point() +
+  geom_line() +
+  expand_limits(y = 0)
+```
+
+&lt;img src="04-slides_files/figure-html/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, inverse, center
+
+
+## You have 2 challenges today!
+
+Described [here](04-challenge.html)
+Reference lab [here](04-distributions.html)
+
+
+---
+class: middle, inverse, center
+
+# 🍱
+
+## Tidy Data:
+
+http://r4ds.had.co.nz/tidy-data.html
+
+http://moderndive.com/4-tidy.html
+
+http://vita.had.co.nz/papers/tidy-data.html
+
+https://github.com/jennybc/lotr-tidy#readme
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

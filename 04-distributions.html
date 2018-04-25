@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 04: Distributions &amp; Summary Statistics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="slides.html">Slides &amp; Reading</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 04: Distributions &amp; Summary Statistics</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="slides-for-today" class="section level1">
+<h1><span class="header-section-number">1</span> Slides for today</h1>
+<iframe src="slides/04-slides.html" width="672" height="400px">
+</iframe>
+</div>
+<div id="packages" class="section level1">
+<h1><span class="header-section-number">2</span> Packages</h1>
+<p>New ones to install:</p>
+<pre class="r"><code>install.packages(&quot;ggbeeswarm&quot;)
+install.packages(&quot;skimr&quot;)
+install.packages(&quot;janitor&quot;)</code></pre>
+<p>To load:</p>
+<pre class="r"><code>library(tidyverse)
+library(ggbeeswarm)
+library(skimr)
+library(janitor)</code></pre>
+</div>
+<div id="make-the-data" class="section level1">
+<h1><span class="header-section-number">3</span> Make the data</h1>
+<p>Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes.</p>
+<ol style="list-style-type: decimal">
+<li>A standard normal (<code>n</code>);</li>
+<li>A skew-right distribution (<code>s</code>, Johnson distribution with skewness 2.2 and kurtosis 13);</li>
+<li>A leptikurtic distribution (<code>k</code>, Johnson distribution with skewness 0 and kurtosis 30);</li>
+<li>A bimodal distribution (<code>mm</code>, two normals with mean -0.95 and 0.95 and standard deviation 0.31).</li>
+</ol>
+<pre class="r"><code>#install.packages(&quot;SuppDists&quot;)
+library(SuppDists)
+# this is used later to generate the s and k distributions
+findParams &lt;- function(mu, sigma, skew, kurt) {
+  value &lt;- .C(&quot;JohnsonMomentFitR&quot;, as.double(mu), as.double(sigma), 
+    as.double(skew), as.double(kurt - 3), gamma = double(1), 
+    delta = double(1), xi = double(1), lambda = double(1), 
+    type = integer(1), PACKAGE = &quot;SuppDists&quot;)
+   list(gamma = value$gamma, delta = value$delta, 
+    xi = value$xi, lambda = value$lambda, 
+    type = c(&quot;SN&quot;, &quot;SL&quot;, &quot;SU&quot;, &quot;SB&quot;)[value$type])  
+}</code></pre>
+<pre class="r"><code># Generate sample data -------------------------------------------------------
+set.seed(141079)
+# normal
+n &lt;- rnorm(100)
+# right-skew
+s &lt;- rJohnson(100, findParams(0, 1, 2.2, 13))
+# leptikurtic
+k &lt;- rJohnson(100, findParams(0, 1, 0, 30))
+# mixture
+mm &lt;- rnorm(100, rep(c(-1, 1), each = 50) * sqrt(0.9), sqrt(0.1))</code></pre>
+</div>
+<div id="tidy-the-data" class="section level1">
+<h1><span class="header-section-number">4</span> Tidy the data</h1>
+<pre class="r"><code>four &lt;- data.frame(
+  dist = factor(rep(c(&quot;n&quot;, &quot;s&quot;, &quot;k&quot;, &quot;mm&quot;), 
+                    each = 100),
+                c(&quot;n&quot;, &quot;s&quot;, &quot;k&quot;, &quot;mm&quot;)),
+  vals = c(n, s, k, mm)
+)</code></pre>
+</div>
+<div id="explore-the-data" class="section level1">
+<h1><span class="header-section-number">5</span> Explore the data</h1>
+<pre class="r"><code>glimpse(four)</code></pre>
+<pre><code>Observations: 400
+Variables: 2
+$ dist &lt;fct&gt; n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, ...
+$ vals &lt;dbl&gt; 0.91835807, -0.44302553, 2.83453800, -0.74480448, 1.44310...</code></pre>
+<p>Let’s see what our descriptive statistics look like:</p>
+<pre class="r"><code>skim(four)</code></pre>
+<pre><code>Skim summary statistics
+ n obs: 400 
+ n variables: 2 
+
+Variable type: factor 
+  variable missing complete   n n_unique                      top_counts
+1     dist       0      400 400        4 n: 100, s: 100, k: 100, mm: 100
+  ordered
+1   FALSE
+
+Variable type: numeric 
+  variable missing complete   n mean   sd   min   p25 median  p75  max
+1     vals       0      400 400 0.19 1.02 -3.07 -0.49   0.16 0.85 4.49
+      hist
+1 ▁▂▆▇▆▁▁▁</code></pre>
+<pre class="r"><code>four %&gt;% 
+  group_by(dist) %&gt;% 
+  skim()</code></pre>
+<pre><code>Skim summary statistics
+ n obs: 400 
+ n variables: 2 
+ group variables: dist 
+
+Variable type: numeric 
+  dist variable missing complete   n      mean   sd   min    p25 median
+1    n     vals       0      100 100     0.071 1.09 -3.07 -0.61   0.13 
+2    s     vals       0      100 100     0.74  1.01 -0.48  0.053  0.43 
+3    k     vals       0      100 100 1e-04     0.79 -2.17 -0.49  -0.069
+4   mm     vals       0      100 100    -0.06  0.99 -1.63 -1     -0.031
+   p75  max     hist
+1 0.9  2.83 ▁▂▃▆▇▆▃▁
+2 1.12 4.49 ▇▇▅▂▁▁▁▁
+3 0.37 2.77 ▁▁▅▇▃▂▁▁
+4 0.86 1.49 ▃▇▅▁▁▃▇▅</code></pre>
+</div>
+<div id="histograms" class="section level1">
+<h1><span class="header-section-number">6</span> Histograms</h1>
+<p>What you want to look for:</p>
+<ul>
+<li>How many “mounds” do you see? (modality)</li>
+<li>If 1 mound, find the peak: are the areas to the left and right of the peak symmetrical? (skewness)</li>
+<li>Notice that kurtosis (peakedness) of the distribution is difficult to judge here, especially given the effects of differing binwidths.</li>
+</ul>
+<p>The nice thing about <code>ggplot</code> is that we can use <code>facet_wrap</code>, and the x- and y-axes are the same, and the size of the binwidths are also the same.</p>
+<pre class="r"><code>#2 x 2 histograms in ggplot
+ggplot(four, aes(x = vals)) + #no y needed for visualization of univariate distributions
+  geom_histogram(fill = &quot;white&quot;, colour = &quot;black&quot;) + #easier to see for me
+  coord_cartesian(xlim = c(-5, 5)) + #use this to change x/y limits!
+  facet_wrap(~ dist) #this is one factor variable with 4 levels</code></pre>
+<p><img src="04-distributions_files/figure-html/gghist-1.png" width="672" /></p>
+<div id="binwidths" class="section level2">
+<h2><span class="header-section-number">6.1</span> Binwidths</h2>
+<p>Always change the binwidths on a histogram. Sometimes the default in <code>ggplot</code> works great, sometimes it does not.</p>
+<p>Super narrow:</p>
+<pre class="r"><code>#2 x 2 histograms in ggplot
+ggplot(four, aes(x = vals)) + 
+  geom_histogram(binwidth = .1, fill = &quot;white&quot;, colour = &quot;black&quot;) + #super narrow bins
+  coord_cartesian(xlim = c(-5, 5)) + 
+  facet_wrap(~ dist)</code></pre>
+<p><img src="04-distributions_files/figure-html/gghist_narrow-1.png" width="672" /></p>
+<p>Super wide:</p>
+<pre class="r"><code>#2 x 2 histograms in ggplot
+ggplot(four, aes(x = vals)) + 
+  geom_histogram(binwidth = 2, fill = &quot;white&quot;, colour = &quot;black&quot;) + #super wide bins
+  coord_cartesian(xlim = c(-5, 5)) + 
+  facet_wrap(~ dist)</code></pre>
+<p><img src="04-distributions_files/figure-html/gghist_wide-1.png" width="672" /></p>
+<p>Just right? Pretty close to the default for this data.</p>
+<pre class="r"><code>#2 x 2 histograms in ggplot
+ggplot(four, aes(x = vals)) + 
+  geom_histogram(binwidth = .2, fill = &quot;white&quot;, colour = &quot;black&quot;) + 
+  coord_cartesian(xlim = c(-5, 5)) + 
+  facet_wrap(~ dist)</code></pre>
+<p><img src="04-distributions_files/figure-html/gghist_right-1.png" width="672" /></p>
+</div>
+<div id="add-a-rug" class="section level2">
+<h2><span class="header-section-number">6.2</span> Add a rug</h2>
+<pre class="r"><code>#2 x 2 histograms in ggplot
+ggplot(four, aes(x = vals)) + 
+  geom_histogram(binwidth = .2, fill = &quot;white&quot;, colour = &quot;black&quot;) + 
+  geom_rug() + 
+  coord_cartesian(xlim = c(-5, 5)) + 
+  facet_wrap(~ dist)</code></pre>
+<p><img src="04-distributions_files/figure-html/gghist_rug-1.png" width="672" /></p>
+</div>
+</div>
+<div id="boxplots-medium-to-large-n" class="section level1">
+<h1><span class="header-section-number">7</span> Boxplots (medium to large N)</h1>
+<p>What you want to look for:</p>
+<ul>
+<li>The center line is the median: does the length of the distance to the upper hinge appear equal to the length to the lower hinge? (symmetry/skewness: Q3 - Q2/Q2 - Q1)</li>
+<li>Are there many outliers?</li>
+<li>Notice that modality of the distribution is difficult to judge here.</li>
+</ul>
+<pre class="r"><code>ggplot(four, aes(y = vals, x = dist)) + 
+  geom_boxplot() + 
+  scale_x_discrete(name=&quot;&quot;) + 
+  scale_y_continuous(name=&quot;&quot;) + 
+  coord_cartesian(ylim = c(-4,4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbox-1.png" width="672" /></p>
+<div id="add-notches" class="section level2">
+<h2><span class="header-section-number">7.1</span> Add notches</h2>
+<p><a href="http://docs.ggplot2.org/0.9.3.1/geom_boxplot.html">ggplot notches</a>: “Notches are used to compare groups; if the notches of two boxes do not overlap, this is strong evidence that the medians differ.” (Chambers et al., 1983, p. 62)</p>
+<pre class="r"><code>ggplot(four, aes(y = vals, x = dist)) + 
+  geom_boxplot(notch = T) + 
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4,4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbox_notch-1.png" width="672" /></p>
+</div>
+<div id="add-summary-statistics" class="section level2">
+<h2><span class="header-section-number">7.2</span> Add summary statistics</h2>
+<p>Here we add a diamond for the mean (see other possible shape codes <a href="http://www.cookbook-r.com/Graphs/Shapes_and_line_types/">here</a>).</p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) + 
+  geom_boxplot() +
+  stat_summary(fun.y = mean, 
+               geom = &quot;point&quot;, 
+               shape = 18, 
+               size = 4, 
+               colour = &quot;lightseagreen&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbox_stat-1.png" width="672" /></p>
+</div>
+</div>
+<div id="univariate-scatterplots-small-to-medium-n" class="section level1">
+<h1><span class="header-section-number">8</span> Univariate scatterplots (small to medium n)</h1>
+<p>Options:</p>
+<ul>
+<li><a href="http://stat.ethz.ch/R-manual/R-patched/library/graphics/html/stripchart.html">Stripchart</a>: “one dimensional scatter plots (or dot plots) of the given data. These plots are a good alternative to boxplots when sample sizes are small.”</li>
+<li><a href="https://cran.r-project.org/web/packages/beeswarm/beeswarm.pdf">Beeswarm</a>: “A bee swarm plot is a one-dimensional scatter plot similar to ‘stripchart’, except that would-be overlapping points are separated such that each is visible.”</li>
+</ul>
+<div id="stripchart" class="section level2">
+<h2><span class="header-section-number">8.1</span> Stripchart</h2>
+<p>Combining <code>geom_jitter() + stat_summary()</code> is the ggplot corollary to a stripchart.</p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  geom_jitter(position = position_jitter(height = 0, width = .1), 
+              fill = &quot;lightseagreen&quot;, 
+              colour = &quot;lightseagreen&quot;,
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = &quot;crossbar&quot;, 
+               width = 0.5) +
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggjitter_stat-1.png" width="672" /></p>
+</div>
+<div id="dotplot" class="section level2">
+<h2><span class="header-section-number">8.2</span> Dotplot</h2>
+<p>This is a beeswarm-like ggplot- not exactly the same, but gives you the same idea.</p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  geom_dotplot(stackdir = &quot;center&quot;, 
+               binaxis = &quot;y&quot;, 
+               binwidth = .1,
+               binpositions = &quot;all&quot;,
+               stackratio = 1.5, 
+               fill = &quot;lightseagreen&quot;, 
+               colour = &quot;lightseagreen&quot;) + 
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggdot_stat-1.png" width="672" /></p>
+</div>
+<div id="beeswarm" class="section level2">
+<h2><span class="header-section-number">8.3</span> Beeswarm</h2>
+<p><a href="https://github.com/eclarke/ggbeeswarm" class="uri">https://github.com/eclarke/ggbeeswarm</a></p>
+<pre class="r"><code>install.packages(&quot;ggbeeswarm&quot;)
+library(ggbeeswarm)</code></pre>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  geom_quasirandom(fill = &quot;lightseagreen&quot;, 
+               colour = &quot;lightseagreen&quot;) + 
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbee1_stat-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  geom_quasirandom(fill = &quot;lightseagreen&quot;, 
+               colour = &quot;lightseagreen&quot;, 
+               method = &quot;smiley&quot;) + 
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbee2_stat-1.png" width="672" /></p>
+<p>Note that these recommendations do not apply if your data is “big”. You will know your data is too big if you try the below methods and you can’t see many of the individual points (typically, N &gt; 100).</p>
+</div>
+</div>
+<div id="boxplots-univariate-scatterplots-small-to-medium-n" class="section level1">
+<h1><span class="header-section-number">9</span> Boxplots + univariate scatterplots (small to medium n)</h1>
+<p>Combining <code>geom_boxplot() + geom_dotplot()</code> is my personal pick for EDA when I have small - medium data (N &lt; 100).</p>
+<pre class="r"><code>ggplot(four, aes(y = vals, x = dist)) + 
+  geom_boxplot(outlier.shape = NA) + 
+  geom_dotplot(binaxis = &#39;y&#39;, 
+               stackdir = &#39;center&#39;, 
+               stackratio = 1.5, 
+               binwidth = .1,
+               binpositions = &quot;all&quot;,
+               dotsize = 1,
+               alpha = .75, 
+               fill = &quot;lightseagreen&quot;, 
+               colour = &quot;lightseagreen&quot;,
+               na.rm = TRUE) + 
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbox_dot-1.png" width="672" /></p>
+<p>You can also combin <code>geom_boxplot() + geom_jitter()</code>. I left the outliers in to demonstrate the jittered points only go left to right because I set the jitter <code>height = 0</code>.</p>
+<pre class="r"><code>ggplot(four, aes(y = vals, x = dist)) + 
+  geom_boxplot(width = .5) + #left the outliers in here, so they are double-plotted
+  geom_jitter(fill = &quot;lightseagreen&quot;, 
+              colour = &quot;lightseagreen&quot;,
+              na.rm = TRUE,
+              position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  scale_x_discrete(name = &quot;&quot;) + 
+  scale_y_continuous(name = &quot;&quot;) + 
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbox_jitter-1.png" width="672" /></p>
+</div>
+<div id="density-plots-medium-to-large-n" class="section level1">
+<h1><span class="header-section-number">10</span> Density plots (medium to large n)</h1>
+<p>A few ways to do this:</p>
+<ul>
+<li><a href="https://chemicalstatistician.wordpress.com/2013/06/09/exploratory-data-analysis-kernel-density-estimation-in-r-on-ozone-pollution-data-in-new-york-and-ozonopolis/">Kernel density</a>: “Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable. Kernel density estimation is a fundamental data smoothing problem where inferences about the population are made, based on a finite data sample.” - from <a href="https://en.wikipedia.org/wiki/Kernel_density_estimation">wikipedia</a></li>
+<li><a href="https://cran.r-project.org/web/packages/UsingR/UsingR.pdf">Violin plots</a>: “This function serves the same utility as side-by-side boxplots, only it provides more detail about the different distribution. It plots violinplots instead of boxplots. That is, instead of a box, it uses the density function to plot the density. For skewed distributions, the results look like”violins“. Hence the name.”
+<ul>
+<li>Some violin plots also include the boxplot so you can see Q1/Q2/Q3.</li>
+</ul></li>
+<li><a href="https://cran.r-project.org/web/packages/beanplot/vignettes/beanplot.pdf">Beanplots</a>: “The name beanplot stems from green beans. The density shape can be seen as the pod of a green bean, while the scatter plot shows the seeds inside the pod.”</li>
+</ul>
+<div id="density-plots" class="section level2">
+<h2><span class="header-section-number">10.1</span> Density plots</h2>
+<pre class="r"><code>ggplot(four, aes(x = vals)) + 
+  geom_density(fill = &quot;lightseagreen&quot;) +
+  coord_cartesian(xlim = c(-5, 5)) +
+  facet_wrap(~ dist)</code></pre>
+<p><img src="04-distributions_files/figure-html/ggdensity-1.png" width="672" /></p>
+<p>Instead of doing a <code>facet_wrap</code>, I could make just one plot showing all four distributions. To make each distribution a different color, set the <code>fill</code> within the <code>aes</code>, and assign it to the factor variable <code>dist</code>. Since now all four will be plotted on top of each other, add an <code>alpha</code> level to make the color fill transparent (0 = completely transparent; 1 = completely opaque).</p>
+<pre class="r"><code># Density plots with semi-transparent fill
+ggplot(four, aes(x = vals, fill = dist)) + 
+  geom_density(alpha = .5)</code></pre>
+<p><img src="04-distributions_files/figure-html/ggdensityinone-1.png" width="672" /></p>
+<div id="add-a-histogram" class="section level3">
+<h3><span class="header-section-number">10.1.1</span> Add a histogram</h3>
+<p>These are pretty easy to make in <code>ggplot</code>. However, note that the y-axis is different from if you just plotted the histogram. In fact, when interpreting this plot, the y-axis is only meaningful for reading density. It is meaningless for interpreting the histogram.</p>
+<pre class="r"><code>ggplot(four, aes(x = vals)) + 
+  geom_histogram(aes(y = ..density..), 
+                 binwidth = .5, 
+                 colour = &quot;black&quot;, 
+                 fill = &quot;white&quot;) +
+  geom_density(alpha = .5, fill = &quot;lightseagreen&quot;) + 
+  coord_cartesian(xlim = c(-5,5)) + 
+  facet_wrap(~ dist)</code></pre>
+<p><img src="04-distributions_files/figure-html/gghist_density-1.png" width="672" /></p>
+</div>
+</div>
+<div id="violin-plots" class="section level2">
+<h2><span class="header-section-number">10.2</span> Violin plots</h2>
+<p>My advice: always set <code>color = NA</code> for <code>geom_violin</code>. For fill, always set <code>alpha</code>.</p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+    geom_violin(color = NA,
+                fill = &quot;lightseagreen&quot;,
+                alpha = .5,
+                na.rm = TRUE,
+                scale = &quot;count&quot;) + # max width proportional to sample size
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggvio-1.png" width="672" /></p>
+<div id="add-a-boxplot" class="section level3">
+<h3><span class="header-section-number">10.2.1</span> Add a boxplot</h3>
+<p>Combination <code>geom_violin() + geom_boxplot()</code> is my personal pick for EDA when I have large data (N &gt; 100).</p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+    geom_boxplot(outlier.size = 2, 
+                 colour = &quot;lightseagreen&quot;,
+                 fill = &quot;black&quot;,
+                 na.rm = TRUE,
+                 width = .1) + 
+    geom_violin(alpha = .2, 
+                fill = &quot;lightseagreen&quot;,
+                colour = NA,
+                na.rm = TRUE) +
+  coord_cartesian(ylim = c(-4, 4))</code></pre>
+<p><img src="04-distributions_files/figure-html/ggbox_vio-1.png" width="672" /></p>
+<p>Note that it is just as easy to layer a univariate scatterplot over a violin plot, just by replacing the <code>geom_boxplot</code> with a different geom as shown abobe. Lots of combination plots are possible!</p>
+</div>
+</div>
+</div>
+<div id="split-violin" class="section level1">
+<h1><span class="header-section-number">11</span> Split violin</h1>
+<p>Using David Robinson’s code: <a href="https://gist.github.com/dgrtwo/eb7750e74997891d7c20" class="uri">https://gist.github.com/dgrtwo/eb7750e74997891d7c20</a></p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+    geom_flat_violin(alpha = .5, 
+                fill = &quot;lightseagreen&quot;,
+                colour = NA,
+                na.rm = TRUE) +
+    coord_flip()</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="plotting-summary-statistics" class="section level1">
+<h1><span class="header-section-number">12</span> Plotting summary statistics</h1>
+<p>The more general <code>stat_summary</code> function applies a summary function to the variable mapped to y at each x value.</p>
+<div id="means-and-error-bars" class="section level2">
+<h2><span class="header-section-number">12.1</span> Means and error bars</h2>
+<p>The simplest summary function is <code>mean_se</code>, which returns the mean and the mean plus its standard error on each side. Thus, <code>stat_summary</code> will calculate and plot the mean and standard errors for the y variable at each x value.</p>
+<p>The default geom is “pointrange” which places a dot at the central y value and extends lines to the minimum and maximum y values. Other geoms you might consider to display summarized data:</p>
+<ul>
+<li><code>geom_errorbar</code></li>
+<li><code>geom_pointrange</code></li>
+<li><code>geom_linerange</code></li>
+<li><code>geom_crossbar</code></li>
+</ul>
+<p>There are a few summary functions from the <code>Hmisc</code> package which are reformatted for use in <code>stat_summary()</code>. They all return aesthetics for <code>y</code>, <code>ymax</code>, and <code>ymin</code>.</p>
+<ul>
+<li><code>mean_cl_normal()</code>
+<ul>
+<li>Returns sample mean and 95% confidence intervals assuming normality (i.e., t-distribution based)</li>
+</ul></li>
+<li><code>mean_sdl()</code>
+<ul>
+<li>Returns sample mean and a confidence interval based on the standard deviation times some constant</li>
+</ul></li>
+<li><code>mean_cl_boot()</code>
+<ul>
+<li>Uses a bootstrap method to determine a confidence interval for the sample mean without assuming normality.</li>
+</ul></li>
+<li><code>median_hilow()</code>
+<ul>
+<li>Returns the median and an upper and lower quantiles.</li>
+</ul></li>
+</ul>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  stat_summary(fun.data = &quot;mean_se&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  stat_summary(fun.y = &quot;mean&quot;, geom = &quot;point&quot;) +
+  stat_summary(fun.y = &quot;max&quot;, geom = &quot;point&quot;, shape = 21)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(four, aes(x = dist, y = vals)) +
+  stat_summary(fun.data = median_hilow)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>You may have noticed two different arguments that are potentially confusing: <code>fun.data</code> and <code>fun.y</code>. If the function returns three values, specify the function with the argument <code>fun.data</code>. If the function returns one value, specify <code>fun.y</code>. See below.</p>
+<pre class="r"><code>x &lt;- c(1, 2, 3)
+mean(x) # use fun.y</code></pre>
+<pre><code>[1] 2</code></pre>
+<pre class="r"><code>mean_cl_normal(x) # use fun.data</code></pre>
+<pre><code>  y       ymin     ymax
+1 2 -0.4841377 4.484138</code></pre>
+<p>Confidence limits may give us a better idea than standard error limits of whether two means would be deemed statistically different when modeling, so we frequently use <code>mean_cl_normal</code> or <code>mean_cl_boot</code> in addition to <code>mean_se</code>.</p>
+</div>
+<div id="connecting-means-with-lines" class="section level2">
+<h2><span class="header-section-number">12.2</span> Connecting means with lines</h2>
+<p>Using the <code>ToothGrowth</code> dataset</p>
+<pre class="r"><code>data(ToothGrowth)
+tg &lt;- ToothGrowth</code></pre>
+<pre class="r"><code># Standard error of the mean
+ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
+  stat_summary(fun.data = &quot;mean_se&quot;) +
+  ggtitle(&quot;Mean +/- SE&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code># Connect the points with lines
+ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
+  stat_summary(fun.data = &quot;mean_se&quot;) +
+  stat_summary(fun.y = mean, geom = &quot;line&quot;) +
+  ggtitle(&quot;Mean +/- SE&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<pre class="r"><code># Use 95% confidence interval instead of SEM
+ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
+  stat_summary(fun.data = &quot;mean_cl_normal&quot;) +
+  stat_summary(fun.y = mean, geom = &quot;line&quot;) +
+  ggtitle(&quot;Mean with 95% confidence intervals&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
+<pre class="r"><code># The errorbars overlapped, so use position_dodge to move them horizontally
+pd &lt;- position_dodge(0.1) # move them .05 to the left and right
+
+ggplot(tg, aes(x = dose, y = len, colour = supp)) + 
+  stat_summary(fun.data = &quot;mean_cl_normal&quot;, position = pd) +
+  stat_summary(fun.y = mean, geom = &quot;line&quot;, position = pd) +
+  ggtitle(&quot;Mean with 95% confidence intervals&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-13-4.png" width="672" /></p>
+<p>Not the best example for this geom, but another good one for showing variability…</p>
+<pre class="r"><code># ribbon geom
+ggplot(tg, aes(x = dose, y = len, colour = supp, fill = supp)) + 
+  stat_summary(fun.y = mean, geom = &quot;line&quot;) +
+  stat_summary(fun.data = mean_se, geom = &quot;ribbon&quot;, alpha = .5)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="bars-with-error-bars" class="section level2">
+<h2><span class="header-section-number">12.3</span> Bars with error bars</h2>
+<p>If you must…</p>
+<pre class="r"><code># Standard error of the mean; note positioning
+ggplot(tg, aes(x = factor(dose), y = len, fill = supp)) + 
+  stat_summary(fun.y = mean, geom = &quot;bar&quot;, position = position_dodge(width = .9)) +
+  stat_summary(fun.data = mean_se, geom = &quot;linerange&quot;, position = position_dodge(width = .9)) +
+  ggtitle(&quot;Mean +/- SE&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code># Use 95% confidence interval instead of SEM
+ggplot(tg, aes(x = factor(dose), y = len, fill = supp)) + 
+  stat_summary(fun.y = mean, geom = &quot;bar&quot;, position = position_dodge(width = .9)) +
+  stat_summary(fun.data = mean_cl_boot, geom = &quot;linerange&quot;, position = position_dodge(width = .9)) +
+  ggtitle(&quot;Mean with 95% confidence intervals&quot;)</code></pre>
+<p><img src="04-distributions_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p>More help here: <a href="http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/" class="uri">http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/</a></p>
+</div>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

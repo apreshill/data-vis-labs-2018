@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Alison Hill" />
 
 
-<title>Principles &amp; Practice of Data Visualization</title>
+<title>Lab 04: Exploratory Data Analysis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -200,40 +201,59 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Principles &amp; Practice of Data Visualization</h1>
+<h1 class="title toc-ignore">Lab 04: Exploratory Data Analysis</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
 
 </div>
 
 
-<p>This is the site for sharing our Data Visualization Labs for CS631 at Oregon Health &amp; Science University.</p>
+<div id="overview" class="section level1">
+<h1><span class="header-section-number">1</span> Overview</h1>
+<p>Both challenges are due by noon via Sakai on Wednesday May 2. For the first tidy challenge, you’ll want to refer back to our <a href="slides/04-slides.html">slides</a>. For the second challenge, you’ll want to refer to the <a href="04-distributions.html">reference lab</a>.</p>
+<ol style="list-style-type: decimal">
+<li><p>Tidy challenge: Tidy the “Lord of the Rings” data <em>(Advice: read in each csv file using <code>read_csv()</code>, then use <code>dplyr::bind_rows</code> to stack them together pre-tidying.)</em></p>
 <ul>
-<li><a href="00-install_name_plot.html">Lab 00: Introduce Yourself</a></li>
-<li><a href="01-eda_hot_dogs.html">Lab 01: Nathan’s Hot Dog Eating Context</a>
-<ul>
-<li><a href="slides/01-slides.html">Slides</a></li>
-<li>Dataset 1: <a href="http://bit.ly/cs631-hotdog" class="uri">http://bit.ly/cs631-hotdog</a></li>
-<li>Dataset 2: <a href="http://bit.ly/cs631-hotdog-affiliated" class="uri">http://bit.ly/cs631-hotdog-affiliated</a></li>
-<li>Addendum: <a href="01-addendum.html" class="uri">01-addendum.html</a></li>
+<li><a href="http://bit.ly/cs631-lotr-fship" class="uri">http://bit.ly/cs631-lotr-fship</a></li>
+<li><a href="http://bit.ly/cs631-lotr-ttow" class="uri">http://bit.ly/cs631-lotr-ttow</a></li>
+<li><a href="http://bit.ly/cs631-lotr-rking" class="uri">http://bit.ly/cs631-lotr-rking</a></li>
 </ul></li>
-<li><a href="02-moma.html">Lab 02: MoMA Museum Tour</a>
+<li><p>Gapminder challenge: Read on…</p></li>
+</ol>
+<p>Install and load the <code>gapminder</code> data package. This is the same data that was used in your Datacamp “Introduction to the Tidyverse” course!</p>
+<pre class="r"><code>install.packages(&quot;gapminder&quot;)
+library(gapminder)
+?gapminder</code></pre>
+<p>Pick at least <strong>two</strong> of the tasks below from the task menu and approach each with a table and figure.</p>
 <ul>
-<li><a href="slides/02-slides.html">Slides</a></li>
-<li>Dataset: <a href="http://bit.ly/cs631-moma" class="uri">http://bit.ly/cs631-moma</a></li>
-<li>Dataset Cleaning <em>(optional)</em>: <a href="02a-moma-cleaning.html" class="uri">02a-moma-cleaning.html</a></li>
-<li>Addendum: <a href="02-addendum.html" class="uri">02-addendum.html</a></li>
-</ul></li>
-<li><a href="03-colors.html">Lab 03: Colors with Animal Sounds</a>
-<ul>
-<li><a href="slides/03-slides.html">Slides</a></li>
-<li>Dataset: <a href="http://bit.ly/cs631-meow" class="uri">http://bit.ly/cs631-meow</a></li>
-<li>Dataset Cleaning <em>(optional)</em>: <a href="03a-meow-cleaning.html" class="uri">03a-meow-cleaning.html</a></li>
-</ul></li>
-<li><a href="04-challenge.html">Lab 04: Tidy Data + Distributions</a>
-<ul>
-<li><a href="slides/04-slides.html">Slides</a></li>
-<li><a href="04-distributions.html">Reference lab</a></li>
-</ul></li>
+<li><code>dplyr</code> should be your main data manipulation tool</li>
+<li><code>ggplot2</code> should be your main visualization tool</li>
 </ul>
+<p>Make observations about what your tables/figures show and about the process. If you want to do something comparable but different, i.e. swap one quantitative variable for another- go for it!</p>
+<p>You do not have to use <code>tidyr</code> or otherwise worry about reshaping your tables. Many of your tables may not be formatted perfectly in the report. Simply printing <code>dplyr</code> tabular output is fine. For all things, graphical and tabular, if you’re dissatisfied with a result, discuss the problem, what you tried to do to fix it, and move on.</p>
+<div id="task-menu" class="section level3">
+<h3><span class="header-section-number">1.0.1</span> Task menu</h3>
+<ul>
+<li><p>Get the maximum and minimum of GDP per capita for all continents.</p></li>
+<li><p>Look at the spread of GDP per capita across countries within the continents.</p></li>
+<li><p>How does life expectancy vary across different continents?</p></li>
+<li><p>Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.</p></li>
+<li><p>Make up your own!</p></li>
+</ul>
+</div>
+<div id="companion-graphs" class="section level3">
+<h3><span class="header-section-number">1.0.2</span> Companion graphs</h3>
+<p>For each table, make sure to include a relevant figure. One tip for starting is to draw out on paper what you want your x- and y-axis to be first and what your <code>geom</code> is; that is, start by drawing the plot you want <code>ggplot</code> to give you. Your figure does not have to depict every single number present in the table. Use your judgement. It just needs to complement the table, add context, and allow for some sanity checking.</p>
+<p>Notice which figures are easy/hard to make, and whether the visualization adds clarity, detracts from, or is completely redundant (and therefore probably unnecessary) with respect to the tabular display.</p>
+</div>
+<div id="report-your-process" class="section level2">
+<h2><span class="header-section-number">1.1</span> Report your process</h2>
+<p>You’re encouraged to reflect on what was hard/easy, problems you solved, helpful tutorials you read, etc.</p>
+<div class="jumbotron">
+<p>Gapminder EDA ideas from <a href="http://stat545.com/hw03_dplyr-and-more-ggplot2.html">Jenny Bryan</a>, author and creator of the <a href="https://cran.r-project.org/web/packages/gapminder/index.html">Gapminder package</a>.</p>
+</div>
+</div>
+</div>
 
 <p>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">

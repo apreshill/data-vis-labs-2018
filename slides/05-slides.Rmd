@@ -1,0 +1,35 @@
+---
+title: "Lab 05: CS631"
+subtitle: ""
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "80%", cache = FALSE)
+library(tidyverse)
+library(here)
+```
+
+---
+class: middle, inverse, center
+
+# 🌊
+
+## Workflows:
+
+http://r4ds.had.co.nz/workflow-projects.html
+
+https://www.tidyverse.org/articles/2017/12/workflow-vs-script/
+
+https://andrewbtran.github.io/NICAR/2018/workflow/docs/01-workflow_intro.html

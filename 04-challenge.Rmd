@@ -1,0 +1,67 @@
+---
+title: "Lab 04: Exploratory Data Analysis"
+subtitle: "CS631"
+author: "Alison Hill"
+output:
+  html_document:
+    theme: flatly
+    number_sections: TRUE
+---
+
+# Overview
+
+Both challenges are due by noon via Sakai on Wednesday May 2. For the first tidy challenge, you'll want to refer back to our [slides](slides/04-slides.html). For the second challenge, you'll want to refer to the [reference lab](04-distributions.html).
+
+1. Tidy challenge: Tidy the "Lord of the Rings" data *(Advice: read in each csv file using `read_csv()`, then use `dplyr::bind_rows` to stack them together pre-tidying.)*
+
+    - http://bit.ly/cs631-lotr-fship
+    - http://bit.ly/cs631-lotr-ttow
+    - http://bit.ly/cs631-lotr-rking
+
+
+
+1. Gapminder challenge: Read on...
+
+Install and load the `gapminder` data package. This is the same data that was used in your Datacamp "Introduction to the Tidyverse" course!
+
+``` r
+install.packages("gapminder")
+library(gapminder)
+?gapminder
+```
+
+Pick at least __two__ of the tasks below from the task menu and approach each with a table and figure. 
+
+  * `dplyr` should be your main data manipulation tool
+  * `ggplot2` should be your main visualization tool
+  
+Make observations about what your tables/figures show and about the process. If you want to do something comparable but different, i.e. swap one quantitative variable for another- go for it!
+
+You do not have to use `tidyr` or otherwise worry about reshaping your tables. Many of your tables may not be formatted perfectly in the report. Simply printing `dplyr` tabular output is fine. For all things, graphical and tabular, if you're dissatisfied with a result, discuss the problem, what you tried to do to fix it, and move on.
+
+### Task menu
+
+* Get the maximum and minimum of GDP per capita for all continents.
+
+* Look at the spread of GDP per capita across countries within the continents.
+
+* How does life expectancy vary across different continents?
+
+* Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+
+* Make up your own! 
+
+### Companion graphs
+
+For each table, make sure to include a relevant figure. One tip for starting is to draw out on paper what you want your x- and y-axis to be first and what your `geom` is; that is, start by drawing the plot you want `ggplot` to give you. Your figure does not have to depict every single number present in the table. Use your judgement. It just needs to complement the table, add context, and allow for some sanity checking.
+
+Notice which figures are easy/hard to make, and whether the visualization adds clarity, detracts from, or is completely redundant (and therefore probably unnecessary) with respect to the tabular display. 
+
+
+## Report your process
+
+You're encouraged to reflect on what was hard/easy, problems you solved, helpful tutorials you read, etc.
+
+<div class="jumbotron">
+Gapminder EDA ideas from [Jenny Bryan](http://stat545.com/hw03_dplyr-and-more-ggplot2.html), author and creator of the [Gapminder package](https://cran.r-project.org/web/packages/gapminder/index.html).  
+</div>
