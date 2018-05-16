@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lab 06: CS631
-## The Tada!-verse II: blogdown
+## Making a Site in the Tada!-verse
 ### Alison Hill
 
 ---
@@ -44,17 +44,17 @@ background-size: cover
 
 File ➡️ New Project ➡️ New Directory ➡️ Website using blogdown
 
-&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/website-using-blogdown.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../images/website-using-blogdown.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Next in RStudio
 
-&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/install-cocoa-eh-theme.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../images/install-cocoa-eh-theme.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Open your new project
 
-&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/hugo-initial-files.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../images/hugo-initial-files.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Mini-orientation to Hugo
@@ -70,7 +70,6 @@ https://gohugo.io/getting-started/directory-structure/
 ├── content
 ├── data
 ├── layouts
-├── public
 ├── static
 └── themes
 ```
@@ -94,7 +93,6 @@ Note which folders are *empty* at the top level of your project:
 ├── content
 *├── data
 *├── layouts
-├── public
 ├── static
 └── themes
 ```
@@ -112,14 +110,33 @@ class: middle, inverse, center
 
 - Add `ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]`
 
+
+```r
+*baseurl = "/"
+theme = "cocoa-eh-hugo-theme"
+builddrafts = true
+canonifyurls = true
+contentdir = "content"
+languageCode = "en-US"
+layoutdir = "layouts"
+publishdir = "public"
+*author = "Joel Adams"
+*title = "Joel Adams"
+disqusshortname = ""
+pluralizelisttitles = false
+*ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+```
+
 ---
 # Serve site!
 
 Mouse up to "Addins"
 
+![](../images/addin-serve-site.png)
+
 --
 
-&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/cocoa-errorf.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../images/cocoa-errorf.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -147,7 +164,7 @@ Mouse up to "Addins"
 # Almost there!
 
 
-&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/cocoa-in-viewer.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../images/cocoa-in-viewer.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Go back to `config.toml`
@@ -209,15 +226,28 @@ Mouse to `content/` and edit `about.md` and `home.md`
 ---
 # Blogdown resources
 
-- https://blogdown-demo.rbind.io
-- https://bookdown.org/yihui/blogdown/
-- https://alison.rbind.io/post/up-and-running-with-blogdown/
-- https://alison.rbind.io/talk/blogdown-meetup/
+- [Blogdown demo site](https://blogdown-demo.rbind.io)
+- [Blogdown book](https://bookdown.org/yihui/blogdown/)
+- [I did a blog post on it](https://alison.rbind.io/post/up-and-running-with-blogdown/)
+- [Also did a workshop](https://alison.rbind.io/talk/blogdown-meetup/)
+- [Yihui's slides from RStudio Conf](https://slides.yihui.name/2018-blogdown-rstudio-conf-Yihui-Xie.html)
 
 ---
 # Next up!
 
 We'll connect to GitHub and deploy to Netlify.
+
+---
+# What is hard about `blogdown`?
+
+Lots
+
+---
+# My growing list
+
+- TOML in `config` file, but YAML in posts
+- Themes vary a lot
+- Overriding versus editing directory structure
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

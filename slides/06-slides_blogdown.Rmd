@@ -46,21 +46,21 @@ background-size: cover
 File ➡️ New Project ➡️ New Directory ➡️ Website using blogdown
 
 ```{r echo = FALSE}
-include_graphics(here::here("images", "website-using-blogdown.png"))
+include_graphics("../images/website-using-blogdown.png")
 ```
 
 ---
 # Next in RStudio
 
 ```{r echo = FALSE}
-include_graphics(here::here("images", "install-cocoa-eh-theme.png"))
+include_graphics("../images/install-cocoa-eh-theme.png")
 ```
 
 ---
 # Open your new project
 
 ```{r echo = FALSE}
-include_graphics(here::here("images", "hugo-initial-files.png"))
+include_graphics("../images/hugo-initial-files.png")
 ```
 
 ---
@@ -76,7 +76,6 @@ https://gohugo.io/getting-started/directory-structure/
 ├── content
 ├── data
 ├── layouts
-├── public
 ├── static
 └── themes
 ```
@@ -94,12 +93,11 @@ Note which folders are *empty* at the top level of your project:
 
 ```{r eval = FALSE}
 .
-{{├── archetypes}}
+├── archetypes #<<
 ├── config.toml
 ├── content
-{{├── data}}
-{{├── layouts}}
-├── public
+├── data #<<
+├── layouts #<<
 ├── static
 └── themes
 ```
@@ -117,15 +115,33 @@ class: middle, inverse, center
 
 - Add `ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]`
 
+```{r eval = FALSE}
+baseurl = "/" #<<
+theme = "cocoa-eh-hugo-theme"
+builddrafts = true
+canonifyurls = true
+contentdir = "content"
+languageCode = "en-US"
+layoutdir = "layouts"
+publishdir = "public"
+author = "Joel Adams" #<<
+title = "Joel Adams" #<<
+disqusshortname = ""
+pluralizelisttitles = false
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"] #<<
+```
+
 ---
 # Serve site!
 
 Mouse up to "Addins"
 
+![](../images/addin-serve-site.png)
+
 --
 
 ```{r echo = FALSE}
-include_graphics(here::here("images", "cocoa-errorf.png"))
+include_graphics("../images/cocoa-errorf.png")
 ```
 
 
@@ -155,7 +171,7 @@ include_graphics(here::here("images", "cocoa-errorf.png"))
 
 
 ```{r echo = FALSE}
-include_graphics(here::here("images", "cocoa-in-viewer.png"))
+include_graphics("../images/cocoa-in-viewer.png")
 ```
 
 ---
