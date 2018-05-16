@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 06: CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 06: CS631
+## The Tada!-verse II: blogdown
+### Alison Hill
+
+---
+
+
+
+
+
+class: center, middle, inverse
+
+# First:
+
+## Slides with `xaringan`
+
+--
+
+# NOW!:
+
+## Sites with `blogdown`
+
+---
+background-image: url("https://media.giphy.com/media/3o6ozfM60Gc64dN0A0/giphy.gif")
+background-size: cover
+
+
+---
+# In RStudio
+
+File ➡️ New Project ➡️ Website using blogdown
+
+&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/website-using-blogdown.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Next in RStudio
+
+&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/install-cocoa-eh-theme.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Open your new project
+
+&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/hugo-initial-files.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Mini-orientation to Hugo
+
+https://gohugo.io/getting-started/directory-structure/
+
+
+
+```r
+.
+├── archetypes
+├── config.toml
+├── content
+├── data
+├── layouts
+├── public
+├── static
+└── themes
+```
+
+---
+# Overriding vs editing
+
+https://gohugo.io/themes/customizing/
+
+&gt; *When you use a theme cloned from its git repository, do not edit the theme’s files directly. Instead, theme customization in Hugo is a matter of overriding the templates made available to you in a theme. This provides the added flexibility of tweaking a theme to meet your needs while staying current with a theme’s upstream.*
+
+--
+
+Note which folders are *empty* at the top level of your project:
+
+
+```r
+.
+*├── archetypes
+├── config.toml
+├── content
+*├── data
+*├── layouts
+├── public
+*├── static
+└── themes
+```
+
+---
+class: middle, inverse, center
+## Editing the configuration file
+
+---
+# Open `config.toml`
+
+- TOML is like YAML, but not 😂
+
+- Set `baseurl = "/"`
+
+- Add `ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]`
+
+---
+# Serve site!
+
+Mouse up to "Addins"
+
+--
+
+&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/cocoa-errorf.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# I can fix this!
+
+- Mouse over to "themes" folder, then click on that folder
+
+- Click through to `/layouts/partials/css/main.css`
+
+- Search for `errorf` (about line 170)
+
+- Make it look like this:
+
+```
+  text-transform: {{ .Site.Params.titlestyle }};
+      {{ end }}
+  {{ else }}
+  text-transform: uppercase;
+  {{ end }}
+```
+
+- Try serving the site again
+
+---
+# Almost there!
+
+
+&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/cocoa-in-viewer.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Go back to `config.toml`
+
+
+
+
+```r
+*baseurl = "/"
+theme = "cocoa-eh-hugo-theme"
+builddrafts = true
+canonifyurls = true
+contentdir = "content"
+languageCode = "en-US"
+layoutdir = "layouts"
+publishdir = "public"
+*author = "Joel Adams"
+*title = "Joel Adams"
+disqusshortname = ""
+pluralizelisttitles = false
+*ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+*enableEmoji = true
+```
+
+---
+# Update logo
+
+Mouse over the `static/img/` and see `logo.png`? We can replace that file, or make new file.
+
+
+```r
+[permalinks]
+blog = "blog/:slug/"
+
+[params]
+dateform = "Jan 2, 2006"
+dateformfull = "Mon Jan 2 2006 15:04:05 MST"
+*description = "Professional website"
+*copyright = "Copyright © 2015 Joel Adams"
+*copyrightUrl = "https://creativecommons.org/licenses/by-sa/4.0/"
+*logofile = "img/joel.jpg"
+faviconfile = "img/logo.png"
+highlightjs = true
+progressively = true
+share = true
+```
+
+---
+# Edit content 
+
+Mouse to `content/` and edit `about.md` and `home.md`
+---
+# Theme examples
+
+- [Julia Silge](https://juliasilge.com)
+
+- [Joshua Rosenberg](https://jrosen48.github.io)
+
+---
+# Blogdown resources
+
+- https://blogdown-demo.rbind.io
+- https://bookdown.org/yihui/blogdown/
+- https://alison.rbind.io/post/up-and-running-with-blogdown/
+- https://alison.rbind.io/talk/blogdown-meetup/
+
+---
+# Next up!
+
+We'll connect to GitHub and deploy to Netlify.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
