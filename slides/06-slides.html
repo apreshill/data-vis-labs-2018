@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lab 06: CS631
-## Tada!-verse
+## Working in the Tada!-verse
 ### Alison Hill
 
 ---
@@ -115,20 +115,20 @@ class: center, middle, inverse
 ## Using `xaringan`
 
 ---
-# Edit your slides
+# Edit the YAML
 
-- Edit the YAML to personalize.
 
 ```yaml
 ---
 title: "Lab 06: CS631"
-subtitle: "Tada!-verse"
+subtitle: "Working in the Tada!-verse"
 author: "Alison Hill"
 output: xaringan::moon_reader
 ---
 ```
 
---
+---
+# Slide Separators
 
 - The first slide starts right away. 
 
@@ -136,19 +136,29 @@ output: xaringan::moon_reader
 
 - New slides are separated by three dashes in a row `---` on a line by itself (recommend keeping an empty line before)
 
+--
 
+```
+# Slide 1
+This is slide 1
+---
+# Slide 2
+This is slide 2
+```
 
 ---
-# Format your slides
+# Align your slides
 
-If you aren't familiar with CSS, know that you can use the `default` CSS to do the following on the line immediately after the slide break:
+Use the [`class` property](https://github.com/gnab/remark/wiki/Markdown#class) on the line immediately after the slide break:
 
 - `class:`
     - `inverse`
-    - `center` (horizontally)
+    - `center` 
+    - `left` (default)
+    - `right` 
     - `middle` (vertically)
-    - `bottom` (vertically)
-    - `top` (default; vertically)
+    - `bottom` 
+    - `top` (default)
 
 --
 
@@ -251,7 +261,7 @@ this!
 ---
 # Full image slides
 
-Use CSS right after slide break (`---`):
+Use the [`background-image` property](https://github.com/gnab/remark/wiki/Markdown#background-image) right after slide break (`---`):
 
 - `background-image: url("actual url or file path here")`
 - `background-size: cover` --&gt; image is scaled to fit into the slide.
@@ -407,7 +417,36 @@ knitr::kable(head(iris), format = "html")
 
 https://www.markdowntutorial.com
 
-You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**.
+You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**. 
+
+--
+
+.pull-left[
+You can also:
+
+- do
+- bullets
+- plus
+  - nested
+- lists
+  - if you like
+]
+
+--
+
+.pull-right[
+```
+1. or
+1. numbered
+1. lists
+1. too
+```
+
+1. or
+1. numbered
+1. lists
+1. too
+]
 
 ---
 # Play with CSS in YAML
@@ -417,7 +456,8 @@ You can use markdown to do [links](https://www.markdowntutorial.com), *italics*,
 
 ```yaml
 ---
-title: "TADA!"
+title: "Lab 06: CS631"
+subtitle: "Working in the Tada!-verse"
 author: "Alison Hill"
 date: "May 15, 2018"
 output: xaringan::moon_reader
@@ -429,7 +469,8 @@ output: xaringan::moon_reader
 .pull-right[
 ```yaml
 ---
-title: "TADA!"
+title: "Lab 06: CS631"
+subtitle: "Working in the Tada!-verse"
 author: "Alison Hill"
 date: "May 15, 2018"
 output: 
@@ -460,7 +501,8 @@ names(xaringan:::list_css())
 
 ```yaml
 ---
-title: "TADA!"
+title: "Lab 06: CS631"
+subtitle: "Working in the Tada!-verse"
 author: "Alison Hill"
 date: "May 15, 2018"
 output: 
@@ -474,7 +516,8 @@ output:
 
 ```yaml
 ---
-title: "TADA!"
+title: "Lab 06: CS631"
+subtitle: "Working in the Tada!-verse"
 author: "Alison Hill"
 date: "May 15, 2018"
 output: 
@@ -529,6 +572,23 @@ class: center, middle
 
 
 https://pkg.garrickadenbuie.com/xaringanthemer/
+
+---
+# Slide notes &amp; presenter mode
+
+```
+# Slide
+
+Some content.
+
+???
+note to self
+```
+
+Type `p` on your keyboard to enter presentation mode- you should be able to view your presenter notes.
+
+???
+note to self
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
