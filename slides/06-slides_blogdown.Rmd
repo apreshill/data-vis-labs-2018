@@ -1,6 +1,6 @@
 ---
 title: "Lab 06: CS631"
-subtitle: "The Tada!-verse II: blogdown"
+subtitle: "Making a Site in the Tada!-verse"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
@@ -216,12 +216,25 @@ Mouse to `content/` and edit `about.md` and `home.md`
 ---
 # Blogdown resources
 
-- https://blogdown-demo.rbind.io
-- https://bookdown.org/yihui/blogdown/
-- https://alison.rbind.io/post/up-and-running-with-blogdown/
-- https://alison.rbind.io/talk/blogdown-meetup/
+- [Blogdown demo site](https://blogdown-demo.rbind.io)
+- [Blogdown book](https://bookdown.org/yihui/blogdown/)
+- [I did a blog post on it](https://alison.rbind.io/post/up-and-running-with-blogdown/)
+- [Also did a workshop](https://alison.rbind.io/talk/blogdown-meetup/)
+- [Yihui's slides from RStudio Conf](https://slides.yihui.name/2018-blogdown-rstudio-conf-Yihui-Xie.html)
 
 ---
 # Next up!
 
 We'll connect to GitHub and deploy to Netlify.
+
+---
+# What is hard about `blogdown`?
+
+Lots
+
+---
+# My growing list
+
+- TOML in `config` file, but YAML in posts
+- Themes vary a lot
+- Overriding versus editing directory structure

@@ -13,10 +13,11 @@
 class: center, middle, inverse, title-slide
 
 # Lab 06: CS631
-## Working with Slides in the Tada!-verse
+## Making Slides in the Tada!-verse
 ### Alison Hill
 
 ---
+
 
 
 
@@ -101,11 +102,21 @@ output: xaringan::moon_reader
 ---
 # Knit to moon reader
 
-Either:
 
-- Mouse over to `Knit` drop-down menu and select "Knit to moon_reader"
+- Must mouse over to `Knit` drop-down menu and select "Knit to moon_reader"
 
-- Or mouse up to "Addins" and select `xaringan`: Infinite Moon Reader. This option does live preview of slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.)
+&lt;img src="../images/knit-to-moon-reader.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Infinite moon reader
+
+- Now mouse up to "Addins" and select `xaringan`: Infinite Moon Reader. 
+    - This option does live preview of slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.)
+
+- From here on, you won't need to knit before using Infinite Moon Reader.
+
+- In RStudio viewer pane, you can `right-click` to select "open frame in new window", or you can open open the file in your browser.
 
 ---
 class: center, middle, inverse
@@ -118,6 +129,20 @@ class: center, middle, inverse
 
 
 ## Using `xaringan`
+
+
+---
+# WT* YAML?
+
+- YAML = YAML Ain't No Markup Language (not helpful)
+
+- aka "R Markdown front-matter"
+
+```yaml
+---
+variable: "value"
+---
+```
 
 ---
 # Edit the YAML
@@ -153,9 +178,11 @@ This is slide 2
 ```
 
 ---
-# Refresh your markdown 
+# Know your markdown 
 
 https://www.markdowntutorial.com
+
+--
 
 You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**. 
 
@@ -187,6 +214,15 @@ You can also:
 1. lists
 1. too
 ]
+
+---
+# Pro-tip!
+
+In RStudio, mouse over to Help ➡️ Markdown Quick Reference!
+
+
+![](../images/markdown-quick-reference.png)
+
 ---
 # Align your slides
 
@@ -376,12 +412,12 @@ knitr::include_graphics(here("images", "pygmy.jpg"))
 ---
 # Now for some R!
 
-&lt;img src="06-slides_xaringan_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="06-slides_xaringan_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Control your R
 
-&lt;img src="06-slides_xaringan_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="06-slides_xaringan_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 Use in your code chunks:
 - `fig.width=` (here I did 10.5)
@@ -474,7 +510,8 @@ knitr::kable(head(iris), format = "html")
 
 
 
-```yaml
+
+```r
 ---
 title: "Lab 06: CS631"
 subtitle: "Working in the Tada!-verse"
@@ -487,15 +524,16 @@ output: xaringan::moon_reader
 
 --
 
-```yaml
+
+```r
 ---
 title: "Lab 06: CS631"
 subtitle: "Working in the Tada!-verse"
 author: "Alison Hill"
 date: "May 15, 2018"
-output: 
-  xaringan::moon_reader:
-    css: [default]
+*output:
+* xaringan::moon_reader:
+*   css: [default]
 ---
 ```
 
@@ -518,7 +556,8 @@ names(xaringan:::list_css())
 
 --
 
-```yaml
+
+```r
 ---
 title: "Lab 06: CS631"
 subtitle: "Working in the Tada!-verse"
@@ -526,14 +565,15 @@ author: "Alison Hill"
 date: "May 15, 2018"
 output: 
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts]
+*   css: [default, metropolis, metropolis-fonts]
 ---
 ```
 
 ---
 # More YAML!
 
-```yaml
+
+```r
 ---
 title: "Lab 06: CS631"
 subtitle: "Working in the Tada!-verse"
@@ -542,10 +582,10 @@ date: "May 15, 2018"
 output: 
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts]
-    nature:
-      highlightStyle: atelier-lakeside-light
-      highlightLines: true
-      countIncrementalSlides: false
+*   nature:
+*     highlightStyle: atelier-lakeside-light
+*     highlightLines: true
+*     countIncrementalSlides: false
 ---
 ```
 
@@ -561,10 +601,10 @@ Use `#&lt;&lt;`!
 
 ````
 ```{r example-plot}
-ggplot(tips) +
-  aes(x = tip) +
+ggplot(iris) +
+  aes(x = Sepal.Width) +
   geom_histogram(   #&lt;&lt;
-    binwidth = 0.25 #&lt;&lt;
+    binwidth = 0.10 #&lt;&lt;
   )                 #&lt;&lt;
 ```
 ````
@@ -574,10 +614,10 @@ ggplot(tips) +
 
 
 ```r
-ggplot(tips) +
-  aes(x = tip) +
+ggplot(iris) +
+  aes(x = Sepal.Width) +
 * geom_histogram(
-*   binwidth = 0.25
+*   binwidth = 0.10
 * )
 ```
 ]
