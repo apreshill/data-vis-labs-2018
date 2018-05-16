@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lab 06: CS631
-## Working in the Tada!-verse
+## Working with Slides in the Tada!-verse
 ### Alison Hill
 
 ---
@@ -33,6 +33,11 @@ class: center, middle, inverse
 # Second:
 
 ## Sites with `blogdown`
+
+---
+background-image: url("https://media.giphy.com/media/uELDhoOZdSnUk/giphy.gif")
+background-size: cover
+
 
 ---
 
@@ -128,7 +133,7 @@ output: xaringan::moon_reader
 ```
 
 ---
-# Slide Separators
+# Slide separators
 
 - The first slide starts right away. 
 
@@ -141,11 +146,47 @@ output: xaringan::moon_reader
 ```
 # Slide 1
 This is slide 1
+
 ---
 # Slide 2
 This is slide 2
 ```
 
+---
+# Refresh your markdown 
+
+https://www.markdowntutorial.com
+
+You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**. 
+
+--
+
+.pull-left[
+You can also:
+
+- do
+- bullets
+- plus
+  - nested
+- lists
+  - if you like
+]
+
+--
+
+.pull-right[
+```
+1. or
+1. numbered
+1. lists
+1. too
+```
+
+1. or
+1. numbered
+1. lists
+1. too
+]
 ---
 # Align your slides
 
@@ -265,7 +306,7 @@ Use the [`background-image` property](https://github.com/gnab/remark/wiki/Markdo
 
 - `background-image: url("actual url or file path here")`
 - `background-size: cover` --&gt; image is scaled to fit into the slide.
-- `background-position:` play with this, in percents
+- `background-position:` play with [this](https://www.w3schools.com/cssref/pr_background-position.asp)
 
 --
 
@@ -293,6 +334,8 @@ knitr::include_graphics("http://bit.ly/cs631-pygmy")
 
 &lt;img src="http://bit.ly/cs631-pygmy" width="80%" style="display: block; margin: auto;" /&gt;
 
+
+
 ---
 # Adding images to slides
 
@@ -317,14 +360,28 @@ Set the chunk option to `{r echo = FALSE}` to just show the image:
 ]
 
 ---
+# Bonus: `here::here`
+
+Using `knitr` means you can use the `here` package for your image file paths 
+
+
+```r
+library(here)
+knitr::include_graphics(here("images", "pygmy.jpg"))
+```
+
+&lt;img src="/Users/hillali/Documents/Projects/r-projects/data-vis-labs-2018/images/pygmy.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
 # Now for some R!
 
-&lt;img src="06-slides_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="06-slides_xaringan_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Control your R
 
-&lt;img src="06-slides_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="06-slides_xaringan_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 Use in your code chunks:
 - `fig.width=` (here I did 10.5)
@@ -413,46 +470,9 @@ knitr::kable(head(iris), format = "html")
 
 
 ---
-# Refresh your markdown 
-
-https://www.markdowntutorial.com
-
-You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**. 
-
---
-
-.pull-left[
-You can also:
-
-- do
-- bullets
-- plus
-  - nested
-- lists
-  - if you like
-]
-
---
-
-.pull-right[
-```
-1. or
-1. numbered
-1. lists
-1. too
-```
-
-1. or
-1. numbered
-1. lists
-1. too
-]
-
----
 # Play with CSS in YAML
 
 
-.pull-left[
 
 ```yaml
 ---
@@ -463,10 +483,10 @@ date: "May 15, 2018"
 output: xaringan::moon_reader
 ---
 ```
-]
+
 
 --
-.pull-right[
+
 ```yaml
 ---
 title: "Lab 06: CS631"
@@ -478,7 +498,6 @@ output:
   css: [default]
 ---
 ```
-]
 
 ---
 # Play with CSS in YAML

@@ -48,9 +48,11 @@ knitr::include_url("slides/02-slides.html")
 knitr::include_url("slides/03-slides.html")
 ```
 
-### 06: Working in the tada!-verse
+### 06: Working with the Tada!-verse
 
 ```{r}
-knitr::include_url("slides/06-slides.html")
+knitr::include_url("slides/06-slides_xaringan.html")
 ```
+
+
 

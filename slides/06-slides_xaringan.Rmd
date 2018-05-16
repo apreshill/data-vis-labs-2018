@@ -1,6 +1,6 @@
 ---
 title: "Lab 06: CS631"
-subtitle: "Working in the Tada!-verse"
+subtitle: "Working with Slides in the Tada!-verse"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
@@ -33,6 +33,11 @@ class: center, middle, inverse
 # Second:
 
 ## Sites with `blogdown`
+
+---
+background-image: url("https://media.giphy.com/media/uELDhoOZdSnUk/giphy.gif")
+background-size: cover
+
 
 ---
 
@@ -127,7 +132,7 @@ output: xaringan::moon_reader
 ```
 
 ---
-# Slide Separators
+# Slide separators
 
 - The first slide starts right away. 
 
@@ -140,11 +145,47 @@ output: xaringan::moon_reader
 ```
 # Slide 1
 This is slide 1
+
 ---
 # Slide 2
 This is slide 2
 ```
 
+---
+# Refresh your markdown 
+
+https://www.markdowntutorial.com
+
+You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**. 
+
+--
+
+.pull-left[
+You can also:
+
+- do
+- bullets
+- plus
+  - nested
+- lists
+  - if you like
+]
+
+--
+
+.pull-right[
+```
+1. or
+1. numbered
+1. lists
+1. too
+```
+
+1. or
+1. numbered
+1. lists
+1. too
+]
 ---
 # Align your slides
 
@@ -264,7 +305,7 @@ Use the [`background-image` property](https://github.com/gnab/remark/wiki/Markdo
 
 - `background-image: url("actual url or file path here")`
 - `background-size: cover` --> image is scaled to fit into the slide.
-- `background-position:` play with this, in percents
+- `background-position:` play with [this](https://www.w3schools.com/cssref/pr_background-position.asp)
 
 --
 
@@ -288,6 +329,8 @@ Use an R chunk (we haven't even done R yet!)
 ```{r}
 knitr::include_graphics("http://bit.ly/cs631-pygmy")
 ```
+
+
 
 ---
 # Adding images to slides
@@ -317,6 +360,17 @@ knitr::include_graphics("http://bit.ly/cs631-pygmy")
 knitr::include_graphics("http://bit.ly/cs631-sheep")
 ```
 ]
+
+---
+# Bonus: `here::here`
+
+Using `knitr` means you can use the `here` package for your image file paths 
+
+```{r}
+library(here)
+knitr::include_graphics(here("images", "pygmy.jpg"))
+```
+
 
 ---
 # Now for some R!
@@ -379,46 +433,9 @@ knitr::kable(head(iris), format = "html")
 
 
 ---
-# Refresh your markdown 
-
-https://www.markdowntutorial.com
-
-You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**. 
-
---
-
-.pull-left[
-You can also:
-
-- do
-- bullets
-- plus
-  - nested
-- lists
-  - if you like
-]
-
---
-
-.pull-right[
-```
-1. or
-1. numbered
-1. lists
-1. too
-```
-
-1. or
-1. numbered
-1. lists
-1. too
-]
-
----
 # Play with CSS in YAML
 
 
-.pull-left[
 
 ```yaml
 ---
@@ -429,10 +446,10 @@ date: "May 15, 2018"
 output: xaringan::moon_reader
 ---
 ```
-]
+
 
 --
-.pull-right[
+
 ```yaml
 ---
 title: "Lab 06: CS631"
@@ -444,7 +461,6 @@ output:
   css: [default]
 ---
 ```
-]
 
 ---
 # Play with CSS in YAML
