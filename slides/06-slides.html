@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 06: CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 06: CS631
+## Tada!-verse
+### Alison Hill
+
+---
+
+
+
+
+
+class: center, middle, inverse
+
+# First:
+
+## Slides with `xaringan`
+
+--
+
+# Second:
+
+## Sites with `blogdown`
+
+---
+
+# xaringan
+
+- Don't ask me how to pronounce it.
+
+- We'll use it to make slides in R Markdown.
+
+- Install it:
+
+
+```r
+devtools::install_github('yihui/xaringan')
+```
+
+You don't have to load it to use it.
+
+
+---
+
+# Let's do this
+
+- File ➡️ New File ➡️ R Markdown ➡️ Click OK
+
+--
+
+- Delete everything but YAML
+
+--
+
+.pull-left[
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: html_document
+---
+```
+]
+
+--
+
+.pull-right[
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: xaringan::moon_reader
+---
+```
+]
+
+--
+
+- Save. (save, save, save!)
+
+---
+# Knit to moon reader
+
+Either:
+
+- Mouse over to `Knit` drop-down menu and select "Knit to moon_reader"
+
+- Or mouse up to "Addins" and select `xaringan`: Infinite Moon Reader. This option does live preview of slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.)
+
+---
+class: center, middle, inverse
+
+# 🖼
+## You should be looking at two slides right now!
+
+---
+class: center, middle, inverse
+
+
+## Using `xaringan`
+
+---
+# Edit your slides
+
+- Edit the YAML to personalize.
+
+```yaml
+---
+title: "Lab 06: CS631"
+subtitle: "Tada!-verse"
+author: "Alison Hill"
+output: xaringan::moon_reader
+---
+```
+
+--
+
+- The first slide starts right away. 
+
+--
+
+- New slides are separated by three dashes in a row `---` on a line by itself (recommend keeping an empty line before)
+
+
+
+---
+# Format your slides
+
+If you aren't familiar with CSS, know that you can use the `default` CSS to do the following on the line immediately after the slide break:
+
+- `class:`
+    - `inverse`
+    - `center` (horizontally)
+    - `middle` (vertically)
+    - `bottom` (vertically)
+    - `top` (default; vertically)
+
+--
+
+You can combine any of these using commas to separate. All my blue background slides are created with:
+
+```
+---
+class: inverse, middle, center
+```
+
+---
+# Title your slides
+## This font is smaller
+
+
+Slide titles and text follow Markdown formatting:
+- A big title uses `#`
+- But you can also use `##`
+
+--
+
+Try creating a new slide that uses a built-in CSS class and has a big title!
+
+```
+---
+class: inverse, middle, center
+# Title your slides
+## This font is smaller
+```
+
+---
+# Two column slides
+
+Another nice built-in CSS feature is `.pull-left[ ]` and `.pull-right[ ]`
+
+Try this:
+```
+.pull-left[
+on your left
+]
+
+.pull-right[
+on your right
+]
+```
+--
+
+You should see:
+
+.pull-left[
+on your left
+]
+
+.pull-right[
+on your right
+]
+
+---
+# Make an incremental slide
+
+One of my favorite things about `xaringan` is the ability to make any slide, anywhere, incremental. To do this, use `--` (that is right, two dashes on a line alone- not three which is a slide break!)
+
+```
+easy
+
+--
+
+does
+
+--
+
+it
+```
+
+--
+
+easy
+
+--
+
+does
+
+--
+
+it
+
+---
+## Do this with a two column slide!
+
+.pull-left[
+increment
+]
+
+--
+
+.pull-right[
+this!
+]
+
+---
+# Full image slides
+
+Use CSS right after slide break (`---`):
+
+- `background-image: url("actual url or file path here")`
+- `background-size: cover` --&gt; image is scaled to fit into the slide.
+- `background-position:` play with this, in percents
+
+--
+
+Try this in a new slide:
+
+```
+---
+background-image: url("http://bit.ly/cs631-donkey")
+background-size: cover
+```
+
+---
+background-image: url("http://bit.ly/cs631-donkey")
+background-size: cover
+
+---
+# Adding images to slides
+
+Use an R chunk (we haven't even done R yet!)
+
+
+```r
+knitr::include_graphics("http://bit.ly/cs631-pygmy")
+```
+
+&lt;img src="http://bit.ly/cs631-pygmy" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Adding images to slides
+
+Set the chunk option to `{r echo = FALSE}` to just show the image:
+
+&lt;img src="http://bit.ly/cs631-pygmy" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## Use images in an incremental two column slide!
+
+.pull-left[
+
+&lt;img src="http://bit.ly/cs631-pygmy" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+&lt;img src="http://bit.ly/cs631-sheep" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Now for some R!
+
+&lt;img src="06-slides_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Control your R
+
+&lt;img src="06-slides_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+Use in your code chunks:
+- `fig.width=` (here I did 10.5)
+- `fig.height=` (here I did 4)
+
+
+
+---
+# Control all of your R
+
+You can do this for all code chunks in your **global chunk options**: 
+
+
+```r
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.width = 10.5, fig.height = 4, 
+                      comment = NA, rows.print = 16)
+```
+
+---
+# Tables
+
+If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+
+
+```r
+knitr::kable(head(iris), format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+# Refresh your markdown 
+
+https://www.markdowntutorial.com
+
+You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**.
+
+---
+# Play with CSS in YAML
+
+
+.pull-left[
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: xaringan::moon_reader
+---
+```
+]
+
+--
+.pull-right[
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: 
+  xaringan::moon_reader
+  css: [default]
+---
+```
+]
+
+---
+# Play with CSS in YAML
+
+Use a built-in theme:
+
+
+```r
+names(xaringan:::list_css())
+```
+
+```
+ [1] "default-fonts"    "default"          "hygge"           
+ [4] "metropolis-fonts" "metropolis"       "rladies-fonts"   
+ [7] "rladies"          "rutgers-fonts"    "rutgers"         
+[10] "tamu-fonts"       "tamu"            
+```
+
+--
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: 
+  xaringan::moon_reader
+  css: [default, metropolis, metropolis-fonts]
+---
+```
+
+---
+# More YAML!
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: 
+  xaringan::moon_reader
+  css: [default, metropolis, metropolis-fonts]
+  nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```
+
+- There are 79 [highlight styles](https://highlightjs.org/static/demo/)
+- Let's look at highlight lines!
+
+---
+# Highlight lines
+
+Use `#&lt;&lt;`!
+
+.pull-left[
+
+````
+```{r example-plot}
+ggplot(tips) +
+  aes(x = tip) +
+  geom_histogram(   #&lt;&lt;
+    binwidth = 0.25 #&lt;&lt;
+  )                 #&lt;&lt;
+```
+````
+]
+
+.pull-right[
+
+
+```r
+ggplot(tips) +
+  aes(x = tip) +
+* geom_histogram(
+*   binwidth = 0.25
+* )
+```
+]
+
+
+---
+class: center, middle
+## Want more control, but less CSS?
+
+&lt;img src="https://pkg.garrickadenbuie.com/xaringanthemer/articles/images/examples.gif" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+https://pkg.garrickadenbuie.com/xaringanthemer/
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,823 @@
+---
+title: 'Lab 05: Fonts & Tables'
+author: "Alison Hill"
+subtitle: CS631
+output:
+  html_document:
+    number_sections: yes
+    theme: flatly
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE, comment = NA, warning = FALSE, errors = FALSE, message = FALSE, tidy = FALSE, cache = FALSE)
+```
+
+# Goals for Lab 05
+
+```{r load_packages, include = FALSE}
+library(tidyverse)
+library(janitor)
+library(knitr)
+library(DT)
+library(xtable)
+library(broom)
+library(tableone)
+library(formattable)
+library(pnwflights14)
+library(pixiedust)
+library(kableExtra)
+library(huxtable)
+```
+
+```{r}
+mazes <- read_csv("http://bit.ly/mazes-gist") %>% 
+  clean_names()  #janitor package
+```
+
+
+# TL;DR
+
+The workhorse for making tables in R Markdown documents is the `knitr` package's `kable` function. This function is really versatile, but also free of fancy formatting options, for better or worse.
+
+# `knitr::kable`
+
+## `kable` all tables everywhere
+
+Update the YAML of your document. For HTML:
+
+```{r eval = FALSE}
+---
+title: "My Awesome Data Vis Lab"
+output:
+  html_document:
+    df_print: kable
+---
+```
+
+You can also define the html format in the global options.
+```{r eval = FALSE}
+# If you don't define format here, you'll need put `format = "html"` in every kable function.
+options(knitr.table.format = "html") 
+# You may also wish to set this option
+options(scipen = 1, digits = 2)
+```
+
+
+## `kable` table in a chunk
+
+For HTML:
+
+```{r}
+head(mazes) %>% 
+  kable(format = "html")
+```
+
+```{r}
+head(mazes) %>% 
+  kable(format = "html", digits = 2, caption = "A table produced by kable.")
+```
+
+```{r}
+my_maze_names <- c("Participant", "Age", "Verbal\nIQ", "Group", "Activity", "Content\nMaze", "Filler\nMaze", "Repetition", "Revision", "False\nStart", "Cued", "Not\nCued")
+head(mazes) %>% 
+  kable(format = "html", digits = 2, caption = "A table produced by kable.",
+        col.names = my_maze_names)
+```
+
+
+## Styled `kable` tables in a chunk
+
+Solution: apply some Bootstrap CSS styling using the `kableExtra` package.
+
+```{r}
+head(mazes) %>% 
+  kable(format = "html", digits = 2, caption = "A styled kable table.",
+        col.names = my_maze_names) %>% 
+  kable_styling()
+```
+
+Lots of printing options:
+https://haozhu233.github.io/kableExtra/awesome_table_in_html.html
+
+```{r}
+head(mazes) %>% 
+  kable(format = "html", digits = 2, caption = "A non-full width zebra kable table.") %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F)
+```
+
+
+```{r}
+head(mazes) %>% 
+  kable(format = "html", digits = 2, caption = "Over here!") %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+## `kable` + `kableExtra` + `formattable`
+
+`color_tile` and `color_bar` are neat extras if used wisely!
+
+http://haozhu233.github.io/kableExtra/use_kableExtra_with_formattable.html
+
+```{r}
+library(formattable)
+head(mazes) %>% 
+  mutate(ca = color_tile("transparent", "lightpink")(ca),
+         viq = color_bar("lightseagreen")(viq)) %>%
+  kable("html", escape = F, caption = 'This table is colored.') %>%
+  kable_styling(position = "center") %>% 
+  column_spec(4, width = "3cm") 
+```
+
+
+## `tibble` + `kable` + `kableExtra`
+
+You can also use any of these tools with plain text tables using the [`tibble` package](http://tibble.tidyverse.org) to create a table. Two main functions:
+
+- `tribble`: enter tibble by rows
+- `tibble`: enter tibble by columns
+
+
+For example, I used `tribble` to make this table in our slide decks:
+```{r}
+math_table <- tibble::tribble(
+  ~Operator, ~Description, ~Usage,
+  "\\+", "addition", "x + y",
+  "\\-", "subtraction", "x - y",
+  "\\*", "multiplication", "x * y",
+  "/", "division", "x / y",
+  "^", "raised to the power of", "x ^ y",
+  "abs", "absolute value", "abs(x)",
+  "%/%", "integer division", "x %/% y",
+  "%%", "remainder after division", "x %% y"
+)
+```
+
+Then I used this chunk to print it:
+
+````
+```{r, results = 'asis'}`r ''`
+knitr::kable(math_table, format = "html", caption = "Helpful mutate functions") %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+````
+
+```{r results = 'asis'}
+knitr::kable(math_table, format = "html", caption = "Helpful mutate functions") %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+# Markdown Tables
+
+Sometimes you may just want to type in a table in Markdown and ignore R. Four kinds of tables may be used. The first three kinds presuppose the use of a fixed-width font, such as Courier. The fourth kind can be used with proportionally spaced fonts, as it does not require lining up columns. All of the below will render when typed *outside* of an R code chunk since these are based on `pandoc` being used to render your markdown document. Note that these should all work whether you are knitting to either html or PDF.
+
+
+## Simple table
+
+This code for a simple table:
+
+
+```{r eval = FALSE}
+  Right     Left     Center     Default
+-------     ------ ----------   -------
+     12     12        12            12
+    123     123       123          123
+      1     1          1             1
+
+Table:  Demonstration of simple table syntax.
+```
+
+Produces this simple table:
+
+  Right     Left     Center     Default
+-------     ------ ----------   -------
+     12     12        12            12
+    123     123       123          123
+      1     1          1             1
+
+Table:  Demonstration of simple table syntax.
+
+The headers and table rows must each fit on one line. Column alignments are determined by the position of the header text relative to the dashed line below it:3
+
+* If the dashed line is flush with the header text on the right side but extends beyond it on the left, the column is right-aligned.
+* If the dashed line is flush with the header text on the left side but extends beyond it on the right, the column is left-aligned.
+* If the dashed line extends beyond the header text on both sides, the column is centered.
+* If the dashed line is flush with the header text on both sides, the default alignment is used (in most cases, this will be left).
+* The table must end with a blank line, or a line of dashes followed by a blank line.
+
+The column headers may be omitted, provided a dashed line is used to end the table.
+
+## Multi-line tables
+
+This code for a multi-line table:
+
+```{r eval = FALSE}
+-------------------------------------------------------------
+ Centered   Default           Right Left
+  Header    Aligned         Aligned Aligned
+----------- ------- --------------- -------------------------
+   First    row                12.0 Example of a row that
+                                    spans multiple lines.
+
+  Second    row                 5.0 Here's another one. Note
+                                    the blank line between
+                                    rows.
+-------------------------------------------------------------
+
+Table: Here's the caption. It, too, may span
+multiple lines.
+```
+
+Produces this multi-line table:
+
+-------------------------------------------------------------
+ Centered   Default           Right Left
+  Header    Aligned         Aligned Aligned
+----------- ------- --------------- -------------------------
+   First    row                12.0 Example of a row that
+                                    spans multiple lines.
+
+  Second    row                 5.0 Here's another one. Note
+                                    the blank line between
+                                    rows.
+-------------------------------------------------------------
+
+Table: Here's the caption. It, too, may span
+multiple lines.
+
+## Grid tables
+
+This code for a grid table:
+
+```{r eval = FALSE}
+: Sample grid table.
+
++---------------+---------------+--------------------+
+| Fruit         | Price         | Advantages         |
++===============+===============+====================+
+| Bananas       | $1.34         | - built-in wrapper |
+|               |               | - bright color     |
++---------------+---------------+--------------------+
+| Oranges       | $2.10         | - cures scurvy     |
+|               |               | - tasty            |
++---------------+---------------+--------------------+
+```
+
+Produces this grid table:
+
+: Sample grid table.
+
++---------------+---------------+--------------------+
+| Fruit         | Price         | Advantages         |
++===============+===============+====================+
+| Bananas       | $1.34         | - built-in wrapper |
+|               |               | - bright color     |
++---------------+---------------+--------------------+
+| Oranges       | $2.10         | - cures scurvy     |
+|               |               | - tasty            |
++---------------+---------------+--------------------+
+
+Alignments are not supported, nor are cells that span multiple columns or rows. 
+
+## Pipe tables
+
+This code for a pipe table:
+
+```{r eval = FALSE}
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1  |
+
+  : Demonstration of pipe table syntax.
+```
+
+Produces this pipe table:
+
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1  |
+
+  : Demonstration of pipe table syntax.
+
+
+# Making tables in R
+
+If you want to make tables that include R output (like output from functions like means, variances, or output from models), there are two steps: 
+
+1. Get the numbers you need in tabular format; then
+2. Render that information in an aesthetically-pleasing way.
+
+This section covers (1). But, although there are some nice options for (2) within R Markdown via various packages, I am not dogmatic about doing *everything* in R Markdown, especially things like (2).
+
+## `dplyr`
+
+We'll use the `pnwflights14` package to practice our `dplyr` skills. We need to download the package from github using `devtools`.
+
+```{r eval = FALSE}
+# once per machine
+install.packages("devtools")
+devtools::install_github("ismayc/pnwflights14")
+```
+
+Now, we need to load the `flights` dataset from the `pnwflights14` package.
+
+```{r eval = FALSE}
+# once per work session
+data("flights", package = "pnwflights14")
+```
+
+
+### `dplyr::select`
+
+Use select to specify which columns in a dataframe you'd like to keep **by name**. Heretofore, this was not possible in base R! In base R, this can only be achieved using numeric variable positions. But most of the time, you keep track of your variables by name (like `carrier`) rather than position (the 8th column).
+
+```{r use-dplyr-select}
+# keep these 2 cols
+mini_flights <- flights %>% 
+  select(carrier, flight)
+glimpse(mini_flights)
+
+# keep first five cols
+first_five <- flights %>% 
+  select(year, month, day, dep_time, dep_delay)
+glimpse(first_five)
+
+# alternatively, specify range
+first_five <- flights %>% 
+  select(year:dep_delay)
+glimpse(first_five)
+```
+
+We can also choose the columns we want by negation, that is, you can specify which columns to drop instead of keep. This way, all variables **not** listed are kept.
+
+```{r drop-select}
+# we can also use negation
+all_but_year <- flights %>% 
+  select(-year)
+glimpse(all_but_year)
+```
+
+
+
+`dplyr::select` comes with several other helper functions...
+
+```{r dplyr-select-helpers}
+depart <- flights %>% 
+  select(starts_with("dep_"))
+glimpse(depart)
+
+times <- flights %>% 
+  select(contains("time"))
+glimpse(times)
+
+# here I am not creating a new dataframe
+flights %>%
+  select(-contains("time"))
+
+delays <- flights %>% 
+  select(ends_with("delay"))
+glimpse(delays)
+```
+
+One of my favorite select helper functions is `everything()`, which allows you to use select to keep **all** your variables, but easily rearrange the columns without having to list all the variables to keep/drop.
+
+```{r dplyr-select-everything}
+new_order <- flights %>% 
+  select(origin, dest, everything())
+head(new_order)
+
+# with negation
+new_order2 <- flights %>% 
+  select(origin, dest, everything(), -year)
+head(new_order2)
+```
+
+
+We can also rename variables within select.
+
+```{r rename-select}
+flights2 <- flights %>%
+  select(tail_num = tailnum, everything())
+head(flights2)
+```
+
+If you don't want to move the renamed variables within your dataframe, you can use the `rename` function.
+
+```{r rename}
+flights3 <- flights %>%
+  rename(tail_num = tailnum)
+glimpse(flights3)
+```
+
+### `dplyr::filter`
+
+
+
+```{r dplyr-filter}
+# flights taking off from PDX
+pdx <- flights %>% 
+  filter(origin == "PDX")
+head(pdx)
+
+# january flights from PDX
+pdx_jan <- flights %>% 
+  filter(origin == "PDX", month == 1) # the comma is an "and"
+head(pdx_jan)
+
+# flights to ATL (Atlanta) or BNA (Nashville)
+to_south <- flights %>% 
+  filter(dest == "ATL" | dest == "BNA") %>% # | is "or"
+  select(origin, dest, everything())
+head(to_south)
+
+# flights from PDX to ATL (Atlanta) or BNA (Nashville)
+pdx_to_south <- flights %>% 
+  filter(origin == "PDX", dest == "ATL" | dest == "BNA") %>% # | is "or"
+  select(origin, dest, everything())
+head(pdx_to_south)
+
+# alternatively, using group membership
+south_dests <- c("ATL", "BNA")
+pdx_to_south2 <- flights %>% 
+  filter(origin == "PDX", dest %in% south_dests) %>% 
+  select(origin, dest, everything())
+head(pdx_to_south2)
+
+# flights delayed by 1 hour or more
+delay_1plus <- flights %>%
+  filter(dep_delay >= 60)
+head(delay_1plus)
+
+# flights delayed by 1 hour, but not more than 2 hours
+delay_1hr <- flights %>%
+  filter(dep_delay >= 60, dep_delay < 120)
+head(delay_1hr)
+range(delay_1hr$dep_delay, na.rm = TRUE)
+
+# even more efficient using between (always inclusive)
+delay_bwn <- flights %>%
+  filter(between(dep_delay, 60, 119))
+head(delay_bwn)
+range(delay_bwn$dep_delay, na.rm = TRUE)
+```
+
+
+### `dplyr::arrange`
+
+```{r}
+# default is ascending order
+flights %>% 
+  arrange(year, month, day)
+
+# descending order
+flights %>% 
+  arrange(desc(year), desc(month), desc(day))
+```
+
+
+### `dplyr::distinct`
+
+
+```{r}
+# all unique origin-dest combinations
+flights %>% 
+  select(origin, dest) %>% 
+  distinct
+
+# all unique destinations from PDX (there are 49)
+from_pdx <- flights %>% 
+  filter(origin == "PDX") %>% 
+  select(origin, dest) %>%
+  distinct(dest)
+head(from_pdx)
+```
+
+
+
+### `dplyr::mutate`
+
+```{r}
+# add total delay variable
+flights %>%
+  mutate(tot_delay = dep_delay + arr_delay) %>%
+  select(origin, dest, ends_with("delay"), everything())
+
+# flights that were delayed at departure had on time or early arrivals?
+arrivals <- flights %>%
+  mutate(arr_ok = ifelse(dep_delay > 0 & arr_delay <= 0, 1, 0)) %>% 
+  select(origin, dest, ends_with("delay"), carrier, arr_ok)
+
+# peek at it
+arrivals %>%
+  filter(arr_ok == 1) %>%
+  head
+```
+
+
+
+### `dplyr::summarise` (or `dplyr::summarize`)
+
+
+```{r}
+flights %>%
+  summarise(mean(dep_delay, na.rm = TRUE))
+
+# we can also name that variable, and summarise multiple variables
+flights %>%
+  summarise(mean_delay = mean(dep_delay, na.rm = TRUE),
+            sd_delay = sd(dep_delay, na.rm = TRUE),
+            median_delay = median(dep_delay, na.rm = TRUE))
+```
+
+But this can get tedious with multiple summaries...
+
+```{r}
+flights %>%
+  filter(!is.na(dep_delay)) %>%
+  select(dep_delay) %>%
+  summarise_each(funs(mean, sd, median))
+
+# same thing
+flights %>%
+  filter(!is.na(dep_delay)) %>%
+  summarise_each(funs(mean, sd, median), dep_delay)
+
+# combine with gather, change names too
+flights %>%
+  filter(!is.na(dep_delay)) %>%
+  summarise_each(funs(mean, stdev = sd, median), dep_delay) %>%
+  gather(delay_stat, value)
+```
+
+Using aggregating functions in `summarise`
+
+```{r}
+# how many unique destinations?
+summary_table <- flights %>% 
+  summarise(tot_flights = n(),
+            tot_planes = n_distinct(tailnum),
+            tot_carriers = n_distinct(carrier),
+            tot_dests = n_distinct(dest),
+            tot_origins = n_distinct(origin))
+
+summary_table
+
+# chain with tidyr functions
+summary_table %>% 
+  gather(key, value) %>% 
+  separate(key, into = c("tot", "entity")) %>% 
+  select(-tot, total = value)
+```
+
+
+
+
+## `tidyr`
+
+We'll work with a made up dataframe:
+
+```{r}
+df <- data.frame(
+  id = 1:10,
+  date = as.Date('2015-01-01') + 0:9,
+  q1_m1_w1 = rnorm(10, 0, 1),
+  q1_m1_w2 = rnorm(10, 0, 1),
+  q1_m2_w3 = rnorm(10, 0, 1),
+  q2_m1_w1 = rnorm(10, 0, 1),
+  q2_m2_w1 = rnorm(10, 0, 1),
+  q2_m2_w2 = rnorm(10, 0, 1)
+)
+```
+
+```{r}
+# HLO
+head(df)
+glimpse(df)
+```
+
+### `tidyr::gather`
+
+First, let's gather...
+```{r}
+df_tidy <- df %>%
+  gather(key, value, q1_m1_w1:q2_m2_w2)
+head(df_tidy)
+```
+
+
+Now let's gather using subtraction...
+```{r}
+df_tidy <- df %>%
+  gather(key, value, -id, -date)
+head(df_tidy)
+```
+
+### `tidyr::separate`
+
+```{r}
+# separate 1 col into 3 cols
+df_sep <- df_tidy %>%
+  separate(key, into = c("quarter", "month", "week"))
+head(df_sep)
+
+# separate 1 col into 2 cols
+df_sep2 <- df_tidy %>%
+  separate(key, into = c("quarter", "period"), extra = "merge")
+head(df_sep2)
+```
+stringr vs. tidyr separate by regular expression
+
+### `tidyr::extract`
+
+`Extract` is essentially the same as `separate`, let's see how...
+
+```{r}
+# extract
+df_ext <- df_sep2 %>%
+  extract(period, into = "month")
+head(df_ext)
+
+# this gives us same output as separate
+df_ext <- df_sep2 %>%
+  extract(period, into = c("month", "week"), 
+          regex = "([[:alnum:]]+)_([[:alnum:]]+)")
+head(df_ext)
+````
+
+### `tidyr::unite`
+
+```{r}
+# let's say we want to combine quarter and month with an underscore
+df_uni <- df_sep %>%
+  unite(period, quarter:month) # sep = "_" is the default arg
+head(df_uni)
+
+# let's say we want to combine quarter and month with nothing
+df_uni <- df_sep %>%
+  unite(period, quarter:month, sep = "")
+head(df_uni)
+```
+
+### `tidyr::spread`
+
+```{r}
+# finally let's spread
+df_spread <- df_uni %>%
+  spread(week, value) # fill = NA is default arg
+head(df_spread)
+```
+
+### Gather multiple sets of columns (`gather() %>% separate() %>% spread()`)
+
+[Gather multiple sets of columns](http://stackoverflow.com/questions/25925556/gather-multiple-sets-of-columns-with-tidyr)
+
+All in one, if we had wanted to essentially "gather" three sets of columns (here, one for each week)...
+
+```{r}
+df_tidiest <- df %>%
+  gather(key, value, -id, -date) %>%
+  separate(key, into = c("quarter", "month", "week")) %>%
+  spread(week, value)
+head(df_tidiest)
+```
+
+
+
+## `broom`
+
+"The broom package takes the messy output of built-in functions in R, such as `lm`, `nls`, or `t.test`, and turns them into tidy data frames." So, broom tidies output from other R functions that are un-tidy.
+
+See here for list of functions: https://github.com/dgrtwo/broom
+
+Vignette: ftp://cran.r-project.org/pub/R/web/packages/broom/vignettes/broom.html
+
+```{r}
+fit <- lm(mpg ~ qsec + factor(am) + wt + factor(gear), 
+          data = mtcars)
+```
+
+Un-tidy output from `lm`
+```{r}
+summary(fit)
+```
+
+Tidy output from `broom`
+```{r}
+tidy(fit)
+```
+
+
+# Specialized Packages
+
+## `huxtable`
+
+## `tableone`
+
+Vignette: https://cran.r-project.org/web/packages/tableone/vignettes/introduction.html
+
+```{r eval = FALSE}
+library(tableone)
+```
+
+```{r}
+CreateTableOne(data = mazes)
+```
+
+```{r}
+my_maze_names <- c("Participant", "Age", "Verbal\nIQ", "Group", "Activity", "Content\nMaze", "Filler\nMaze", "Repetition", "Revision", "False\nStart", "Cued", "Not\nCued")
+## Vector of variables to summarize
+my_num_vars <- c("ca", "viq", "content", "filler", "rep", "rev", "fs", "cued", "not_cued")
+## Vector of categorical variables that need transformation
+my_cat_vars <- c("dx", "activity")
+## Create a TableOne object
+tab2 <- CreateTableOne(vars = my_num_vars, data = mazes, factorVars = my_cat_vars)
+print(tab2, showAllLevels = TRUE)
+
+tab3 <- CreateTableOne(vars = my_num_vars, strata = "dx" , data = mazes)
+tab3
+```
+
+
+
+## The `DT` package
+
+An excellent tutorial on DT is available at https://rstudio.github.io/DT/.
+
+```{r}
+datatable(mazes)
+```
+
+
+## `xtable` (best for html)
+
+The xtable is a solution that delivers both HTML and LaTeX. The syntax is very similar to kable:
+
+```{r}
+output <- 
+  matrix(sprintf("Content %s", LETTERS[1:4]),
+         ncol=2, byrow=TRUE)
+colnames(output) <- 
+  c("1st header", "2nd header")
+rownames(output) <- 
+  c("1st row", "2nd row")
+
+print(xtable(output, 
+             caption="A test table", 
+             align = c("l", "c", "r")), 
+      type="html")
+```
+
+Note that to make it `knit`, you need to specify a chunk option: `results = 'asis'`
+```{r results = 'asis'}
+print(xtable(output, 
+             caption="A test table", 
+             align = c("l", "c", "r")), 
+      type="html")
+```
+
+
+
+```{r results = 'asis'}
+print(xtable(head(iris)), type = 'html', html.table.attributes = '')
+```
+
+
+## `pixiedust` (best for PDF)
+
+Remember that `broom` package we used earlier? We can make this table better...
+
+```{r}
+tidy(fit)
+```
+
+
+https://cran.r-project.org/web/packages/pixiedust/vignettes/pixiedust.html
+
+http://www.suchanutter.net/pixiedust/index.html
+
+```{r}
+dust(fit) %>% 
+  sprinkle(cols = "term", 
+           replace = c("Intercept", "Quarter Mile Time", "Automatic vs. Manual",
+                       "Weight", "Gears: 4 vs. 3", "Gears: 5 vs 3")) %>%
+  sprinkle(cols = c("estimate", "std.error", "statistic"),
+           round = 3) %>% 
+  sprinkle(cols = "p.value", fn = quote(pvalString(value))) %>% 
+  sprinkle_colnames("Term", "Coefficient", "SE", "T-statistic", "P-value")
+```
+
+# Finally, fonts!
+
+https://github.com/wch/extrafont
+
+Follow all installation instructions from `github`
+

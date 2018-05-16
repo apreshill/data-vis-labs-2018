@@ -1,0 +1,490 @@
+---
+title: "Lab 06: CS631"
+subtitle: "Tada!-verse"
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "80%", cache = FALSE)
+library(tidyverse)
+library(here)
+```
+
+
+class: center, middle, inverse
+
+# First:
+
+## Slides with `xaringan`
+
+--
+
+# Second:
+
+## Sites with `blogdown`
+
+---
+
+# xaringan
+
+- Don't ask me how to pronounce it.
+
+- We'll use it to make slides in R Markdown.
+
+- Install it:
+
+```{r eval = FALSE}
+devtools::install_github('yihui/xaringan')
+```
+
+You don't have to load it to use it.
+
+
+---
+
+# Let's do this
+
+- File ➡️ New File ➡️ R Markdown ➡️ Click OK
+
+--
+
+- Delete everything but YAML
+
+--
+
+.pull-left[
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: html_document
+---
+```
+]
+
+--
+
+.pull-right[
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: xaringan::moon_reader
+---
+```
+]
+
+--
+
+- Save. (save, save, save!)
+
+---
+# Knit to moon reader
+
+Either:
+
+- Mouse over to `Knit` drop-down menu and select "Knit to moon_reader"
+
+- Or mouse up to "Addins" and select `xaringan`: Infinite Moon Reader. This option does live preview of slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.)
+
+---
+class: center, middle, inverse
+
+# 🖼
+## You should be looking at two slides right now!
+
+---
+class: center, middle, inverse
+
+
+## Using `xaringan`
+
+---
+# Edit your slides
+
+- Edit the YAML to personalize.
+
+```yaml
+---
+title: "Lab 06: CS631"
+subtitle: "Tada!-verse"
+author: "Alison Hill"
+output: xaringan::moon_reader
+---
+```
+
+--
+
+- The first slide starts right away. 
+
+--
+
+- New slides are separated by three dashes in a row `---` on a line by itself (recommend keeping an empty line before)
+
+
+
+---
+# Format your slides
+
+If you aren't familiar with CSS, know that you can use the `default` CSS to do the following on the line immediately after the slide break:
+
+- `class:`
+    - `inverse`
+    - `center` (horizontally)
+    - `middle` (vertically)
+    - `bottom` (vertically)
+    - `top` (default; vertically)
+
+--
+
+You can combine any of these using commas to separate. All my blue background slides are created with:
+
+```
+---
+class: inverse, middle, center
+```
+
+---
+# Title your slides
+## This font is smaller
+
+
+Slide titles and text follow Markdown formatting:
+- A big title uses `#`
+- But you can also use `##`
+
+--
+
+Try creating a new slide that uses a built-in CSS class and has a big title!
+
+```
+---
+class: inverse, middle, center
+# Title your slides
+## This font is smaller
+```
+
+---
+# Two column slides
+
+Another nice built-in CSS feature is `.pull-left[ ]` and `.pull-right[ ]`
+
+Try this:
+```
+.pull-left[
+on your left
+]
+
+.pull-right[
+on your right
+]
+```
+--
+
+You should see:
+
+.pull-left[
+on your left
+]
+
+.pull-right[
+on your right
+]
+
+---
+# Make an incremental slide
+
+One of my favorite things about `xaringan` is the ability to make any slide, anywhere, incremental. To do this, use `--` (that is right, two dashes on a line alone- not three which is a slide break!)
+
+```
+easy
+
+--
+
+does
+
+--
+
+it
+```
+
+--
+
+easy
+
+--
+
+does
+
+--
+
+it
+
+---
+## Do this with a two column slide!
+
+.pull-left[
+increment
+]
+
+--
+
+.pull-right[
+this!
+]
+
+---
+# Full image slides
+
+Use CSS right after slide break (`---`):
+
+- `background-image: url("actual url or file path here")`
+- `background-size: cover` --> image is scaled to fit into the slide.
+- `background-position:` play with this, in percents
+
+--
+
+Try this in a new slide:
+
+```
+---
+background-image: url("http://bit.ly/cs631-donkey")
+background-size: cover
+```
+
+---
+background-image: url("http://bit.ly/cs631-donkey")
+background-size: cover
+
+---
+# Adding images to slides
+
+Use an R chunk (we haven't even done R yet!)
+
+```{r}
+knitr::include_graphics("http://bit.ly/cs631-pygmy")
+```
+
+---
+# Adding images to slides
+
+Set the chunk option to `{r echo = FALSE}` to just show the image:
+
+```{r echo = FALSE}
+knitr::include_graphics("http://bit.ly/cs631-pygmy")
+```
+
+---
+## Use images in an incremental two column slide!
+
+.pull-left[
+
+```{r echo = FALSE}
+knitr::include_graphics("http://bit.ly/cs631-pygmy")
+```
+
+]
+
+--
+
+.pull-right[
+
+```{r echo = FALSE}
+knitr::include_graphics("http://bit.ly/cs631-sheep")
+```
+]
+
+---
+# Now for some R!
+
+```{r echo = FALSE}
+library(babynames)
+library(tidyverse)
+alison <- babynames %>%
+  filter(name == "Alison" | name == "Allison") %>% 
+  filter(sex == "F") 
+ggplot(alison, aes(x = year, 
+                           y = prop,  
+                           group = name, 
+                           color = name)) + 
+  geom_line()  
+```
+
+---
+# Control your R
+
+```{r echo = FALSE, fig.width=10.5, fig.height=4}
+library(babynames)
+library(tidyverse)
+alison <- babynames %>%
+  filter(name == "Alison" | name == "Allison") %>% 
+  filter(sex == "F") 
+ggplot(alison, aes(x = year, 
+                           y = prop,  
+                           group = name, 
+                           color = name)) + 
+  geom_line()  
+```
+
+Use in your code chunks:
+- `fig.width=` (here I did 10.5)
+- `fig.height=` (here I did 4)
+
+
+
+---
+# Control all of your R
+
+You can do this for all code chunks in your **global chunk options**: 
+
+```{r eval = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.width = 10.5, fig.height = 4, 
+                      comment = NA, rows.print = 16)
+```
+
+---
+# Tables
+
+If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+
+```{r}
+knitr::kable(head(iris), format = "html")
+```
+
+
+
+---
+# Refresh your markdown 
+
+https://www.markdowntutorial.com
+
+You can use markdown to do [links](https://www.markdowntutorial.com), *italics*, and **bold**.
+
+---
+# Play with CSS in YAML
+
+
+.pull-left[
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: xaringan::moon_reader
+---
+```
+]
+
+--
+.pull-right[
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: 
+  xaringan::moon_reader
+  css: [default]
+---
+```
+]
+
+---
+# Play with CSS in YAML
+
+Use a built-in theme:
+
+```{r}
+names(xaringan:::list_css())
+```
+
+--
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: 
+  xaringan::moon_reader
+  css: [default, metropolis, metropolis-fonts]
+---
+```
+
+---
+# More YAML!
+
+```yaml
+---
+title: "TADA!"
+author: "Alison Hill"
+date: "May 15, 2018"
+output: 
+  xaringan::moon_reader
+  css: [default, metropolis, metropolis-fonts]
+  nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```
+
+- There are 79 [highlight styles](https://highlightjs.org/static/demo/)
+- Let's look at highlight lines!
+
+---
+# Highlight lines
+
+Use `#<<`!
+
+.pull-left[
+
+````
+```{r example-plot}`r ''`
+ggplot(tips) +
+  aes(x = tip) +
+  geom_histogram(   #<<
+    binwidth = 0.25 #<<
+  )                 #<<
+```
+````
+]
+
+.pull-right[
+
+```{r example-plot, eval = FALSE}
+ggplot(tips) +
+  aes(x = tip) +
+  geom_histogram(   #<<
+    binwidth = 0.25 #<<
+  )                 #<<
+```
+]
+
+
+---
+class: center, middle
+## Want more control, but less CSS?
+
+```{r echo = FALSE}
+knitr::include_graphics("https://pkg.garrickadenbuie.com/xaringanthemer/articles/images/examples.gif")
+```
+
+
+https://pkg.garrickadenbuie.com/xaringanthemer/

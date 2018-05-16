@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 04: Tidy Summaries with Gapminder Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="slides.html">Slides &amp; Reading</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 04: Tidy Summaries with Gapminder Data</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="overview" class="section level1">
+<h1><span class="header-section-number">1</span> Overview</h1>
+<p>Both challenges are due by noon via Sakai on Wednesday May 2. For the first tidy challenge, you’ll want to refer back to our <a href="slides/04-slides.html">slides</a>. For the second challenge, you’ll want to refer to the <a href="04-distributions.html">reference lab</a>.</p>
+<ol style="list-style-type: decimal">
+<li>Tidy challenge: Tidy the <code>gapminder_broadband_per_100.csv</code> file <em>(Tip: use <code>janitor::clean_names()</code> immediately after import to make life easier)</em>
+<ul>
+<li>The data are the fixed broadband internet subscribers (per 100 people) for different countries by year: “Fixed broadband subscribers are users of the Internet who subscribe to paid high-speed access to the public Internet. High-speed access is at least 256 kilobits per second in one or both directions. Source: International Telecommunication Union, World Telecommunication Development Report and database, and World Bank estimates. Note: Please cite the International Telecommunication Union for third-party use of these data.”</li>
+<li>Read more about the numbers <a href="https://docs.google.com/spreadsheets/d/1MgJAijU4I4WnB8JDu6uPmS9lGYaPUkCt1k-RYTZ4nSE/pub#">here</a></li>
+</ul></li>
+<li>Gapminder challenge: Read on…</li>
+</ol>
+<p>Install and load the <code>gapminder</code> data package. This is the same data that was used in your Datacamp “Introduction to the Tidyverse” course, and a tidied version of the larger gapminder dataset from challenge 1!</p>
+<pre class="r"><code>install.packages(&quot;gapminder&quot;)
+library(gapminder)
+?gapminder</code></pre>
+<p>Pick at least <strong>two</strong> of the tasks below from the task menu and approach each with a table and figure.</p>
+<ul>
+<li><code>dplyr</code> should be your main data manipulation tool</li>
+<li><code>ggplot2</code> should be your main visualization tool</li>
+</ul>
+<p>Make observations about what your tables/figures show and about the process. If you want to do something comparable but different, i.e. swap one quantitative variable for another- go for it!</p>
+<p>You do not have to use <code>tidyr</code> or otherwise worry about reshaping your tables. Many of your tables may not be formatted perfectly in the report. Simply printing <code>dplyr</code> tabular output is fine. For all things, graphical and tabular, if you’re dissatisfied with a result, discuss the problem, what you tried to do to fix it, and move on.</p>
+<div id="task-menu" class="section level3">
+<h3><span class="header-section-number">1.0.1</span> Task menu</h3>
+<ul>
+<li><p>Get the maximum and minimum of GDP per capita for all continents.</p></li>
+<li><p>Look at the spread of GDP per capita across countries within the continents.</p></li>
+<li><p>How does life expectancy vary across different continents?</p></li>
+<li><p>Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.</p></li>
+<li><p>Make up your own!</p></li>
+</ul>
+</div>
+<div id="companion-graphs" class="section level3">
+<h3><span class="header-section-number">1.0.2</span> Companion graphs</h3>
+<p>For each table, make sure to include a relevant figure. One tip for starting is to draw out on paper what you want your x- and y-axis to be first and what your <code>geom</code> is; that is, start by drawing the plot you want <code>ggplot</code> to give you. Your figure does not have to depict every single number present in the table. Use your judgement. It just needs to complement the table, add context, and allow for some sanity checking.</p>
+<p>Notice which figures are easy/hard to make, and whether the visualization adds clarity, detracts from, or is completely redundant (and therefore probably unnecessary) with respect to the tabular display.</p>
+</div>
+<div id="report-your-process" class="section level2">
+<h2><span class="header-section-number">1.1</span> Report your process</h2>
+<p>You’re encouraged to reflect on what was hard/easy, problems you solved, helpful tutorials you read, etc.</p>
+<div class="jumbotron">
+<p>Gapminder EDA ideas from <a href="http://stat545.com/hw03_dplyr-and-more-ggplot2.html">Jenny Bryan</a>, author and creator of the <a href="https://cran.r-project.org/web/packages/gapminder/index.html">Gapminder package</a>.</p>
+</div>
+</div>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

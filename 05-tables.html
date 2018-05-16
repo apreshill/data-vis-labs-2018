@@ -1,0 +1,3932 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 05: Fonts &amp; Tables</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="site_libs/datatables-binding-0.2/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="slides.html">Slides &amp; Reading</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 05: Fonts &amp; Tables</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="goals-for-lab-05" class="section level1">
+<h1><span class="header-section-number">1</span> Goals for Lab 05</h1>
+<pre class="r"><code>mazes &lt;- read_csv(&quot;http://bit.ly/mazes-gist&quot;) %&gt;% 
+  clean_names()  #janitor package</code></pre>
+</div>
+<div id="tldr" class="section level1">
+<h1><span class="header-section-number">2</span> TL;DR</h1>
+<p>The workhorse for making tables in R Markdown documents is the <code>knitr</code> package’s <code>kable</code> function. This function is really versatile, but also free of fancy formatting options, for better or worse.</p>
+</div>
+<div id="knitrkable" class="section level1">
+<h1><span class="header-section-number">3</span> <code>knitr::kable</code></h1>
+<div id="kable-all-tables-everywhere" class="section level2">
+<h2><span class="header-section-number">3.1</span> <code>kable</code> all tables everywhere</h2>
+<p>Update the YAML of your document. For HTML:</p>
+<pre class="r"><code>---
+title: &quot;My Awesome Data Vis Lab&quot;
+output:
+  html_document:
+    df_print: kable
+---</code></pre>
+<p>You can also define the html format in the global options.</p>
+<pre class="r"><code># If you don&#39;t define format here, you&#39;ll need put `format = &quot;html&quot;` in every kable function.
+options(knitr.table.format = &quot;html&quot;) 
+# You may also wish to set this option
+options(scipen = 1, digits = 2)</code></pre>
+</div>
+<div id="kable-table-in-a-chunk" class="section level2">
+<h2><span class="header-section-number">3.2</span> <code>kable</code> table in a chunk</h2>
+<p>For HTML:</p>
+<pre class="r"><code>head(mazes) %&gt;% 
+  kable(format = &quot;html&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+study_id
+</th>
+<th style="text-align:right;">
+ca
+</th>
+<th style="text-align:right;">
+viq
+</th>
+<th style="text-align:left;">
+dx
+</th>
+<th style="text-align:left;">
+activity
+</th>
+<th style="text-align:right;">
+content
+</th>
+<th style="text-align:right;">
+filler
+</th>
+<th style="text-align:right;">
+rep
+</th>
+<th style="text-align:right;">
+rev
+</th>
+<th style="text-align:right;">
+fs
+</th>
+<th style="text-align:right;">
+cued
+</th>
+<th style="text-align:right;">
+not_cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.6667
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.6667
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.6667
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.6667
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.5000
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.5000
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>head(mazes) %&gt;% 
+  kable(format = &quot;html&quot;, digits = 2, caption = &quot;A table produced by kable.&quot;)</code></pre>
+<table>
+<caption>
+A table produced by kable.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+study_id
+</th>
+<th style="text-align:right;">
+ca
+</th>
+<th style="text-align:right;">
+viq
+</th>
+<th style="text-align:left;">
+dx
+</th>
+<th style="text-align:left;">
+activity
+</th>
+<th style="text-align:right;">
+content
+</th>
+<th style="text-align:right;">
+filler
+</th>
+<th style="text-align:right;">
+rep
+</th>
+<th style="text-align:right;">
+rev
+</th>
+<th style="text-align:right;">
+fs
+</th>
+<th style="text-align:right;">
+cued
+</th>
+<th style="text-align:right;">
+not_cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>my_maze_names &lt;- c(&quot;Participant&quot;, &quot;Age&quot;, &quot;Verbal\nIQ&quot;, &quot;Group&quot;, &quot;Activity&quot;, &quot;Content\nMaze&quot;, &quot;Filler\nMaze&quot;, &quot;Repetition&quot;, &quot;Revision&quot;, &quot;False\nStart&quot;, &quot;Cued&quot;, &quot;Not\nCued&quot;)
+head(mazes) %&gt;% 
+  kable(format = &quot;html&quot;, digits = 2, caption = &quot;A table produced by kable.&quot;,
+        col.names = my_maze_names)</code></pre>
+<table>
+<caption>
+A table produced by kable.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Participant
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:right;">
+Verbal IQ
+</th>
+<th style="text-align:left;">
+Group
+</th>
+<th style="text-align:left;">
+Activity
+</th>
+<th style="text-align:right;">
+Content Maze
+</th>
+<th style="text-align:right;">
+Filler Maze
+</th>
+<th style="text-align:right;">
+Repetition
+</th>
+<th style="text-align:right;">
+Revision
+</th>
+<th style="text-align:right;">
+False Start
+</th>
+<th style="text-align:right;">
+Cued
+</th>
+<th style="text-align:right;">
+Not Cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="styled-kable-tables-in-a-chunk" class="section level2">
+<h2><span class="header-section-number">3.3</span> Styled <code>kable</code> tables in a chunk</h2>
+<p>Solution: apply some Bootstrap CSS styling using the <code>kableExtra</code> package.</p>
+<pre class="r"><code>head(mazes) %&gt;% 
+  kable(format = &quot;html&quot;, digits = 2, caption = &quot;A styled kable table.&quot;,
+        col.names = my_maze_names) %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+A styled kable table.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Participant
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:right;">
+Verbal IQ
+</th>
+<th style="text-align:left;">
+Group
+</th>
+<th style="text-align:left;">
+Activity
+</th>
+<th style="text-align:right;">
+Content Maze
+</th>
+<th style="text-align:right;">
+Filler Maze
+</th>
+<th style="text-align:right;">
+Repetition
+</th>
+<th style="text-align:right;">
+Revision
+</th>
+<th style="text-align:right;">
+False Start
+</th>
+<th style="text-align:right;">
+Cued
+</th>
+<th style="text-align:right;">
+Not Cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+<p>Lots of printing options: <a href="https://haozhu233.github.io/kableExtra/awesome_table_in_html.html" class="uri">https://haozhu233.github.io/kableExtra/awesome_table_in_html.html</a></p>
+<pre class="r"><code>head(mazes) %&gt;% 
+  kable(format = &quot;html&quot;, digits = 2, caption = &quot;A non-full width zebra kable table.&quot;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+A non-full width zebra kable table.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+study_id
+</th>
+<th style="text-align:right;">
+ca
+</th>
+<th style="text-align:right;">
+viq
+</th>
+<th style="text-align:left;">
+dx
+</th>
+<th style="text-align:left;">
+activity
+</th>
+<th style="text-align:right;">
+content
+</th>
+<th style="text-align:right;">
+filler
+</th>
+<th style="text-align:right;">
+rep
+</th>
+<th style="text-align:right;">
+rev
+</th>
+<th style="text-align:right;">
+fs
+</th>
+<th style="text-align:right;">
+cued
+</th>
+<th style="text-align:right;">
+not_cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>head(mazes) %&gt;% 
+  kable(format = &quot;html&quot;, digits = 2, caption = &quot;Over here!&quot;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;left&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Over here!
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+study_id
+</th>
+<th style="text-align:right;">
+ca
+</th>
+<th style="text-align:right;">
+viq
+</th>
+<th style="text-align:left;">
+dx
+</th>
+<th style="text-align:left;">
+activity
+</th>
+<th style="text-align:right;">
+content
+</th>
+<th style="text-align:right;">
+filler
+</th>
+<th style="text-align:right;">
+rep
+</th>
+<th style="text-align:right;">
+rev
+</th>
+<th style="text-align:right;">
+fs
+</th>
+<th style="text-align:right;">
+cued
+</th>
+<th style="text-align:right;">
+not_cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:right;">
+5.67
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:left;">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="kable-kableextra-formattable" class="section level2">
+<h2><span class="header-section-number">3.4</span> <code>kable</code> + <code>kableExtra</code> + <code>formattable</code></h2>
+<p><code>color_tile</code> and <code>color_bar</code> are neat extras if used wisely!</p>
+<p><a href="http://haozhu233.github.io/kableExtra/use_kableExtra_with_formattable.html" class="uri">http://haozhu233.github.io/kableExtra/use_kableExtra_with_formattable.html</a></p>
+<pre class="r"><code>library(formattable)
+head(mazes) %&gt;% 
+  mutate(ca = color_tile(&quot;transparent&quot;, &quot;lightpink&quot;)(ca),
+         viq = color_bar(&quot;lightseagreen&quot;)(viq)) %&gt;%
+  kable(&quot;html&quot;, escape = F, caption = &#39;This table is colored.&#39;) %&gt;%
+  kable_styling(position = &quot;center&quot;) %&gt;% 
+  column_spec(4, width = &quot;3cm&quot;) </code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+This table is colored.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+study_id
+</th>
+<th style="text-align:left;">
+ca
+</th>
+<th style="text-align:left;">
+viq
+</th>
+<th style="text-align:left;">
+dx
+</th>
+<th style="text-align:left;">
+activity
+</th>
+<th style="text-align:right;">
+content
+</th>
+<th style="text-align:right;">
+filler
+</th>
+<th style="text-align:right;">
+rep
+</th>
+<th style="text-align:right;">
+rev
+</th>
+<th style="text-align:right;">
+fs
+</th>
+<th style="text-align:right;">
+cued
+</th>
+<th style="text-align:right;">
+not_cued
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:left;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">5.6667</span>
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightseagreen; width: 100.00%">124</span>
+</td>
+<td style="text-align:left;width: 3cm; ">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:left;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">5.6667</span>
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightseagreen; width: 100.00%">124</span>
+</td>
+<td style="text-align:left;width: 3cm; ">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:left;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">5.6667</span>
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightseagreen; width: 100.00%">124</span>
+</td>
+<td style="text-align:left;width: 3cm; ">
+TD
+</td>
+<td style="text-align:left;">
+Play
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-001
+</td>
+<td style="text-align:left;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">5.6667</span>
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightseagreen; width: 100.00%">124</span>
+</td>
+<td style="text-align:left;width: 3cm; ">
+TD
+</td>
+<td style="text-align:left;">
+Wordless Picture Book
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:left;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb6c1">6.5000</span>
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightseagreen; width: 100.00%">124</span>
+</td>
+<td style="text-align:left;width: 3cm; ">
+TD
+</td>
+<td style="text-align:left;">
+Conversation
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CSLU-002
+</td>
+<td style="text-align:left;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb6c1">6.5000</span>
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightseagreen; width: 100.00%">124</span>
+</td>
+<td style="text-align:left;width: 3cm; ">
+TD
+</td>
+<td style="text-align:left;">
+Picture Description
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tibble-kable-kableextra" class="section level2">
+<h2><span class="header-section-number">3.5</span> <code>tibble</code> + <code>kable</code> + <code>kableExtra</code></h2>
+<p>You can also use any of these tools with plain text tables using the <a href="http://tibble.tidyverse.org"><code>tibble</code> package</a> to create a table. Two main functions:</p>
+<ul>
+<li><code>tribble</code>: enter tibble by rows</li>
+<li><code>tibble</code>: enter tibble by columns</li>
+</ul>
+<p>For example, I used <code>tribble</code> to make this table in our slide decks:</p>
+<pre class="r"><code>math_table &lt;- tibble::tribble(
+  ~Operator, ~Description, ~Usage,
+  &quot;\\+&quot;, &quot;addition&quot;, &quot;x + y&quot;,
+  &quot;\\-&quot;, &quot;subtraction&quot;, &quot;x - y&quot;,
+  &quot;\\*&quot;, &quot;multiplication&quot;, &quot;x * y&quot;,
+  &quot;/&quot;, &quot;division&quot;, &quot;x / y&quot;,
+  &quot;^&quot;, &quot;raised to the power of&quot;, &quot;x ^ y&quot;,
+  &quot;abs&quot;, &quot;absolute value&quot;, &quot;abs(x)&quot;,
+  &quot;%/%&quot;, &quot;integer division&quot;, &quot;x %/% y&quot;,
+  &quot;%%&quot;, &quot;remainder after division&quot;, &quot;x %% y&quot;
+)</code></pre>
+<p>Then I used this chunk to print it:</p>
+<pre><code>```{r, results = &#39;asis&#39;}
+knitr::kable(math_table, format = &quot;html&quot;, caption = &quot;Helpful mutate functions&quot;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;left&quot;)
+```</code></pre>
+<pre class="r"><code>knitr::kable(math_table, format = &quot;html&quot;, caption = &quot;Helpful mutate functions&quot;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;left&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Helpful mutate functions
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Operator
+</th>
+<th style="text-align:left;">
+Description
+</th>
+<th style="text-align:left;">
+Usage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
++
+</td>
+<td style="text-align:left;">
+addition
+</td>
+<td style="text-align:left;">
+x + y
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-
+</td>
+<td style="text-align:left;">
+subtraction
+</td>
+<td style="text-align:left;">
+x - y
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+*
+</td>
+<td style="text-align:left;">
+multiplication
+</td>
+<td style="text-align:left;">
+x * y
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/
+</td>
+<td style="text-align:left;">
+division
+</td>
+<td style="text-align:left;">
+x / y
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+^
+</td>
+<td style="text-align:left;">
+raised to the power of
+</td>
+<td style="text-align:left;">
+x ^ y
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abs
+</td>
+<td style="text-align:left;">
+absolute value
+</td>
+<td style="text-align:left;">
+abs(x)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+%/%
+</td>
+<td style="text-align:left;">
+integer division
+</td>
+<td style="text-align:left;">
+x %/% y
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+%%
+</td>
+<td style="text-align:left;">
+remainder after division
+</td>
+<td style="text-align:left;">
+x %% y
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="markdown-tables" class="section level1">
+<h1><span class="header-section-number">4</span> Markdown Tables</h1>
+<p>Sometimes you may just want to type in a table in Markdown and ignore R. Four kinds of tables may be used. The first three kinds presuppose the use of a fixed-width font, such as Courier. The fourth kind can be used with proportionally spaced fonts, as it does not require lining up columns. All of the below will render when typed <em>outside</em> of an R code chunk since these are based on <code>pandoc</code> being used to render your markdown document. Note that these should all work whether you are knitting to either html or PDF.</p>
+<div id="simple-table" class="section level2">
+<h2><span class="header-section-number">4.1</span> Simple table</h2>
+<p>This code for a simple table:</p>
+<pre class="r"><code>  Right     Left     Center     Default
+-------     ------ ----------   -------
+     12     12        12            12
+    123     123       123          123
+      1     1          1             1
+
+Table:  Demonstration of simple table syntax.</code></pre>
+<p>Produces this simple table:</p>
+<table>
+<caption>Demonstration of simple table syntax.</caption>
+<thead>
+<tr class="header">
+<th align="right">Right</th>
+<th align="left">Left</th>
+<th align="center">Center</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">12</td>
+<td align="left">12</td>
+<td align="center">12</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td align="right">123</td>
+<td align="left">123</td>
+<td align="center">123</td>
+<td>123</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">1</td>
+<td align="center">1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The headers and table rows must each fit on one line. Column alignments are determined by the position of the header text relative to the dashed line below it:3</p>
+<ul>
+<li>If the dashed line is flush with the header text on the right side but extends beyond it on the left, the column is right-aligned.</li>
+<li>If the dashed line is flush with the header text on the left side but extends beyond it on the right, the column is left-aligned.</li>
+<li>If the dashed line extends beyond the header text on both sides, the column is centered.</li>
+<li>If the dashed line is flush with the header text on both sides, the default alignment is used (in most cases, this will be left).</li>
+<li>The table must end with a blank line, or a line of dashes followed by a blank line.</li>
+</ul>
+<p>The column headers may be omitted, provided a dashed line is used to end the table.</p>
+</div>
+<div id="multi-line-tables" class="section level2">
+<h2><span class="header-section-number">4.2</span> Multi-line tables</h2>
+<p>This code for a multi-line table:</p>
+<pre class="r"><code>-------------------------------------------------------------
+ Centered   Default           Right Left
+  Header    Aligned         Aligned Aligned
+----------- ------- --------------- -------------------------
+   First    row                12.0 Example of a row that
+                                    spans multiple lines.
+
+  Second    row                 5.0 Here&#39;s another one. Note
+                                    the blank line between
+                                    rows.
+-------------------------------------------------------------
+
+Table: Here&#39;s the caption. It, too, may span
+multiple lines.</code></pre>
+<p>Produces this multi-line table:</p>
+<table style="width:85%;">
+<caption>Here’s the caption. It, too, may span multiple lines.</caption>
+<colgroup>
+<col width="16%" />
+<col width="11%" />
+<col width="22%" />
+<col width="34%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Centered Header</th>
+<th>Default Aligned</th>
+<th align="right">Right Aligned</th>
+<th align="left">Left Aligned</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">First</td>
+<td>row</td>
+<td align="right">12.0</td>
+<td align="left">Example of a row that spans multiple lines.</td>
+</tr>
+<tr class="even">
+<td align="center">Second</td>
+<td>row</td>
+<td align="right">5.0</td>
+<td align="left">Here’s another one. Note the blank line between rows.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="grid-tables" class="section level2">
+<h2><span class="header-section-number">4.3</span> Grid tables</h2>
+<p>This code for a grid table:</p>
+<pre class="r"><code>: Sample grid table.
+
++---------------+---------------+--------------------+
+| Fruit         | Price         | Advantages         |
++===============+===============+====================+
+| Bananas       | $1.34         | - built-in wrapper |
+|               |               | - bright color     |
++---------------+---------------+--------------------+
+| Oranges       | $2.10         | - cures scurvy     |
+|               |               | - tasty            |
++---------------+---------------+--------------------+</code></pre>
+<p>Produces this grid table:</p>
+<table style="width:74%;">
+<caption>Sample grid table.</caption>
+<colgroup>
+<col width="22%" />
+<col width="22%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fruit</th>
+<th>Price</th>
+<th>Advantages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Bananas</p></td>
+<td><p>$1.34</p></td>
+<td><ul>
+<li>built-in wrapper</li>
+<li>bright color</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Oranges</p></td>
+<td><p>$2.10</p></td>
+<td><ul>
+<li>cures scurvy</li>
+<li>tasty</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<p>Alignments are not supported, nor are cells that span multiple columns or rows.</p>
+</div>
+<div id="pipe-tables" class="section level2">
+<h2><span class="header-section-number">4.4</span> Pipe tables</h2>
+<p>This code for a pipe table:</p>
+<pre class="r"><code>| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1  |
+
+  : Demonstration of pipe table syntax.</code></pre>
+<p>Produces this pipe table:</p>
+<table>
+<caption>Demonstration of pipe table syntax.</caption>
+<thead>
+<tr class="header">
+<th align="right">Right</th>
+<th align="left">Left</th>
+<th>Default</th>
+<th align="center">Center</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">12</td>
+<td align="left">12</td>
+<td>12</td>
+<td align="center">12</td>
+</tr>
+<tr class="even">
+<td align="right">123</td>
+<td align="left">123</td>
+<td>123</td>
+<td align="center">123</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">1</td>
+<td>1</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="making-tables-in-r" class="section level1">
+<h1><span class="header-section-number">5</span> Making tables in R</h1>
+<p>If you want to make tables that include R output (like output from functions like means, variances, or output from models), there are two steps:</p>
+<ol style="list-style-type: decimal">
+<li>Get the numbers you need in tabular format; then</li>
+<li>Render that information in an aesthetically-pleasing way.</li>
+</ol>
+<p>This section covers (1). But, although there are some nice options for (2) within R Markdown via various packages, I am not dogmatic about doing <em>everything</em> in R Markdown, especially things like (2).</p>
+<div id="dplyr" class="section level2">
+<h2><span class="header-section-number">5.1</span> <code>dplyr</code></h2>
+<p>We’ll use the <code>pnwflights14</code> package to practice our <code>dplyr</code> skills. We need to download the package from github using <code>devtools</code>.</p>
+<pre class="r"><code># once per machine
+install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;ismayc/pnwflights14&quot;)</code></pre>
+<p>Now, we need to load the <code>flights</code> dataset from the <code>pnwflights14</code> package.</p>
+<pre class="r"><code># once per work session
+data(&quot;flights&quot;, package = &quot;pnwflights14&quot;)</code></pre>
+<div id="dplyrselect" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> <code>dplyr::select</code></h3>
+<p>Use select to specify which columns in a dataframe you’d like to keep <strong>by name</strong>. Heretofore, this was not possible in base R! In base R, this can only be achieved using numeric variable positions. But most of the time, you keep track of your variables by name (like <code>carrier</code>) rather than position (the 8th column).</p>
+<pre class="r"><code># keep these 2 cols
+mini_flights &lt;- flights %&gt;% 
+  select(carrier, flight)
+glimpse(mini_flights)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 2
+$ carrier &lt;chr&gt; &quot;AS&quot;, &quot;US&quot;, &quot;UA&quot;, &quot;US&quot;, &quot;AS&quot;, &quot;DL&quot;, &quot;UA&quot;, &quot;UA&quot;, &quot;UA&quot;, ...
+$ flight  &lt;int&gt; 145, 1830, 1609, 466, 121, 1823, 1481, 229, 1576, 478,...</code></pre>
+<pre class="r"><code># keep first five cols
+first_five &lt;- flights %&gt;% 
+  select(year, month, day, dep_time, dep_delay)
+glimpse(first_five)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 5
+$ year      &lt;int&gt; 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014...
+$ month     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ day       &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ dep_time  &lt;int&gt; 1, 4, 8, 28, 34, 37, 346, 526, 527, 536, 541, 549, 5...
+$ dep_delay &lt;dbl&gt; 96, -6, 13, -2, 44, 82, 227, -4, 7, 1, 1, 24, 0, -3,...</code></pre>
+<pre class="r"><code># alternatively, specify range
+first_five &lt;- flights %&gt;% 
+  select(year:dep_delay)
+glimpse(first_five)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 5
+$ year      &lt;int&gt; 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014...
+$ month     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ day       &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ dep_time  &lt;int&gt; 1, 4, 8, 28, 34, 37, 346, 526, 527, 536, 541, 549, 5...
+$ dep_delay &lt;dbl&gt; 96, -6, 13, -2, 44, 82, 227, -4, 7, 1, 1, 24, 0, -3,...</code></pre>
+<p>We can also choose the columns we want by negation, that is, you can specify which columns to drop instead of keep. This way, all variables <strong>not</strong> listed are kept.</p>
+<pre class="r"><code># we can also use negation
+all_but_year &lt;- flights %&gt;% 
+  select(-year)
+glimpse(all_but_year)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 15
+$ month     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ day       &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ dep_time  &lt;int&gt; 1, 4, 8, 28, 34, 37, 346, 526, 527, 536, 541, 549, 5...
+$ dep_delay &lt;dbl&gt; 96, -6, 13, -2, 44, 82, 227, -4, 7, 1, 1, 24, 0, -3,...
+$ arr_time  &lt;int&gt; 235, 738, 548, 800, 325, 747, 936, 1148, 917, 1334, ...
+$ arr_delay &lt;dbl&gt; 70, -23, -4, -23, 43, 88, 219, 15, 24, -6, 4, 12, -1...
+$ carrier   &lt;chr&gt; &quot;AS&quot;, &quot;US&quot;, &quot;UA&quot;, &quot;US&quot;, &quot;AS&quot;, &quot;DL&quot;, &quot;UA&quot;, &quot;UA&quot;, &quot;UA&quot;...
+$ tailnum   &lt;chr&gt; &quot;N508AS&quot;, &quot;N195UW&quot;, &quot;N37422&quot;, &quot;N547UW&quot;, &quot;N762AS&quot;, &quot;N...
+$ flight    &lt;int&gt; 145, 1830, 1609, 466, 121, 1823, 1481, 229, 1576, 47...
+$ origin    &lt;chr&gt; &quot;PDX&quot;, &quot;SEA&quot;, &quot;PDX&quot;, &quot;PDX&quot;, &quot;SEA&quot;, &quot;SEA&quot;, &quot;SEA&quot;, &quot;PD...
+$ dest      &lt;chr&gt; &quot;ANC&quot;, &quot;CLT&quot;, &quot;IAH&quot;, &quot;CLT&quot;, &quot;ANC&quot;, &quot;DTW&quot;, &quot;ORD&quot;, &quot;IA...
+$ air_time  &lt;dbl&gt; 194, 252, 201, 251, 201, 224, 202, 217, 136, 268, 13...
+$ distance  &lt;dbl&gt; 1542, 2279, 1825, 2282, 1448, 1927, 1721, 1825, 1024...
+$ hour      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6...
+$ minute    &lt;dbl&gt; 1, 4, 8, 28, 34, 37, 46, 26, 27, 36, 41, 49, 50, 57,...</code></pre>
+<p><code>dplyr::select</code> comes with several other helper functions…</p>
+<pre class="r"><code>depart &lt;- flights %&gt;% 
+  select(starts_with(&quot;dep_&quot;))
+glimpse(depart)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 2
+$ dep_time  &lt;int&gt; 1, 4, 8, 28, 34, 37, 346, 526, 527, 536, 541, 549, 5...
+$ dep_delay &lt;dbl&gt; 96, -6, 13, -2, 44, 82, 227, -4, 7, 1, 1, 24, 0, -3,...</code></pre>
+<pre class="r"><code>times &lt;- flights %&gt;% 
+  select(contains(&quot;time&quot;))
+glimpse(times)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 3
+$ dep_time &lt;int&gt; 1, 4, 8, 28, 34, 37, 346, 526, 527, 536, 541, 549, 55...
+$ arr_time &lt;int&gt; 235, 738, 548, 800, 325, 747, 936, 1148, 917, 1334, 9...
+$ air_time &lt;dbl&gt; 194, 252, 201, 251, 201, 224, 202, 217, 136, 268, 130...</code></pre>
+<pre class="r"><code># here I am not creating a new dataframe
+flights %&gt;%
+  select(-contains(&quot;time&quot;))</code></pre>
+<pre><code># A tibble: 162,049 x 13
+    year month   day dep_delay arr_delay carrier tailnum flight origin
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt; 
+ 1  2014     1     1       96.       70. AS      N508AS     145 PDX   
+ 2  2014     1     1       -6.      -23. US      N195UW    1830 SEA   
+ 3  2014     1     1       13.       -4. UA      N37422    1609 PDX   
+ 4  2014     1     1       -2.      -23. US      N547UW     466 PDX   
+ 5  2014     1     1       44.       43. AS      N762AS     121 SEA   
+ 6  2014     1     1       82.       88. DL      N806DN    1823 SEA   
+ 7  2014     1     1      227.      219. UA      N14219    1481 SEA   
+ 8  2014     1     1       -4.       15. UA      N813UA     229 PDX   
+ 9  2014     1     1        7.       24. UA      N75433    1576 SEA   
+10  2014     1     1        1.       -6. UA      N574UA     478 SEA   
+# ... with 162,039 more rows, and 4 more variables: dest &lt;chr&gt;,
+#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code>delays &lt;- flights %&gt;% 
+  select(ends_with(&quot;delay&quot;))
+glimpse(delays)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 2
+$ dep_delay &lt;dbl&gt; 96, -6, 13, -2, 44, 82, 227, -4, 7, 1, 1, 24, 0, -3,...
+$ arr_delay &lt;dbl&gt; 70, -23, -4, -23, 43, 88, 219, 15, 24, -6, 4, 12, -1...</code></pre>
+<p>One of my favorite select helper functions is <code>everything()</code>, which allows you to use select to keep <strong>all</strong> your variables, but easily rearrange the columns without having to list all the variables to keep/drop.</p>
+<pre class="r"><code>new_order &lt;- flights %&gt;% 
+  select(origin, dest, everything())
+head(new_order)</code></pre>
+<pre><code># A tibble: 6 x 16
+  origin dest   year month   day dep_time dep_delay arr_time arr_delay
+  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 PDX    ANC    2014     1     1        1       96.      235       70.
+2 SEA    CLT    2014     1     1        4       -6.      738      -23.
+3 PDX    IAH    2014     1     1        8       13.      548       -4.
+4 PDX    CLT    2014     1     1       28       -2.      800      -23.
+5 SEA    ANC    2014     1     1       34       44.      325       43.
+6 SEA    DTW    2014     1     1       37       82.      747       88.
+# ... with 7 more variables: carrier &lt;chr&gt;, tailnum &lt;chr&gt;, flight &lt;int&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># with negation
+new_order2 &lt;- flights %&gt;% 
+  select(origin, dest, everything(), -year)
+head(new_order2)</code></pre>
+<pre><code># A tibble: 6 x 15
+  origin dest  month   day dep_time dep_delay arr_time arr_delay carrier
+  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;  
+1 PDX    ANC       1     1        1       96.      235       70. AS     
+2 SEA    CLT       1     1        4       -6.      738      -23. US     
+3 PDX    IAH       1     1        8       13.      548       -4. UA     
+4 PDX    CLT       1     1       28       -2.      800      -23. US     
+5 SEA    ANC       1     1       34       44.      325       43. AS     
+6 SEA    DTW       1     1       37       82.      747       88. DL     
+# ... with 6 more variables: tailnum &lt;chr&gt;, flight &lt;int&gt;, air_time &lt;dbl&gt;,
+#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<p>We can also rename variables within select.</p>
+<pre class="r"><code>flights2 &lt;- flights %&gt;%
+  select(tail_num = tailnum, everything())
+head(flights2)</code></pre>
+<pre><code># A tibble: 6 x 16
+  tail_num  year month   day dep_time dep_delay arr_time arr_delay carrier
+  &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;  
+1 N508AS    2014     1     1        1       96.      235       70. AS     
+2 N195UW    2014     1     1        4       -6.      738      -23. US     
+3 N37422    2014     1     1        8       13.      548       -4. UA     
+4 N547UW    2014     1     1       28       -2.      800      -23. US     
+5 N762AS    2014     1     1       34       44.      325       43. AS     
+6 N806DN    2014     1     1       37       82.      747       88. DL     
+# ... with 7 more variables: flight &lt;int&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<p>If you don’t want to move the renamed variables within your dataframe, you can use the <code>rename</code> function.</p>
+<pre class="r"><code>flights3 &lt;- flights %&gt;%
+  rename(tail_num = tailnum)
+glimpse(flights3)</code></pre>
+<pre><code>Observations: 162,049
+Variables: 16
+$ year      &lt;int&gt; 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014...
+$ month     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ day       &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+$ dep_time  &lt;int&gt; 1, 4, 8, 28, 34, 37, 346, 526, 527, 536, 541, 549, 5...
+$ dep_delay &lt;dbl&gt; 96, -6, 13, -2, 44, 82, 227, -4, 7, 1, 1, 24, 0, -3,...
+$ arr_time  &lt;int&gt; 235, 738, 548, 800, 325, 747, 936, 1148, 917, 1334, ...
+$ arr_delay &lt;dbl&gt; 70, -23, -4, -23, 43, 88, 219, 15, 24, -6, 4, 12, -1...
+$ carrier   &lt;chr&gt; &quot;AS&quot;, &quot;US&quot;, &quot;UA&quot;, &quot;US&quot;, &quot;AS&quot;, &quot;DL&quot;, &quot;UA&quot;, &quot;UA&quot;, &quot;UA&quot;...
+$ tail_num  &lt;chr&gt; &quot;N508AS&quot;, &quot;N195UW&quot;, &quot;N37422&quot;, &quot;N547UW&quot;, &quot;N762AS&quot;, &quot;N...
+$ flight    &lt;int&gt; 145, 1830, 1609, 466, 121, 1823, 1481, 229, 1576, 47...
+$ origin    &lt;chr&gt; &quot;PDX&quot;, &quot;SEA&quot;, &quot;PDX&quot;, &quot;PDX&quot;, &quot;SEA&quot;, &quot;SEA&quot;, &quot;SEA&quot;, &quot;PD...
+$ dest      &lt;chr&gt; &quot;ANC&quot;, &quot;CLT&quot;, &quot;IAH&quot;, &quot;CLT&quot;, &quot;ANC&quot;, &quot;DTW&quot;, &quot;ORD&quot;, &quot;IA...
+$ air_time  &lt;dbl&gt; 194, 252, 201, 251, 201, 224, 202, 217, 136, 268, 13...
+$ distance  &lt;dbl&gt; 1542, 2279, 1825, 2282, 1448, 1927, 1721, 1825, 1024...
+$ hour      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6...
+$ minute    &lt;dbl&gt; 1, 4, 8, 28, 34, 37, 46, 26, 27, 36, 41, 49, 50, 57,...</code></pre>
+</div>
+<div id="dplyrfilter" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> <code>dplyr::filter</code></h3>
+<pre class="r"><code># flights taking off from PDX
+pdx &lt;- flights %&gt;% 
+  filter(origin == &quot;PDX&quot;)
+head(pdx)</code></pre>
+<pre><code># A tibble: 6 x 16
+   year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+1  2014     1     1        1       96.      235       70. AS      N508AS 
+2  2014     1     1        8       13.      548       -4. UA      N37422 
+3  2014     1     1       28       -2.      800      -23. US      N547UW 
+4  2014     1     1      526       -4.     1148       15. UA      N813UA 
+5  2014     1     1      541        1.      911        4. UA      N36476 
+6  2014     1     1      549       24.      907       12. US      N548UW 
+# ... with 7 more variables: flight &lt;int&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># january flights from PDX
+pdx_jan &lt;- flights %&gt;% 
+  filter(origin == &quot;PDX&quot;, month == 1) # the comma is an &quot;and&quot;
+head(pdx_jan)</code></pre>
+<pre><code># A tibble: 6 x 16
+   year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+1  2014     1     1        1       96.      235       70. AS      N508AS 
+2  2014     1     1        8       13.      548       -4. UA      N37422 
+3  2014     1     1       28       -2.      800      -23. US      N547UW 
+4  2014     1     1      526       -4.     1148       15. UA      N813UA 
+5  2014     1     1      541        1.      911        4. UA      N36476 
+6  2014     1     1      549       24.      907       12. US      N548UW 
+# ... with 7 more variables: flight &lt;int&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># flights to ATL (Atlanta) or BNA (Nashville)
+to_south &lt;- flights %&gt;% 
+  filter(dest == &quot;ATL&quot; | dest == &quot;BNA&quot;) %&gt;% # | is &quot;or&quot;
+  select(origin, dest, everything())
+head(to_south)</code></pre>
+<pre><code># A tibble: 6 x 16
+  origin dest   year month   day dep_time dep_delay arr_time arr_delay
+  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 SEA    ATL    2014     1     1      624       -6.     1401       -6.
+2 SEA    ATL    2014     1     1      802       -3.     1533      -17.
+3 SEA    ATL    2014     1     1      824       -1.     1546      -14.
+4 PDX    ATL    2014     1     1      944       -6.     1727       -8.
+5 PDX    ATL    2014     1     1     1054       94.     1807       84.
+6 SEA    ATL    2014     1     1     1158        6.     1915      -14.
+# ... with 7 more variables: carrier &lt;chr&gt;, tailnum &lt;chr&gt;, flight &lt;int&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># flights from PDX to ATL (Atlanta) or BNA (Nashville)
+pdx_to_south &lt;- flights %&gt;% 
+  filter(origin == &quot;PDX&quot;, dest == &quot;ATL&quot; | dest == &quot;BNA&quot;) %&gt;% # | is &quot;or&quot;
+  select(origin, dest, everything())
+head(pdx_to_south)</code></pre>
+<pre><code># A tibble: 6 x 16
+  origin dest   year month   day dep_time dep_delay arr_time arr_delay
+  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 PDX    ATL    2014     1     1      944       -6.     1727       -8.
+2 PDX    ATL    2014     1     1     1054       94.     1807       84.
+3 PDX    ATL    2014     1     1     1323       -2.     2038      -15.
+4 PDX    ATL    2014     1     1     2253        8.      611        4.
+5 PDX    ATL    2014     1     2      627       -3.     1350       -7.
+6 PDX    ATL    2014     1     2      918       -2.     1643       -2.
+# ... with 7 more variables: carrier &lt;chr&gt;, tailnum &lt;chr&gt;, flight &lt;int&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># alternatively, using group membership
+south_dests &lt;- c(&quot;ATL&quot;, &quot;BNA&quot;)
+pdx_to_south2 &lt;- flights %&gt;% 
+  filter(origin == &quot;PDX&quot;, dest %in% south_dests) %&gt;% 
+  select(origin, dest, everything())
+head(pdx_to_south2)</code></pre>
+<pre><code># A tibble: 6 x 16
+  origin dest   year month   day dep_time dep_delay arr_time arr_delay
+  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 PDX    ATL    2014     1     1      944       -6.     1727       -8.
+2 PDX    ATL    2014     1     1     1054       94.     1807       84.
+3 PDX    ATL    2014     1     1     1323       -2.     2038      -15.
+4 PDX    ATL    2014     1     1     2253        8.      611        4.
+5 PDX    ATL    2014     1     2      627       -3.     1350       -7.
+6 PDX    ATL    2014     1     2      918       -2.     1643       -2.
+# ... with 7 more variables: carrier &lt;chr&gt;, tailnum &lt;chr&gt;, flight &lt;int&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># flights delayed by 1 hour or more
+delay_1plus &lt;- flights %&gt;%
+  filter(dep_delay &gt;= 60)
+head(delay_1plus)</code></pre>
+<pre><code># A tibble: 6 x 16
+   year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+1  2014     1     1        1       96.      235       70. AS      N508AS 
+2  2014     1     1       37       82.      747       88. DL      N806DN 
+3  2014     1     1      346      227.      936      219. UA      N14219 
+4  2014     1     1      650       90.     1037       91. US      N626AW 
+5  2014     1     1      959      164.     1137      157. AS      N534AS 
+6  2014     1     1     1008       68.     1242       64. AS      N788AS 
+# ... with 7 more variables: flight &lt;int&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># flights delayed by 1 hour, but not more than 2 hours
+delay_1hr &lt;- flights %&gt;%
+  filter(dep_delay &gt;= 60, dep_delay &lt; 120)
+head(delay_1hr)</code></pre>
+<pre><code># A tibble: 6 x 16
+   year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+1  2014     1     1        1       96.      235       70. AS      N508AS 
+2  2014     1     1       37       82.      747       88. DL      N806DN 
+3  2014     1     1      650       90.     1037       91. US      N626AW 
+4  2014     1     1     1008       68.     1242       64. AS      N788AS 
+5  2014     1     1     1014       75.     1613       81. UA      N37408 
+6  2014     1     1     1036       81.     1408       63. OO      N218AG 
+# ... with 7 more variables: flight &lt;int&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code>range(delay_1hr$dep_delay, na.rm = TRUE)</code></pre>
+<pre><code>[1]  60 119</code></pre>
+<pre class="r"><code># even more efficient using between (always inclusive)
+delay_bwn &lt;- flights %&gt;%
+  filter(between(dep_delay, 60, 119))
+head(delay_bwn)</code></pre>
+<pre><code># A tibble: 6 x 16
+   year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+1  2014     1     1        1       96.      235       70. AS      N508AS 
+2  2014     1     1       37       82.      747       88. DL      N806DN 
+3  2014     1     1      650       90.     1037       91. US      N626AW 
+4  2014     1     1     1008       68.     1242       64. AS      N788AS 
+5  2014     1     1     1014       75.     1613       81. UA      N37408 
+6  2014     1     1     1036       81.     1408       63. OO      N218AG 
+# ... with 7 more variables: flight &lt;int&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code>range(delay_bwn$dep_delay, na.rm = TRUE)</code></pre>
+<pre><code>[1]  60 119</code></pre>
+</div>
+<div id="dplyrarrange" class="section level3">
+<h3><span class="header-section-number">5.1.3</span> <code>dplyr::arrange</code></h3>
+<pre class="r"><code># default is ascending order
+flights %&gt;% 
+  arrange(year, month, day)</code></pre>
+<pre><code># A tibble: 162,049 x 16
+    year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+ 1  2014     1     1        1       96.      235       70. AS      N508AS 
+ 2  2014     1     1        4       -6.      738      -23. US      N195UW 
+ 3  2014     1     1        8       13.      548       -4. UA      N37422 
+ 4  2014     1     1       28       -2.      800      -23. US      N547UW 
+ 5  2014     1     1       34       44.      325       43. AS      N762AS 
+ 6  2014     1     1       37       82.      747       88. DL      N806DN 
+ 7  2014     1     1      346      227.      936      219. UA      N14219 
+ 8  2014     1     1      526       -4.     1148       15. UA      N813UA 
+ 9  2014     1     1      527        7.      917       24. UA      N75433 
+10  2014     1     1      536        1.     1334       -6. UA      N574UA 
+# ... with 162,039 more rows, and 7 more variables: flight &lt;int&gt;,
+#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+#   minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># descending order
+flights %&gt;% 
+  arrange(desc(year), desc(month), desc(day))</code></pre>
+<pre><code># A tibble: 162,049 x 16
+    year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
+ 1  2014    12    31        2       12.      601       31. AA      N3JKAA 
+ 2  2014    12    31       27       -3.      623        3. AA      N3EWAA 
+ 3  2014    12    31       39       14.      324        4. AS      N762AS 
+ 4  2014    12    31       40        0.      549        0. DL      N757AT 
+ 5  2014    12    31       52       -8.      917      -21. AA      N3JFAA 
+ 6  2014    12    31       54        4.      621       17. DL      N128DL 
+ 7  2014    12    31       56       61.      848       80. DL      N655DL 
+ 8  2014    12    31      512       -3.      904        4. US      N653AW 
+ 9  2014    12    31      515       -5.      855        5. US      N580UW 
+10  2014    12    31      534        4.      859        7. UA      N34460 
+# ... with 162,039 more rows, and 7 more variables: flight &lt;int&gt;,
+#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+#   minute &lt;dbl&gt;</code></pre>
+</div>
+<div id="dplyrdistinct" class="section level3">
+<h3><span class="header-section-number">5.1.4</span> <code>dplyr::distinct</code></h3>
+<pre class="r"><code># all unique origin-dest combinations
+flights %&gt;% 
+  select(origin, dest) %&gt;% 
+  distinct</code></pre>
+<pre><code># A tibble: 115 x 2
+   origin dest 
+   &lt;chr&gt;  &lt;chr&gt;
+ 1 PDX    ANC  
+ 2 SEA    CLT  
+ 3 PDX    IAH  
+ 4 PDX    CLT  
+ 5 SEA    ANC  
+ 6 SEA    DTW  
+ 7 SEA    ORD  
+ 8 SEA    DEN  
+ 9 SEA    EWR  
+10 PDX    DEN  
+# ... with 105 more rows</code></pre>
+<pre class="r"><code># all unique destinations from PDX (there are 49)
+from_pdx &lt;- flights %&gt;% 
+  filter(origin == &quot;PDX&quot;) %&gt;% 
+  select(origin, dest) %&gt;%
+  distinct(dest)
+head(from_pdx)</code></pre>
+<pre><code># A tibble: 6 x 1
+  dest 
+  &lt;chr&gt;
+1 ANC  
+2 IAH  
+3 CLT  
+4 DEN  
+5 PHX  
+6 ORD  </code></pre>
+</div>
+<div id="dplyrmutate" class="section level3">
+<h3><span class="header-section-number">5.1.5</span> <code>dplyr::mutate</code></h3>
+<pre class="r"><code># add total delay variable
+flights %&gt;%
+  mutate(tot_delay = dep_delay + arr_delay) %&gt;%
+  select(origin, dest, ends_with(&quot;delay&quot;), everything())</code></pre>
+<pre><code># A tibble: 162,049 x 17
+   origin dest  dep_delay arr_delay tot_delay  year month   day dep_time
+   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;
+ 1 PDX    ANC         96.       70.      166.  2014     1     1        1
+ 2 SEA    CLT         -6.      -23.      -29.  2014     1     1        4
+ 3 PDX    IAH         13.       -4.        9.  2014     1     1        8
+ 4 PDX    CLT         -2.      -23.      -25.  2014     1     1       28
+ 5 SEA    ANC         44.       43.       87.  2014     1     1       34
+ 6 SEA    DTW         82.       88.      170.  2014     1     1       37
+ 7 SEA    ORD        227.      219.      446.  2014     1     1      346
+ 8 PDX    IAH         -4.       15.       11.  2014     1     1      526
+ 9 SEA    DEN          7.       24.       31.  2014     1     1      527
+10 SEA    EWR          1.       -6.       -5.  2014     1     1      536
+# ... with 162,039 more rows, and 8 more variables: arr_time &lt;int&gt;,
+#   carrier &lt;chr&gt;, tailnum &lt;chr&gt;, flight &lt;int&gt;, air_time &lt;dbl&gt;,
+#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;</code></pre>
+<pre class="r"><code># flights that were delayed at departure had on time or early arrivals?
+arrivals &lt;- flights %&gt;%
+  mutate(arr_ok = ifelse(dep_delay &gt; 0 &amp; arr_delay &lt;= 0, 1, 0)) %&gt;% 
+  select(origin, dest, ends_with(&quot;delay&quot;), carrier, arr_ok)
+
+# peek at it
+arrivals %&gt;%
+  filter(arr_ok == 1) %&gt;%
+  head</code></pre>
+<pre><code># A tibble: 6 x 6
+  origin dest  dep_delay arr_delay carrier arr_ok
+  &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+1 PDX    IAH         13.       -4. UA          1.
+2 SEA    EWR          1.       -6. UA          1.
+3 SEA    SAN          2.      -12. AS          1.
+4 PDX    EWR          2.      -19. UA          1.
+5 SEA    IAH         13.       -4. UA          1.
+6 PDX    IAD         10.       -4. UA          1.</code></pre>
+</div>
+<div id="dplyrsummarise-or-dplyrsummarize" class="section level3">
+<h3><span class="header-section-number">5.1.6</span> <code>dplyr::summarise</code> (or <code>dplyr::summarize</code>)</h3>
+<pre class="r"><code>flights %&gt;%
+  summarise(mean(dep_delay, na.rm = TRUE))</code></pre>
+<pre><code># A tibble: 1 x 1
+  `mean(dep_delay, na.rm = TRUE)`
+                            &lt;dbl&gt;
+1                            6.13</code></pre>
+<pre class="r"><code># we can also name that variable, and summarise multiple variables
+flights %&gt;%
+  summarise(mean_delay = mean(dep_delay, na.rm = TRUE),
+            sd_delay = sd(dep_delay, na.rm = TRUE),
+            median_delay = median(dep_delay, na.rm = TRUE))</code></pre>
+<pre><code># A tibble: 1 x 3
+  mean_delay sd_delay median_delay
+       &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;
+1       6.13     29.1          -2.</code></pre>
+<p>But this can get tedious with multiple summaries…</p>
+<pre class="r"><code>flights %&gt;%
+  filter(!is.na(dep_delay)) %&gt;%
+  select(dep_delay) %&gt;%
+  summarise_each(funs(mean, sd, median))</code></pre>
+<pre><code># A tibble: 1 x 3
+   mean    sd median
+  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1  6.13  29.1    -2.</code></pre>
+<pre class="r"><code># same thing
+flights %&gt;%
+  filter(!is.na(dep_delay)) %&gt;%
+  summarise_each(funs(mean, sd, median), dep_delay)</code></pre>
+<pre><code># A tibble: 1 x 3
+   mean    sd median
+  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1  6.13  29.1    -2.</code></pre>
+<pre class="r"><code># combine with gather, change names too
+flights %&gt;%
+  filter(!is.na(dep_delay)) %&gt;%
+  summarise_each(funs(mean, stdev = sd, median), dep_delay) %&gt;%
+  gather(delay_stat, value)</code></pre>
+<pre><code># A tibble: 3 x 2
+  delay_stat  value
+  &lt;chr&gt;       &lt;dbl&gt;
+1 mean         6.13
+2 stdev       29.1 
+3 median      -2.00</code></pre>
+<p>Using aggregating functions in <code>summarise</code></p>
+<pre class="r"><code># how many unique destinations?
+summary_table &lt;- flights %&gt;% 
+  summarise(tot_flights = n(),
+            tot_planes = n_distinct(tailnum),
+            tot_carriers = n_distinct(carrier),
+            tot_dests = n_distinct(dest),
+            tot_origins = n_distinct(origin))
+
+summary_table</code></pre>
+<pre><code># A tibble: 1 x 5
+  tot_flights tot_planes tot_carriers tot_dests tot_origins
+        &lt;int&gt;      &lt;int&gt;        &lt;int&gt;     &lt;int&gt;       &lt;int&gt;
+1      162049       3023           11        71           2</code></pre>
+<pre class="r"><code># chain with tidyr functions
+summary_table %&gt;% 
+  gather(key, value) %&gt;% 
+  separate(key, into = c(&quot;tot&quot;, &quot;entity&quot;)) %&gt;% 
+  select(-tot, total = value)</code></pre>
+<pre><code># A tibble: 5 x 2
+  entity    total
+  &lt;chr&gt;     &lt;int&gt;
+1 flights  162049
+2 planes     3023
+3 carriers     11
+4 dests        71
+5 origins       2</code></pre>
+</div>
+</div>
+<div id="tidyr" class="section level2">
+<h2><span class="header-section-number">5.2</span> <code>tidyr</code></h2>
+<p>We’ll work with a made up dataframe:</p>
+<pre class="r"><code>df &lt;- data.frame(
+  id = 1:10,
+  date = as.Date(&#39;2015-01-01&#39;) + 0:9,
+  q1_m1_w1 = rnorm(10, 0, 1),
+  q1_m1_w2 = rnorm(10, 0, 1),
+  q1_m2_w3 = rnorm(10, 0, 1),
+  q2_m1_w1 = rnorm(10, 0, 1),
+  q2_m2_w1 = rnorm(10, 0, 1),
+  q2_m2_w2 = rnorm(10, 0, 1)
+)</code></pre>
+<pre class="r"><code># HLO
+head(df)</code></pre>
+<pre><code>  id       date   q1_m1_w1   q1_m1_w2     q1_m2_w3     q2_m1_w1
+1  1 2015-01-01 -0.2364178 -1.6110571  0.469628989  0.333886012
+2  2 2015-01-02 -0.2098578  0.8803341  0.779158335  1.315961314
+3  3 2015-01-03 -0.1338671 -0.8605511  0.011618078  0.984272976
+4  4 2015-01-04  0.6114398  0.9446135  0.365425620 -0.001480038
+5  5 2015-01-05 -1.0929171 -0.5512801 -0.004431989  0.086674034
+6  6 2015-01-06  1.0737314  0.6920383 -1.173749948 -1.476551047
+     q2_m2_w1    q2_m2_w2
+1 -0.92283042  0.06057435
+2  0.42249071 -1.66168661
+3  1.51771895  1.53891933
+4  2.04923542  0.40296797
+5 -0.89262300 -0.18700695
+6  0.06240579 -1.28523027</code></pre>
+<pre class="r"><code>glimpse(df)</code></pre>
+<pre><code>Observations: 10
+Variables: 8
+$ id       &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+$ date     &lt;date&gt; 2015-01-01, 2015-01-02, 2015-01-03, 2015-01-04, 2015...
+$ q1_m1_w1 &lt;dbl&gt; -0.2364178, -0.2098578, -0.1338671, 0.6114398, -1.092...
+$ q1_m1_w2 &lt;dbl&gt; -1.6110571, 0.8803341, -0.8605511, 0.9446135, -0.5512...
+$ q1_m2_w3 &lt;dbl&gt; 0.469628989, 0.779158335, 0.011618078, 0.365425620, -...
+$ q2_m1_w1 &lt;dbl&gt; 0.333886012, 1.315961314, 0.984272976, -0.001480038, ...
+$ q2_m2_w1 &lt;dbl&gt; -0.92283042, 0.42249071, 1.51771895, 2.04923542, -0.8...
+$ q2_m2_w2 &lt;dbl&gt; 0.06057435, -1.66168661, 1.53891933, 0.40296797, -0.1...</code></pre>
+<div id="tidyrgather" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> <code>tidyr::gather</code></h3>
+<p>First, let’s gather…</p>
+<pre class="r"><code>df_tidy &lt;- df %&gt;%
+  gather(key, value, q1_m1_w1:q2_m2_w2)
+head(df_tidy)</code></pre>
+<pre><code>  id       date      key      value
+1  1 2015-01-01 q1_m1_w1 -0.2364178
+2  2 2015-01-02 q1_m1_w1 -0.2098578
+3  3 2015-01-03 q1_m1_w1 -0.1338671
+4  4 2015-01-04 q1_m1_w1  0.6114398
+5  5 2015-01-05 q1_m1_w1 -1.0929171
+6  6 2015-01-06 q1_m1_w1  1.0737314</code></pre>
+<p>Now let’s gather using subtraction…</p>
+<pre class="r"><code>df_tidy &lt;- df %&gt;%
+  gather(key, value, -id, -date)
+head(df_tidy)</code></pre>
+<pre><code>  id       date      key      value
+1  1 2015-01-01 q1_m1_w1 -0.2364178
+2  2 2015-01-02 q1_m1_w1 -0.2098578
+3  3 2015-01-03 q1_m1_w1 -0.1338671
+4  4 2015-01-04 q1_m1_w1  0.6114398
+5  5 2015-01-05 q1_m1_w1 -1.0929171
+6  6 2015-01-06 q1_m1_w1  1.0737314</code></pre>
+</div>
+<div id="tidyrseparate" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> <code>tidyr::separate</code></h3>
+<pre class="r"><code># separate 1 col into 3 cols
+df_sep &lt;- df_tidy %&gt;%
+  separate(key, into = c(&quot;quarter&quot;, &quot;month&quot;, &quot;week&quot;))
+head(df_sep)</code></pre>
+<pre><code>  id       date quarter month week      value
+1  1 2015-01-01      q1    m1   w1 -0.2364178
+2  2 2015-01-02      q1    m1   w1 -0.2098578
+3  3 2015-01-03      q1    m1   w1 -0.1338671
+4  4 2015-01-04      q1    m1   w1  0.6114398
+5  5 2015-01-05      q1    m1   w1 -1.0929171
+6  6 2015-01-06      q1    m1   w1  1.0737314</code></pre>
+<pre class="r"><code># separate 1 col into 2 cols
+df_sep2 &lt;- df_tidy %&gt;%
+  separate(key, into = c(&quot;quarter&quot;, &quot;period&quot;), extra = &quot;merge&quot;)
+head(df_sep2)</code></pre>
+<pre><code>  id       date quarter period      value
+1  1 2015-01-01      q1  m1_w1 -0.2364178
+2  2 2015-01-02      q1  m1_w1 -0.2098578
+3  3 2015-01-03      q1  m1_w1 -0.1338671
+4  4 2015-01-04      q1  m1_w1  0.6114398
+5  5 2015-01-05      q1  m1_w1 -1.0929171
+6  6 2015-01-06      q1  m1_w1  1.0737314</code></pre>
+<p>stringr vs. tidyr separate by regular expression</p>
+</div>
+<div id="tidyrextract" class="section level3">
+<h3><span class="header-section-number">5.2.3</span> <code>tidyr::extract</code></h3>
+<p><code>Extract</code> is essentially the same as <code>separate</code>, let’s see how…</p>
+<pre class="r"><code># extract
+df_ext &lt;- df_sep2 %&gt;%
+  extract(period, into = &quot;month&quot;)
+head(df_ext)</code></pre>
+<pre><code>  id       date quarter month      value
+1  1 2015-01-01      q1    m1 -0.2364178
+2  2 2015-01-02      q1    m1 -0.2098578
+3  3 2015-01-03      q1    m1 -0.1338671
+4  4 2015-01-04      q1    m1  0.6114398
+5  5 2015-01-05      q1    m1 -1.0929171
+6  6 2015-01-06      q1    m1  1.0737314</code></pre>
+<pre class="r"><code># this gives us same output as separate
+df_ext &lt;- df_sep2 %&gt;%
+  extract(period, into = c(&quot;month&quot;, &quot;week&quot;), 
+          regex = &quot;([[:alnum:]]+)_([[:alnum:]]+)&quot;)
+head(df_ext)</code></pre>
+<pre><code>  id       date quarter month week      value
+1  1 2015-01-01      q1    m1   w1 -0.2364178
+2  2 2015-01-02      q1    m1   w1 -0.2098578
+3  3 2015-01-03      q1    m1   w1 -0.1338671
+4  4 2015-01-04      q1    m1   w1  0.6114398
+5  5 2015-01-05      q1    m1   w1 -1.0929171
+6  6 2015-01-06      q1    m1   w1  1.0737314</code></pre>
+</div>
+<div id="tidyrunite" class="section level3">
+<h3><span class="header-section-number">5.2.4</span> <code>tidyr::unite</code></h3>
+<pre class="r"><code># let&#39;s say we want to combine quarter and month with an underscore
+df_uni &lt;- df_sep %&gt;%
+  unite(period, quarter:month) # sep = &quot;_&quot; is the default arg
+head(df_uni)</code></pre>
+<pre><code>  id       date period week      value
+1  1 2015-01-01  q1_m1   w1 -0.2364178
+2  2 2015-01-02  q1_m1   w1 -0.2098578
+3  3 2015-01-03  q1_m1   w1 -0.1338671
+4  4 2015-01-04  q1_m1   w1  0.6114398
+5  5 2015-01-05  q1_m1   w1 -1.0929171
+6  6 2015-01-06  q1_m1   w1  1.0737314</code></pre>
+<pre class="r"><code># let&#39;s say we want to combine quarter and month with nothing
+df_uni &lt;- df_sep %&gt;%
+  unite(period, quarter:month, sep = &quot;&quot;)
+head(df_uni)</code></pre>
+<pre><code>  id       date period week      value
+1  1 2015-01-01   q1m1   w1 -0.2364178
+2  2 2015-01-02   q1m1   w1 -0.2098578
+3  3 2015-01-03   q1m1   w1 -0.1338671
+4  4 2015-01-04   q1m1   w1  0.6114398
+5  5 2015-01-05   q1m1   w1 -1.0929171
+6  6 2015-01-06   q1m1   w1  1.0737314</code></pre>
+</div>
+<div id="tidyrspread" class="section level3">
+<h3><span class="header-section-number">5.2.5</span> <code>tidyr::spread</code></h3>
+<pre class="r"><code># finally let&#39;s spread
+df_spread &lt;- df_uni %&gt;%
+  spread(week, value) # fill = NA is default arg
+head(df_spread)</code></pre>
+<pre><code>  id       date period         w1          w2        w3
+1  1 2015-01-01   q1m1 -0.2364178 -1.61105706        NA
+2  1 2015-01-01   q1m2         NA          NA 0.4696290
+3  1 2015-01-01   q2m1  0.3338860          NA        NA
+4  1 2015-01-01   q2m2 -0.9228304  0.06057435        NA
+5  2 2015-01-02   q1m1 -0.2098578  0.88033412        NA
+6  2 2015-01-02   q1m2         NA          NA 0.7791583</code></pre>
+</div>
+<div id="gather-multiple-sets-of-columns-gather-separate-spread" class="section level3">
+<h3><span class="header-section-number">5.2.6</span> Gather multiple sets of columns (<code>gather() %&gt;% separate() %&gt;% spread()</code>)</h3>
+<p><a href="http://stackoverflow.com/questions/25925556/gather-multiple-sets-of-columns-with-tidyr">Gather multiple sets of columns</a></p>
+<p>All in one, if we had wanted to essentially “gather” three sets of columns (here, one for each week)…</p>
+<pre class="r"><code>df_tidiest &lt;- df %&gt;%
+  gather(key, value, -id, -date) %&gt;%
+  separate(key, into = c(&quot;quarter&quot;, &quot;month&quot;, &quot;week&quot;)) %&gt;%
+  spread(week, value)
+head(df_tidiest)</code></pre>
+<pre><code>  id       date quarter month         w1          w2        w3
+1  1 2015-01-01      q1    m1 -0.2364178 -1.61105706        NA
+2  1 2015-01-01      q1    m2         NA          NA 0.4696290
+3  1 2015-01-01      q2    m1  0.3338860          NA        NA
+4  1 2015-01-01      q2    m2 -0.9228304  0.06057435        NA
+5  2 2015-01-02      q1    m1 -0.2098578  0.88033412        NA
+6  2 2015-01-02      q1    m2         NA          NA 0.7791583</code></pre>
+</div>
+</div>
+<div id="broom" class="section level2">
+<h2><span class="header-section-number">5.3</span> <code>broom</code></h2>
+<p>“The broom package takes the messy output of built-in functions in R, such as <code>lm</code>, <code>nls</code>, or <code>t.test</code>, and turns them into tidy data frames.” So, broom tidies output from other R functions that are un-tidy.</p>
+<p>See here for list of functions: <a href="https://github.com/dgrtwo/broom" class="uri">https://github.com/dgrtwo/broom</a></p>
+<p>Vignette: <a href="ftp://cran.r-project.org/pub/R/web/packages/broom/vignettes/broom.html" class="uri">ftp://cran.r-project.org/pub/R/web/packages/broom/vignettes/broom.html</a></p>
+<pre class="r"><code>fit &lt;- lm(mpg ~ qsec + factor(am) + wt + factor(gear), 
+          data = mtcars)</code></pre>
+<p>Un-tidy output from <code>lm</code></p>
+<pre class="r"><code>summary(fit)</code></pre>
+<pre><code>
+Call:
+lm(formula = mpg ~ qsec + factor(am) + wt + factor(gear), data = mtcars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.5064 -1.5220 -0.7517  1.3841  4.6345 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     9.3650     8.3730   1.118  0.27359    
+qsec            1.2449     0.3828   3.252  0.00317 ** 
+factor(am)1     3.1505     1.9405   1.624  0.11654    
+wt             -3.9263     0.7428  -5.286 1.58e-05 ***
+factor(gear)4  -0.2682     1.6555  -0.162  0.87257    
+factor(gear)5  -0.2697     2.0632  -0.131  0.89698    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.55 on 26 degrees of freedom
+Multiple R-squared:  0.8498,    Adjusted R-squared:  0.8209 
+F-statistic: 29.43 on 5 and 26 DF,  p-value: 6.379e-10</code></pre>
+<p>Tidy output from <code>broom</code></p>
+<pre class="r"><code>tidy(fit)</code></pre>
+<pre><code>           term   estimate std.error  statistic      p.value
+1   (Intercept)  9.3650443 8.3730161  1.1184792 2.735903e-01
+2          qsec  1.2449212 0.3828479  3.2517387 3.168128e-03
+3   factor(am)1  3.1505178 1.9405171  1.6235455 1.165367e-01
+4            wt -3.9263022 0.7427562 -5.2861251 1.581735e-05
+5 factor(gear)4 -0.2681630 1.6554617 -0.1619868 8.725685e-01
+6 factor(gear)5 -0.2697468 2.0631829 -0.1307430 8.969850e-01</code></pre>
+</div>
+</div>
+<div id="best-for-html-output" class="section level1">
+<h1><span class="header-section-number">6</span> Best for html output</h1>
+<div id="tableone" class="section level2">
+<h2><span class="header-section-number">6.1</span> <code>tableone</code></h2>
+<p>Vignette: <a href="https://cran.r-project.org/web/packages/tableone/vignettes/introduction.html" class="uri">https://cran.r-project.org/web/packages/tableone/vignettes/introduction.html</a></p>
+<pre class="r"><code>library(tableone)</code></pre>
+<pre class="r"><code>CreateTableOne(data = mazes)</code></pre>
+<pre><code>                          
+                           Overall       
+  n                           381        
+  study_id (%)                           
+     CSLU-001                   4 ( 1.0) 
+     CSLU-002                   4 ( 1.0) 
+     CSLU-007                   4 ( 1.0) 
+     CSLU-010                   4 ( 1.0) 
+     CSLU-020                   4 ( 1.0) 
+     CSLU-024                   4 ( 1.0) 
+     CSLU-027                   4 ( 1.0) 
+     CSLU-031                   4 ( 1.0) 
+     CSLU-036                   3 ( 0.8) 
+     CSLU-046                   4 ( 1.0) 
+     CSLU-053                   4 ( 1.0) 
+     CSLU-054                   4 ( 1.0) 
+     CSLU-059                   4 ( 1.0) 
+     CSLU-062                   4 ( 1.0) 
+     CSLU-066                   4 ( 1.0) 
+     CSLU-073                   4 ( 1.0) 
+     CSLU-077                   4 ( 1.0) 
+     CSLU-080                   4 ( 1.0) 
+     CSLU-082                   3 ( 0.8) 
+     CSLU-084                   4 ( 1.0) 
+     CSLU-089                   4 ( 1.0) 
+     CSLU-095                   3 ( 0.8) 
+     CSLU-096                   4 ( 1.0) 
+     CSLU-101                   4 ( 1.0) 
+     CSLU-104                   4 ( 1.0) 
+     CSLU-112                   4 ( 1.0) 
+     CSLU-117                   4 ( 1.0) 
+     CSLU-119                   4 ( 1.0) 
+     CSLU-122                   4 ( 1.0) 
+     CSLU-124                   3 ( 0.8) 
+     CSLU-142                   4 ( 1.0) 
+     CSLU-144                   4 ( 1.0) 
+     CSLU-146                   4 ( 1.0) 
+     CSLU-154                   4 ( 1.0) 
+     CSLU-156                   4 ( 1.0) 
+     CSLU-161                   4 ( 1.0) 
+     CSLU-163                   4 ( 1.0) 
+     CSLU-165                   4 ( 1.0) 
+     CSLU-167                   4 ( 1.0) 
+     CSLU-180                   4 ( 1.0) 
+     CSLU-191                   4 ( 1.0) 
+     CSLU-203                   4 ( 1.0) 
+     CSLU-204                   4 ( 1.0) 
+     CSLU-213                   4 ( 1.0) 
+     CSLU-216                   4 ( 1.0) 
+     CSLU-220                   4 ( 1.0) 
+     CSLU-226                   4 ( 1.0) 
+     CSLU-233                   4 ( 1.0) 
+     CSLU-238                   4 ( 1.0) 
+     CSLU-245                   4 ( 1.0) 
+     CSLU-258                   4 ( 1.0) 
+     CSLU-259                   4 ( 1.0) 
+     CSLU-263                   4 ( 1.0) 
+     CSLU-269                   4 ( 1.0) 
+     CSLU-274                   4 ( 1.0) 
+     CSLU-275                   4 ( 1.0) 
+     CSLU-277                   4 ( 1.0) 
+     CSLU-284                   4 ( 1.0) 
+     CSLU-290                   4 ( 1.0) 
+     CSLU-303                   4 ( 1.0) 
+     CSLU-306                   4 ( 1.0) 
+     CSLU-312                   4 ( 1.0) 
+     CSLU-315                   4 ( 1.0) 
+     CSLU-316                   4 ( 1.0) 
+     CSLU-320                   4 ( 1.0) 
+     CSLU-324                   4 ( 1.0) 
+     CSLU-332                   4 ( 1.0) 
+     CSLU-335                   4 ( 1.0) 
+     CSLU-339                   4 ( 1.0) 
+     CSLU-348                   4 ( 1.0) 
+     CSLU-349                   4 ( 1.0) 
+     CSLU-355                   4 ( 1.0) 
+     CSLU-359                   4 ( 1.0) 
+     CSLU-372                   4 ( 1.0) 
+     CSLU-373                   4 ( 1.0) 
+     CSLU-375                   4 ( 1.0) 
+     CSLU-379                   4 ( 1.0) 
+     CSLU-388                   2 ( 0.5) 
+     CSLU-389                   4 ( 1.0) 
+     CSLU-393                   4 ( 1.0) 
+     CSLU-395                   4 ( 1.0) 
+     CSLU-417                   4 ( 1.0) 
+     CSLU-419                   4 ( 1.0) 
+     CSLU-427                   4 ( 1.0) 
+     CSLU-432                   3 ( 0.8) 
+     CSLU-435                   4 ( 1.0) 
+     CSLU-441                   4 ( 1.0) 
+     CSLU-442                   4 ( 1.0) 
+     CSLU-447                   4 ( 1.0) 
+     CSLU-454                   4 ( 1.0) 
+     CSLU-460                   4 ( 1.0) 
+     CSLU-470                   4 ( 1.0) 
+     CSLU-472                   4 ( 1.0) 
+     CSLU-477                   4 ( 1.0) 
+     CSLU-482                   4 ( 1.0) 
+     CSLU-486                   4 ( 1.0) 
+     CSLU-499                   4 ( 1.0) 
+  ca (mean (sd))             6.83 (1.06) 
+  viq (mean (sd))          100.82 (18.74)
+  dx (%)                                 
+     ASD                      183 (48.0) 
+     SLI                       71 (18.6) 
+     TD                       127 (33.3) 
+  activity (%)                           
+     Conversation              94 (24.7) 
+     Picture Description       94 (24.7) 
+     Play                      96 (25.2) 
+     Wordless Picture Book     97 (25.5) 
+  content (mean (sd))       18.73 (24.84)
+  filler (mean (sd))        11.20 (17.59)
+  rep (mean (sd))            6.24 (9.45) 
+  rev (mean (sd))            3.79 (4.31) 
+  fs (mean (sd))             8.70 (12.76)
+  cued (mean (sd))          14.36 (24.22)
+  not_cued (mean (sd))      26.77 (31.73)</code></pre>
+<pre class="r"><code>my_maze_names &lt;- c(&quot;Participant&quot;, &quot;Age&quot;, &quot;Verbal\nIQ&quot;, &quot;Group&quot;, &quot;Activity&quot;, &quot;Content\nMaze&quot;, &quot;Filler\nMaze&quot;, &quot;Repetition&quot;, &quot;Revision&quot;, &quot;False\nStart&quot;, &quot;Cued&quot;, &quot;Not\nCued&quot;)
+## Vector of variables to summarize
+my_num_vars &lt;- c(&quot;ca&quot;, &quot;viq&quot;, &quot;content&quot;, &quot;filler&quot;, &quot;rep&quot;, &quot;rev&quot;, &quot;fs&quot;, &quot;cued&quot;, &quot;not_cued&quot;)
+## Vector of categorical variables that need transformation
+my_cat_vars &lt;- c(&quot;dx&quot;, &quot;activity&quot;)
+## Create a TableOne object
+tab2 &lt;- CreateTableOne(vars = my_num_vars, data = mazes, factorVars = my_cat_vars)
+print(tab2, showAllLevels = TRUE)</code></pre>
+<pre><code>                      
+                       level Overall       
+  n                             381        
+  ca (mean (sd))               6.83 (1.06) 
+  viq (mean (sd))            100.82 (18.74)
+  content (mean (sd))         18.73 (24.84)
+  filler (mean (sd))          11.20 (17.59)
+  rep (mean (sd))              6.24 (9.45) 
+  rev (mean (sd))              3.79 (4.31) 
+  fs (mean (sd))               8.70 (12.76)
+  cued (mean (sd))            14.36 (24.22)
+  not_cued (mean (sd))        26.77 (31.73)</code></pre>
+<pre class="r"><code>tab3 &lt;- CreateTableOne(vars = my_num_vars, strata = &quot;dx&quot; , data = mazes)
+tab3</code></pre>
+<pre><code>                      Stratified by dx
+                       ASD           SLI           TD             p     
+  n                      183            71            127               
+  ca (mean (sd))        6.74 (1.11)   7.15 (1.00)    6.76 (0.97)   0.015
+  viq (mean (sd))      95.29 (17.62) 86.24 (5.95)  116.94 (12.82) &lt;0.001
+  content (mean (sd))  20.46 (29.73) 17.34 (24.35)  17.00 (15.67)  0.422
+  filler (mean (sd))    7.86 (13.54) 10.56 (16.35)  16.38 (21.84) &lt;0.001
+  rep (mean (sd))       7.25 (11.82)  5.45 (6.86)    5.23 (6.21)   0.134
+  rev (mean (sd))       3.87 (4.85)   3.25 (3.55)    3.98 (3.85)   0.498
+  fs (mean (sd))        9.35 (14.60)  8.63 (15.00)   7.80 (7.55)   0.574
+  cued (mean (sd))     10.66 (21.94) 13.21 (22.54)  20.35 (27.10)  0.002
+  not_cued (mean (sd)) 25.52 (33.49) 25.25 (31.84)  29.41 (29.04)  0.517
+                      Stratified by dx
+                       test
+  n                        
+  ca (mean (sd))           
+  viq (mean (sd))          
+  content (mean (sd))      
+  filler (mean (sd))       
+  rep (mean (sd))          
+  rev (mean (sd))          
+  fs (mean (sd))           
+  cued (mean (sd))         
+  not_cued (mean (sd))     </code></pre>
+<p>Combine with formatting</p>
+<pre class="r"><code>tab3 %&gt;% 
+  kable(format = &#39;html&#39;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<pre><code>Error in as.data.frame.default(x): cannot coerce class &quot;&quot;TableOne&quot;&quot; to a data.frame</code></pre>
+</div>
+<div id="the-dt-package" class="section level2">
+<h2><span class="header-section-number">6.2</span> The <code>DT</code> package</h2>
+<p>An excellent tutorial on DT is available at <a href="https://rstudio.github.io/DT/" class="uri">https://rstudio.github.io/DT/</a>.</p>
+<pre class="r"><code>datatable(iris)</code></pre>
+<div id="htmlwidget-2cd547465569ed74eb7c" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2cd547465569ed74eb7c">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5,7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7,6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3,3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8,3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4,4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1,6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1,0.2,0.2,0.1,0.1,0.2,0.4,0.4,0.3,0.3,0.3,0.2,0.4,0.2,0.5,0.2,0.2,0.4,0.2,0.2,0.2,0.2,0.4,0.1,0.2,0.2,0.2,0.2,0.1,0.2,0.2,0.3,0.3,0.2,0.6,0.4,0.3,0.2,0.2,0.2,0.2,1.4,1.5,1.5,1.3,1.5,1.3,1.6,1,1.3,1.4,1,1.5,1,1.4,1.3,1.4,1.5,1,1.5,1.1,1.8,1.3,1.5,1.2,1.3,1.4,1.4,1.7,1.5,1,1.1,1,1.2,1.6,1.5,1.6,1.5,1.3,1.3,1.3,1.2,1.4,1.2,1,1.3,1.2,1.3,1.3,1.1,1.3,2.5,1.9,2.1,1.8,2.2,2.1,1.7,1.8,1.8,2.5,2,1.9,2.1,2,2.4,2.3,1.8,2.2,2.3,1.5,2.3,2,2,1.8,2.1,1.8,1.8,1.8,2.1,1.6,1.9,2,2.2,1.5,1.4,2.3,2.4,1.8,1.8,2.1,2.4,2.3,1.9,2.3,2.5,2.3,1.9,2,2.3,1.8],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="for-pdf-or-html" class="section level1">
+<h1><span class="header-section-number">7</span> For pdf or html</h1>
+<div id="the-kable-function-in-the-knitr-package" class="section level2">
+<h2><span class="header-section-number">7.1</span> The <code>kable</code> function in the <code>knitr</code> package</h2>
+<p><a href="https://www.rdocumentation.org/packages/knitr/versions/1.12.3/topics/kable" class="uri">https://www.rdocumentation.org/packages/knitr/versions/1.12.3/topics/kable</a></p>
+<pre class="r"><code>kable(head(iris))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+<th align="left">Species</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="even">
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="odd">
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="even">
+<td align="right">4.6</td>
+<td align="right">3.1</td>
+<td align="right">1.5</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="odd">
+<td align="right">5.0</td>
+<td align="right">3.6</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="even">
+<td align="right">5.4</td>
+<td align="right">3.9</td>
+<td align="right">1.7</td>
+<td align="right">0.4</td>
+<td align="left">setosa</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="the-xtable-package-best-for-html" class="section level2">
+<h2><span class="header-section-number">7.2</span> The <code>xtable</code> package (best for html)</h2>
+<p>The xtable is a solution that delivers both HTML and LaTeX. The syntax is very similar to kable:</p>
+<pre class="r"><code>output &lt;- 
+  matrix(sprintf(&quot;Content %s&quot;, LETTERS[1:4]),
+         ncol=2, byrow=TRUE)
+colnames(output) &lt;- 
+  c(&quot;1st header&quot;, &quot;2nd header&quot;)
+rownames(output) &lt;- 
+  c(&quot;1st row&quot;, &quot;2nd row&quot;)
+
+print(xtable(output, 
+             caption=&quot;A test table&quot;, 
+             align = c(&quot;l&quot;, &quot;c&quot;, &quot;r&quot;)), 
+      type=&quot;html&quot;)</code></pre>
+<pre><code>&lt;!-- html table generated in R 3.4.1 by xtable 1.8-2 package --&gt;
+&lt;!-- Wed May  2 10:15:49 2018 --&gt;
+&lt;table border=1&gt;
+&lt;caption align=&quot;bottom&quot;&gt; A test table &lt;/caption&gt;
+&lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; 1st header &lt;/th&gt; &lt;th&gt; 2nd header &lt;/th&gt;  &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; 1st row &lt;/td&gt; &lt;td align=&quot;center&quot;&gt; Content A &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; Content B &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; 2nd row &lt;/td&gt; &lt;td align=&quot;center&quot;&gt; Content C &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; Content D &lt;/td&gt; &lt;/tr&gt;
+   &lt;/table&gt;</code></pre>
+<p>Note that to make it <code>knit</code>, you need to specify a chunk option: <code>results = 'asis'</code></p>
+<pre class="r"><code>print(xtable(output, 
+             caption=&quot;A test table&quot;, 
+             align = c(&quot;l&quot;, &quot;c&quot;, &quot;r&quot;)), 
+      type=&quot;html&quot;)</code></pre>
+<!-- html table generated in R 3.4.1 by xtable 1.8-2 package -->
+<!-- Wed May  2 10:15:49 2018 -->
+<table border="1">
+<caption align="bottom">
+A test table
+</caption>
+<tr>
+<th>
+</th>
+<th>
+1st header
+</th>
+<th>
+2nd header
+</th>
+</tr>
+<tr>
+<td>
+1st row
+</td>
+<td align="center">
+Content A
+</td>
+<td align="right">
+Content B
+</td>
+</tr>
+<tr>
+<td>
+2nd row
+</td>
+<td align="center">
+Content C
+</td>
+<td align="right">
+Content D
+</td>
+</tr>
+</table>
+<pre class="r"><code>print(xtable(head(iris)), type = &#39;html&#39;, html.table.attributes = &#39;&#39;)</code></pre>
+<!-- html table generated in R 3.4.1 by xtable 1.8-2 package -->
+<!-- Wed May  2 10:15:49 2018 -->
+<table>
+<tr>
+<th>
+</th>
+<th>
+Sepal.Length
+</th>
+<th>
+Sepal.Width
+</th>
+<th>
+Petal.Length
+</th>
+<th>
+Petal.Width
+</th>
+<th>
+Species
+</th>
+</tr>
+<tr>
+<td align="right">
+1
+</td>
+<td align="right">
+5.10
+</td>
+<td align="right">
+3.50
+</td>
+<td align="right">
+1.40
+</td>
+<td align="right">
+0.20
+</td>
+<td>
+setosa
+</td>
+</tr>
+<tr>
+<td align="right">
+2
+</td>
+<td align="right">
+4.90
+</td>
+<td align="right">
+3.00
+</td>
+<td align="right">
+1.40
+</td>
+<td align="right">
+0.20
+</td>
+<td>
+setosa
+</td>
+</tr>
+<tr>
+<td align="right">
+3
+</td>
+<td align="right">
+4.70
+</td>
+<td align="right">
+3.20
+</td>
+<td align="right">
+1.30
+</td>
+<td align="right">
+0.20
+</td>
+<td>
+setosa
+</td>
+</tr>
+<tr>
+<td align="right">
+4
+</td>
+<td align="right">
+4.60
+</td>
+<td align="right">
+3.10
+</td>
+<td align="right">
+1.50
+</td>
+<td align="right">
+0.20
+</td>
+<td>
+setosa
+</td>
+</tr>
+<tr>
+<td align="right">
+5
+</td>
+<td align="right">
+5.00
+</td>
+<td align="right">
+3.60
+</td>
+<td align="right">
+1.40
+</td>
+<td align="right">
+0.20
+</td>
+<td>
+setosa
+</td>
+</tr>
+<tr>
+<td align="right">
+6
+</td>
+<td align="right">
+5.40
+</td>
+<td align="right">
+3.90
+</td>
+<td align="right">
+1.70
+</td>
+<td align="right">
+0.40
+</td>
+<td>
+setosa
+</td>
+</tr>
+</table>
+</div>
+<div id="the-pixiedust-package-best-for-pdf" class="section level2">
+<h2><span class="header-section-number">7.3</span> The <code>pixiedust</code> package (best for PDF)</h2>
+<p>Remember that <code>broom</code> package we used earlier? We can make this table better…</p>
+<pre class="r"><code>tidy(fit)</code></pre>
+<pre><code>           term   estimate std.error  statistic      p.value
+1   (Intercept)  9.3650443 8.3730161  1.1184792 2.735903e-01
+2          qsec  1.2449212 0.3828479  3.2517387 3.168128e-03
+3   factor(am)1  3.1505178 1.9405171  1.6235455 1.165367e-01
+4            wt -3.9263022 0.7427562 -5.2861251 1.581735e-05
+5 factor(gear)4 -0.2681630 1.6554617 -0.1619868 8.725685e-01
+6 factor(gear)5 -0.2697468 2.0631829 -0.1307430 8.969850e-01</code></pre>
+<p><a href="https://cran.r-project.org/web/packages/pixiedust/vignettes/pixiedust.html" class="uri">https://cran.r-project.org/web/packages/pixiedust/vignettes/pixiedust.html</a></p>
+<p><a href="http://www.suchanutter.net/pixiedust/index.html" class="uri">http://www.suchanutter.net/pixiedust/index.html</a></p>
+<pre class="r"><code>dust(fit) %&gt;% 
+  sprinkle(cols = &quot;term&quot;, 
+           replace = c(&quot;Intercept&quot;, &quot;Quarter Mile Time&quot;, &quot;Automatic vs. Manual&quot;,
+                       &quot;Weight&quot;, &quot;Gears: 4 vs. 3&quot;, &quot;Gears: 5 vs 3&quot;)) %&gt;%
+  sprinkle(cols = c(&quot;estimate&quot;, &quot;std.error&quot;, &quot;statistic&quot;),
+           round = 3) %&gt;% 
+  sprinkle(cols = &quot;p.value&quot;, fn = quote(pvalString(value))) %&gt;% 
+  sprinkle_colnames(&quot;Term&quot;, &quot;Coefficient&quot;, &quot;SE&quot;, &quot;T-statistic&quot;, &quot;P-value&quot;)</code></pre>
+<table align = 'center' style = 'border-collapse:collapse;'>
+<tr>
+<th colspan = '1'; rowspan = '1'; style='text-align:left;'>Term</th>
+<th colspan = '1'; rowspan = '1'; style='text-align:right;'>Coefficient</th>
+<th colspan = '1'; rowspan = '1'; style='text-align:right;'>SE</th>
+<th colspan = '1'; rowspan = '1'; style='text-align:right;'>T-statistic</th>
+<th colspan = '1'; rowspan = '1'; style='text-align:right;'>P-value</th>
+</tr>
+<tr>
+<td colspan = '1'; rowspan = '1'; style='text-align:left;'>Intercept</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>9.365</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>8.373</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>1.118</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.27</td>
+</tr>
+<tr>
+<td colspan = '1'; rowspan = '1'; style='text-align:left;'>Quarter Mile Time</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>1.245</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.383</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>3.252</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.003</td>
+</tr>
+<tr>
+<td colspan = '1'; rowspan = '1'; style='text-align:left;'>Automatic vs. Manual</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>3.151</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>1.941</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>1.624</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.12</td>
+</tr>
+<tr>
+<td colspan = '1'; rowspan = '1'; style='text-align:left;'>Weight</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>-3.926</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.743</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>-5.286</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>< 0.001</td>
+</tr>
+<tr>
+<td colspan = '1'; rowspan = '1'; style='text-align:left;'>Gears: 4 vs. 3</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>-0.268</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>1.655</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>-0.162</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.87</td>
+</tr>
+<tr>
+<td colspan = '1'; rowspan = '1'; style='text-align:left;'>Gears: 5 vs 3</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>-0.27</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>2.063</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>-0.131</td>
+<td colspan = '1'; rowspan = '1'; style='text-align:right;'>0.9</td>
+</tr>
+</table></br></br>
+</div>
+</div>
+<div id="finally-fonts" class="section level1">
+<h1><span class="header-section-number">8</span> Finally, fonts!</h1>
+<p><a href="https://github.com/wch/extrafont" class="uri">https://github.com/wch/extrafont</a></p>
+<p>Follow all installation instructions from <code>github</code></p>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
