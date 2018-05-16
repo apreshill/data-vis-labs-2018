@@ -24,7 +24,8 @@ This is the site for sharing our Data Visualization Labs for CS631 at Oregon Hea
     - [Reference lab](04-distributions.html)
 - [Lab 05: Fonts & Tables](05-tables.html)
     - The actual in-class lab focused on "Take a sad plot & make it better"
-- Lab 06: The tada!-verse
+- Lab 06: The Tada!-verse
     - [Slides on `xaringan`](slides/06-slides_xaringan.html)
+    - [Slides on `blogdown`](slides/06-slides_blogdown.html)
     
 

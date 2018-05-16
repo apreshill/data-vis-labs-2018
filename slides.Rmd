@@ -54,5 +54,8 @@ knitr::include_url("slides/03-slides.html")
 knitr::include_url("slides/06-slides_xaringan.html")
 ```
 
+```{r}
+knitr::include_url("slides/06-slides_blogdown.html")
+```
 
 
