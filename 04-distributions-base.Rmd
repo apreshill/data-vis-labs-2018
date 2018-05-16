@@ -54,11 +54,11 @@ sounds <- read_csv(here::here("data", "animal_sounds_summary.csv"))
 
 
 
-```{r setup, include = FALSE, cache = FALSE}
+```{r include = FALSE, cache = FALSE}
 knitr::opts_chunk$set(error = TRUE, comment = NA, warnings = FALSE, errors = FALSE, messages = FALSE, tidy = FALSE, eval = TRUE)
 ```
 
-```{r load_packages, include = FALSE}
+```{r include = FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
 suppressWarnings(suppressMessages(library(moments)))
 suppressWarnings(suppressMessages(library(psych)))

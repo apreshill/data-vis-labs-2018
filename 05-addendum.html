@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 05: Addendum</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="slides.html">Slides &amp; Reading</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 05: Addendum</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="packages" class="section level1">
+<h1><span class="header-section-number">1</span> Packages</h1>
+<pre class="r"><code>library(tidyverse)
+library(babynames)
+# load hd data
+hot_dogs_aff &lt;- read_csv(&quot;http://bit.ly/cs631-hotdog-affiliated&quot;, 
+    col_types = cols(
+      affiliated = col_factor(levels = NULL), 
+      gender = col_factor(levels = NULL)
+      )) %&gt;% 
+  mutate(post_ifoce = year &gt;= 1997) %&gt;% 
+  filter(year &gt;= 1981 &amp; gender == &quot;male&quot;) </code></pre>
+</div>
+<div id="plot-1-add" class="section level1">
+<h1><span class="header-section-number">2</span> Plot 1: Add</h1>
+<p>What is this code trying to accomplish?</p>
+<pre class="r"><code>temp=hot_dogs_aff
+
+for (i in 1:nrow(hot_dogs_aff)) { 
+  # if the maximum num_eaten is equal to the num_eaten for the year AND it&#39;s not the same as the year before
+  if ((max(temp$num_eaten) == hot_dogs_aff$num_eaten[i]) &amp;&amp; (max(temp$num_eaten) != hot_dogs_aff$num_eaten[i+1]) &amp;&amp; (i&lt;nrow(hot_dogs_aff))) {
+    hot_dogs_aff$record[i] = TRUE
+    temp = temp[-1,] # take the most recent year OUT of the running 
+ } else if (i&lt;nrow(hot_dogs_aff)) {
+   hot_dogs_aff$record[i] = FALSE
+   temp = temp[-1,]
+ }
+}
+
+label.df &lt;- data.frame(year = hot_dogs_aff$year[hot_dogs_aff$record],
+                       num_eaten = hot_dogs_aff$num_eaten[hot_dogs_aff$record]) # turn this into a label dataframe</code></pre>
+</div>
+<div id="tidyverse-approach" class="section level1">
+<h1><span class="header-section-number">3</span> Tidyverse approach</h1>
+<p>The first thing we notice is that we don’t have data about whether each year’s winner is a record or not.</p>
+<pre class="r"><code>hot_dogs &lt;- read_csv(&quot;http://bit.ly/cs631-hotdog&quot;, 
+    col_types = cols(
+      gender = col_factor(levels = NULL)
+    ))</code></pre>
+<p>Since our data is nicely tidy, we can use <code>dplyr</code> window functions:</p>
+<ul>
+<li><p>First, we use base R’s <code>cummax</code> to create a new variable that reflects the maximum HDB eaten cumulatively, that is, compared to all earlier years. For this reason, the <code>arrange(year)</code> here is critical.</p></li>
+<li><p>Next, we want to know if the <code>hdb_record</code> is actually a <em>new</em> record or not, compared to all previous years. We can use <code>case_when</code> to create a logical variable that is TRUE if the <code>hdb_record</code> for a given year is greater than the <code>hdb_record</code> from the year before (using <code>dplyr::lag</code>). If not, this variable is FALSE.</p></li>
+</ul>
+<pre class="r"><code>hot_dogs_records &lt;- hot_dogs %&gt;% 
+  filter(year &gt;= 1980 &amp; gender == &#39;male&#39;) %&gt;%  
+  arrange(year) %&gt;% 
+  mutate(hdb_record = cummax(num_eaten),
+         new_record = case_when(
+           hdb_record &gt; lag(hdb_record) ~ TRUE,
+           TRUE ~ FALSE
+         )) %&gt;% 
+  filter(year &gt;= 1981)</code></pre>
+<p>We’ll also make our x-axis ticks again…</p>
+<pre class="r"><code>years_to_label &lt;- seq(from = 1981, to = 2017, by = 4)
+years_to_label</code></pre>
+<pre><code> [1] 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017</code></pre>
+<pre class="r"><code>hd_years &lt;- hot_dogs_records %&gt;%
+  distinct(year) %&gt;% 
+  mutate(year_lab = ifelse(year %in% years_to_label, year, &quot;&quot;))</code></pre>
+<pre class="r"><code>hdb_records &lt;- ggplot(hot_dogs_records, 
+                      aes(x = year, y = num_eaten)) + 
+  geom_col(aes(fill = new_record)) + 
+  labs(x = &quot;Year&quot;, y = &quot;Hot Dogs and Buns Consumed&quot;) +
+  ggtitle(&quot;Nathan&#39;s Hot Dog Eating Contest Results, 1981-2017&quot;) +
+  scale_fill_manual(values = c(&#39;#284a29&#39;, &#39;#629d62&#39;)) + 
+  scale_y_continuous(expand = c(0, 0),
+                     breaks = seq(0, 70, 10)) +
+  scale_x_continuous(expand = c(0, 0), 
+                     breaks = hd_years$year,
+                     labels = hd_years$year_lab) + 
+  coord_cartesian(xlim = c(1980, 2018), ylim = c(0, 80)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(size = 12),
+        panel.background = element_blank(),
+        axis.line.x = element_line(color = &quot;gray92&quot;, 
+                                   size = 0.5),
+        axis.ticks = element_line(color = &quot;gray92&quot;, 
+                                  size = 0.5),
+        text = element_text(family = &quot;Lato&quot;),
+        legend.position = &quot;bottom&quot;,
+        panel.grid.minor = element_blank())
+hdb_records</code></pre>
+<p><img src="05-addendum_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="plot-2" class="section level1">
+<h1><span class="header-section-number">4</span> Plot 2</h1>
+<p>Goal is to observe popular first letter trends in <code>babynames</code>. First filter/arrange data.</p>
+<pre class="r"><code># add column of first letters
+baby_letters &lt;- babynames %&gt;% 
+  mutate(first_letter = str_sub(name, 1, 1))
+
+# add up proportion for each letter by year + sex
+letter_by_year &lt;- baby_letters %&gt;%
+  count(year, sex, first_letter, wt = prop) %&gt;% 
+  rename(total_prop = nn)</code></pre>
+<pre><code>Error in count(., year, sex, first_letter, wt = prop): unused arguments (sex, first_letter)</code></pre>
+<pre class="r"><code># label most popular for each year + sex
+letter_by_year &lt;- letter_by_year %&gt;% 
+  group_by(sex, year) %&gt;% 
+  mutate(top_yearly = case_when(
+    total_prop == max(total_prop) ~ first_letter)) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(top_latest = case_when(
+      year == max(year) ~ top_yearly
+    ))</code></pre>
+<pre><code>Error in eval(lhs, parent, parent): object &#39;letter_by_year&#39; not found</code></pre>
+<pre class="r"><code># make a data frame with just latest top letters
+top_current &lt;- letter_by_year %&gt;% 
+  filter(!is.na(top_latest)) %&gt;% 
+  rename(color_by = top_latest) %&gt;% 
+  select(sex, first_letter, color_by)</code></pre>
+<pre><code>Error in eval(lhs, parent, parent): object &#39;letter_by_year&#39; not found</code></pre>
+<pre class="r"><code># now merge in
+letter_by_year &lt;- letter_by_year %&gt;% 
+  left_join(top_current) %&gt;% 
+  mutate(color_by = replace_na(color_by, &quot;else&quot;))</code></pre>
+<pre><code>Error in eval(lhs, parent, parent): object &#39;letter_by_year&#39; not found</code></pre>
+<pre class="r"><code># set up my colors for males and females
+my_colors &lt;- c(&quot;#FF1493&quot;, &quot;gray80&quot;, &quot;#3399ff&quot;)</code></pre>
+<p>Plot it!</p>
+<pre class="r"><code>ggplot(letter_by_year, aes(x = year, y = total_prop, color = color_by, group = first_letter)) +
+  geom_line() +
+  scale_color_manual(values = my_colors) +
+  facet_wrap(~sex)</code></pre>
+<pre><code>Error in ggplot(letter_by_year, aes(x = year, y = total_prop, color = color_by, : object &#39;letter_by_year&#39; not found</code></pre>
+<pre class="r"><code>ColorM2 &lt;- c(A=&quot;Gray80&quot;,B=&quot;gray80&quot;,C=&quot;gray80&quot;,D=&quot;gray80&quot;,E=&quot;gray80&quot;,F=&quot;gray80&quot;,G=&quot;gray80&quot;,H=&quot;gray80&quot;,I=&quot;gray80&quot;,J=&quot;Black&quot;,K=&quot;gray80&quot;,L=&quot;gray80&quot;,M=&quot;gray80&quot;,N=&quot;gray80&quot;,O=&quot;gray80&quot;,P=&quot;gray80&quot;,Q=&quot;gray80&quot;,R=&quot;gray80&quot;,S=&quot;gray80&quot;,T=&quot;gray80&quot;,U=&quot;gray80&quot;,V=&quot;gray80&quot;,W=&quot;gray80&quot;,X=&quot;gray80&quot;,Y=&quot;gray80&quot;,Z=&quot;gray80&quot;)
+
+ColorF2 &lt;- c(A=&quot;Black&quot;,B=&quot;gray80&quot;,C=&quot;gray80&quot;,D=&quot;gray80&quot;,E=&quot;gray80&quot;,F=&quot;gray80&quot;,G=&quot;gray80&quot;,H=&quot;gray80&quot;,I=&quot;gray80&quot;,J=&quot;gray80&quot;,K=&quot;gray80&quot;,L=&quot;gray80&quot;,M=&quot;gray80&quot;,N=&quot;gray80&quot;,O=&quot;gray80&quot;,P=&quot;gray80&quot;,Q=&quot;gray80&quot;,R=&quot;gray80&quot;,S=&quot;gray80&quot;,T=&quot;gray80&quot;,U=&quot;gray80&quot;,V=&quot;gray80&quot;,W=&quot;gray80&quot;,X=&quot;gray80&quot;,Y=&quot;gray80&quot;,Z=&quot;gray80&quot;)</code></pre>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

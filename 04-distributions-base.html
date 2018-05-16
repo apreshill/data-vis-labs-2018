@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alison Hill" />
+
+
+<title>Lab 04: Distributions &amp; Summary Statistics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CS631 Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="slides.html">Slides &amp; Reading</a>
+</li>
+<li>
+  <a href="data-vis-resources.html">Resources</a>
+</li>
+<li>
+  <a href="https://sakai.ohsu.edu/portal/site/CS-631-1-32176-Sp18">Sakai</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Lab 04: Distributions &amp; Summary Statistics</h1>
+<h3 class="subtitle"><em>CS631</em></h3>
+<h4 class="author"><em>Alison Hill</em></h4>
+
+</div>
+
+
+<div id="overview" class="section level1">
+<h1><span class="header-section-number">1</span> Overview</h1>
+<p>There are 10 challenges total- none are in the “continuous colors” section, but you can use that section to complete the tenth challenge on your own. Upload your knitted html document by next Wednesday at noon to Sakai!</p>
+</div>
+<div id="slides-for-today" class="section level1">
+<h1><span class="header-section-number">2</span> Slides for today</h1>
+<pre class="r"><code>knitr::include_url(&quot;slides/03-slides.html&quot;)</code></pre>
+<iframe src="slides/03-slides.html" width="672" height="400px">
+</iframe>
+</div>
+<div id="packages" class="section level1">
+<h1><span class="header-section-number">3</span> Packages</h1>
+<p>Other packages will be needed to be installed as you go- reveal the first code chunks when in doubt!</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+</div>
+<div id="read-in-the-data" class="section level1">
+<h1><span class="header-section-number">4</span> Read in the data</h1>
+<p>Use this code chunk to read in the data available at <a href="http://bit.ly/cs631-meow" class="uri">http://bit.ly/cs631-meow</a>:</p>
+<pre class="r"><code>sounds &lt;- read_csv(&quot;http://bit.ly/cs631-meow&quot;)</code></pre>
+<p>Or store it locally:</p>
+<pre class="r"><code>sounds &lt;- read_csv(here::here(&quot;data&quot;, &quot;animal_sounds_summary.csv&quot;))</code></pre>
+<p>Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes.</p>
+<ol style="list-style-type: decimal">
+<li>A standard normal (<code>n</code>);</li>
+<li>A skew-right distribution (<code>s</code>, Johnson distribution with skewness 2.2 and kurtosis 13);</li>
+<li>A leptikurtic distribution (<code>k</code>, Johnson distribution with skewness 0 and kurtosis 30);</li>
+<li>A bimodal distribution (<code>mm</code>, two normals with mean -0.95 and 0.95 and standard deviation 0.31).</li>
+</ol>
+<pre class="r"><code>#install.packages(&quot;SuppDists&quot;)
+#library(SuppDists)
+# this is used later to generate the s and k distributions
+findParams &lt;- function(mu, sigma, skew, kurt) {
+  value &lt;- .C(&quot;JohnsonMomentFitR&quot;, as.double(mu), as.double(sigma), 
+    as.double(skew), as.double(kurt - 3), gamma = double(1), 
+    delta = double(1), xi = double(1), lambda = double(1), 
+    type = integer(1), PACKAGE = &quot;SuppDists&quot;)
+   list(gamma = value$gamma, delta = value$delta, 
+    xi = value$xi, lambda = value$lambda, 
+    type = c(&quot;SN&quot;, &quot;SL&quot;, &quot;SU&quot;, &quot;SB&quot;)[value$type])  
+}</code></pre>
+<pre class="r"><code># Generate sample data -------------------------------------------------------
+set.seed(141079)
+# normal
+n &lt;- rnorm(100)
+# right-skew
+s &lt;- rJohnson(100, findParams(0, 1, 2.2, 13))
+# leptikurtic
+k &lt;- rJohnson(100, findParams(0, 1, 0, 30))
+# mixture
+mm &lt;- rnorm(100, rep(c(-1, 1), each = 50) * sqrt(0.9), sqrt(0.1))</code></pre>
+<p>Let’s see what our descriptive statistics look like:</p>
+<pre class="r"><code>four_wide &lt;- data.frame(cbind(n, s, k, mm))
+psych::describe(four_wide)</code></pre>
+<pre><code>   vars   n  mean   sd median trimmed  mad   min  max range  skew kurtosis
+n     1 100  0.07 1.09   0.13    0.12 1.14 -3.07 2.83  5.91 -0.36     0.11
+s     2 100  0.74 1.01   0.43    0.58 0.83 -0.48 4.49  4.97  1.48     2.20
+k     3 100  0.00 0.79  -0.07   -0.05 0.63 -2.17 2.77  4.94  0.64     1.38
+mm    4 100 -0.06 0.99  -0.03   -0.06 1.41 -1.63 1.49  3.12  0.00    -1.65
+     se
+n  0.11
+s  0.10
+k  0.08
+mm 0.10</code></pre>
+<p>What do you notice? For which distributions are the standard measures of central tendency, spread, and shape more accurate?</p>
+</div>
+<div id="histograms" class="section level1">
+<h1><span class="header-section-number">5</span> Histograms</h1>
+<p>What you want to look for:</p>
+<ul>
+<li>How many “mounds” do you see? (modality)</li>
+<li>If 1 mound, find the peak: are the areas to the left and right of the peak symmetrical? (skewness)</li>
+<li>Notice that kurtosis (peakedness) of the distribution is difficult to judge here, especially given the effects of differing binwidths.</li>
+</ul>
+<div id="base-r-hist" class="section level2">
+<h2><span class="header-section-number">5.1</span> Base R: <code>hist()</code></h2>
+<pre class="r"><code>#2 x 2 histograms in base r graphics
+par(mar = c(3.0, 3.0, 1, 1))
+par(mfrow=c(2,2))
+hist(n)
+hist(s)
+hist(k)
+hist(mm)</code></pre>
+<p><img src="04-distributions-base_files/figure-html/base_hist-1.png" width="672" /></p>
+<p>What makes these histograms difficult to compare? A few things:</p>
+<ul>
+<li>Differing y-axes</li>
+<li>Differing x-axes</li>
+<li>Differing bin size</li>
+</ul>
+</div>
+</div>
+<div id="boxplots-medium-to-large-n" class="section level1">
+<h1><span class="header-section-number">6</span> Boxplots (medium to large N)</h1>
+<p>What you want to look for:</p>
+<ul>
+<li>The center line is the median: does the length of the distance to the upper hinge appear equal to the length to the lower hinge? (symmetry/skewness: Q3 - Q2/Q2 - Q1)</li>
+<li>Are there many outliers?</li>
+<li>Notice that modality of the distribution is difficult to judge here.</li>
+</ul>
+<div id="base-r-boxplot" class="section level2">
+<h2><span class="header-section-number">6.1</span> Base R: <code>boxplot()</code></h2>
+<p>Note that if <code>varwidth</code> is TRUE, the boxes are drawn with widths proportional to the square-roots of the number of observations in the groups. It doesn’t matter here since all 4 distributions contain 100 values.</p>
+<pre class="r"><code>#Just Boxplot
+par(mar = c(2.1, 2.1, .1, .1))
+boxplot(vals ~ dist, 
+        data = four, 
+        ylim = c(-4,4),
+        varwidth = TRUE) #vary width by n</code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+</div>
+</div>
+<div id="univariate-scatterplots-small-to-medium-n" class="section level1">
+<h1><span class="header-section-number">7</span> Univariate scatterplots (small to medium n)</h1>
+<p>Options:</p>
+<ul>
+<li><a href="http://stat.ethz.ch/R-manual/R-patched/library/graphics/html/stripchart.html">Stripchart</a>: “one dimensional scatter plots (or dot plots) of the given data. These plots are a good alternative to boxplots when sample sizes are small.”</li>
+<li><a href="https://cran.r-project.org/web/packages/beeswarm/beeswarm.pdf">Beeswarm</a>: “A bee swarm plot is a one-dimensional scatter plot similar to ‘stripchart’, except that would-be overlapping points are separated such that each is visible.”</li>
+</ul>
+<div id="base-r-stripchart" class="section level2">
+<h2><span class="header-section-number">7.1</span> Base R: <code>stripchart()</code></h2>
+<pre class="r"><code>par(mar = c(2.1, 2.1, .1, .1))
+stripchart(vals ~ dist, 
+           data = four, 
+           pch = 16, 
+           ylim = c(-4,4),
+           method = &quot;jitter&quot;,
+           vertical = TRUE,
+           col = rgb(32, 178, 170, 100, max = 255))</code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+<p><a href="http://www.statmethods.net/graphs/scatterplot.html">From statmethods.net</a>: You can use the <code>col2rgb()</code> function to get the rbg values for R colors. For example, <code>col2rgb(&quot;lightseagreen&quot;)</code> yeilds r = 32, g = 178, b = 170. Then add the alpha transparency level as the 4th number in the color vector. Alpha values range from 0 (fully transparent) to 255 (opaque). You must also specify max = 255. See <code>help(rgb)</code> for more information.</p>
+</div>
+<div id="beeswarm-package-beeswarm" class="section level2">
+<h2><span class="header-section-number">7.2</span> Beeswarm package: <code>beeswarm()</code></h2>
+<pre class="r"><code># install.packages(&quot;beeswarm&quot;)
+# library(beeswarm)
+#par(mfrow = c(1,1))
+par(mar = c(2.1, 2.1, .1, .1))
+beeswarm(vals ~ dist, 
+         data = four, 
+         pch = 20, 
+         col=&quot;lightseagreen&quot;,
+         ylim=c(-4,4))</code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+<p>Note that these recommendations do not apply if your data is “big”. You will know your data is too big if you try the below methods and you can’t see many of the individual points (typically, N &gt; 100).</p>
+</div>
+</div>
+<div id="boxplots-univariate-scatterplots-small-to-medium-n" class="section level1">
+<h1><span class="header-section-number">8</span> Boxplots + univariate scatterplots (small to medium n)</h1>
+<div id="base-r-plus-beeswarm-package-boxplot-beeswarmadd-true" class="section level2">
+<h2><span class="header-section-number">8.1</span> Base R plus beeswarm package: <code>boxplot()</code>, <code>beeswarm(add = TRUE)</code></h2>
+<pre class="r"><code>#install.packages(&quot;beeswarm&quot;)
+#library(beeswarm)
+par(mar = c(2.1, 2.1, .1, .1))
+boxplot(vals ~ dist, #make the boxplot first
+        data = four, 
+        outline = FALSE, #avoid double-plotting outliers-beeswarm will plot them too
+        ylim = c(-4, 4))    </code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+<pre class="r"><code>beeswarm(vals ~ dist, 
+         data = four, 
+         pch = 20, 
+         col = &quot;lightseagreen&quot;,
+         ylim = c(-4, 4), 
+         add = TRUE) #this is how you layer on top of the boxplot</code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+</div>
+<div id="base-r-boxplot-stripchartadd-true" class="section level2">
+<h2><span class="header-section-number">8.2</span> Base R: <code>boxplot()</code>, <code>stripchart(add = TRUE)</code></h2>
+<pre class="r"><code>par(mar = c(2.1, 2.1, .1, .1))
+boxplot(vals ~ dist, #make the boxplot first
+        data = four, 
+        outline = FALSE, #avoid double-plotting outliers-beeswarm will plot them too
+        ylim = c(-4, 4))  </code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+<pre class="r"><code>stripchart(vals ~ dist, 
+           data = four, 
+           vertical = TRUE, 
+           method = &quot;jitter&quot;, 
+           pch = 16, 
+           add = TRUE, 
+           ylim = c(-4, 4), 
+           col = rgb(32, 178, 170, 100, max = 255))</code></pre>
+<pre><code>Error in eval(m$data, parent.frame()): object &#39;four&#39; not found</code></pre>
+</div>
+</div>
+<div id="density-plots-medium-to-large-n" class="section level1">
+<h1><span class="header-section-number">9</span> Density plots (medium to large n)</h1>
+<p>A few ways to do this:</p>
+<ul>
+<li><a href="https://chemicalstatistician.wordpress.com/2013/06/09/exploratory-data-analysis-kernel-density-estimation-in-r-on-ozone-pollution-data-in-new-york-and-ozonopolis/">Kernel density</a>: “Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable. Kernel density estimation is a fundamental data smoothing problem where inferences about the population are made, based on a finite data sample.” - from <a href="https://en.wikipedia.org/wiki/Kernel_density_estimation">wikipedia</a></li>
+<li><a href="https://cran.r-project.org/web/packages/UsingR/UsingR.pdf">Violin plots</a>: “This function serves the same utility as side-by-side boxplots, only it provides more detail about the different distribution. It plots violinplots instead of boxplots. That is, instead of a box, it uses the density function to plot the density. For skewed distributions, the results look like”violins“. Hence the name.”
+<ul>
+<li>Some violin plots also include the boxplot so you can see Q1/Q2/Q3.</li>
+</ul></li>
+<li><a href="https://cran.r-project.org/web/packages/beanplot/vignettes/beanplot.pdf">Beanplots</a>: “The name beanplot stems from green beans. The density shape can be seen as the pod of a green bean, while the scatter plot shows the seeds inside the pod.”</li>
+</ul>
+<div id="vioplot-package-vioplot" class="section level2">
+<h2><span class="header-section-number">9.1</span> Vioplot package: <code>vioplot()</code></h2>
+<p>Includes equivalent of boxplot.</p>
+<pre class="r"><code>#install.packages(&quot;vioplot&quot;)
+#library(vioplot)
+par(mar = c(2.1, 2.1, .1, .1))
+with(four, vioplot(vals[dist == &quot;n&quot;], 
+                   vals[dist == &quot;s&quot;], 
+                   vals[dist == &quot;k&quot;], 
+                   vals[dist == &quot;mm&quot;],
+                   horizontal = FALSE,
+                   names = c(&quot;n&quot;, &quot;s&quot;, &quot;k&quot;, &quot;mm&quot;),
+                   col = &quot;lightseagreen&quot;,
+                   ylim = c(-4, 4)))</code></pre>
+<pre><code>Error in with(four, vioplot(vals[dist == &quot;n&quot;], vals[dist == &quot;s&quot;], vals[dist == : object &#39;four&#39; not found</code></pre>
+</div>
+<div id="beanplot-package-beanplot" class="section level2">
+<h2><span class="header-section-number">9.2</span> Beanplot package: <code>beanplot()</code></h2>
+<p>The default <code>beanlines</code> for each bean is the mean- you can also use the median or quantiles. The default <code>overallline</code> is the mean, again you can use the median instead.</p>
+<pre class="r"><code>#install.packages(&quot;beanplot&quot;)
+#library(beanplot)
+par(mar = c(2.1, 2.1, .1, .1))
+beanplot(vals ~ dist, 
+         data = four, 
+         ylim = c(-4, 4),
+         method = &quot;jitter&quot;, #handling overlapping beans
+         col = c(&quot;lightblue&quot;, &quot;lightseagreen&quot;, &quot;lightseagreen&quot;), 
+         border = &quot;lightblue&quot;)</code></pre>
+<pre><code>Error in FUN(X[[i]], ...): object &#39;four&#39; not found</code></pre>
+</div>
+</div>
+
+<p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="by-nc.png" height="400" width="65"/></a>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

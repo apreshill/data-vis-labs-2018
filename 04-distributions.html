@@ -380,16 +380,16 @@ $ vals &lt;dbl&gt; 0.91835807, -0.44302553, 2.83453800, -0.74480448, 1.44310...<
  n variables: 2 
 
 Variable type: factor 
-  variable missing complete   n n_unique                      top_counts
-1     dist       0      400 400        4 n: 100, s: 100, k: 100, mm: 100
-  ordered
-1   FALSE
+ variable missing complete   n n_unique                      top_counts
+     dist       0      400 400        4 n: 100, s: 100, k: 100, mm: 100
+ ordered
+   FALSE
 
 Variable type: numeric 
-  variable missing complete   n mean   sd   min   p25 median  p75  max
-1     vals       0      400 400 0.19 1.02 -3.07 -0.49   0.16 0.85 4.49
-      hist
-1 ▁▂▆▇▆▁▁▁</code></pre>
+ variable missing complete   n mean   sd    p0   p25  p50  p75 p100
+     vals       0      400 400 0.19 1.02 -3.07 -0.49 0.16 0.85 4.49
+     hist
+ ▁▂▆▇▆▁▁▁</code></pre>
 <pre class="r"><code>four %&gt;% 
   group_by(dist) %&gt;% 
   skim()</code></pre>
@@ -399,16 +399,16 @@ Variable type: numeric
  group variables: dist 
 
 Variable type: numeric 
-  dist variable missing complete   n      mean   sd   min    p25 median
-1    n     vals       0      100 100     0.071 1.09 -3.07 -0.61   0.13 
-2    s     vals       0      100 100     0.74  1.01 -0.48  0.053  0.43 
-3    k     vals       0      100 100 1e-04     0.79 -2.17 -0.49  -0.069
-4   mm     vals       0      100 100    -0.06  0.99 -1.63 -1     -0.031
-   p75  max     hist
-1 0.9  2.83 ▁▂▃▆▇▆▃▁
-2 1.12 4.49 ▇▇▅▂▁▁▁▁
-3 0.37 2.77 ▁▁▅▇▃▂▁▁
-4 0.86 1.49 ▃▇▅▁▁▃▇▅</code></pre>
+ dist variable missing complete   n      mean   sd    p0    p25    p50
+    n     vals       0      100 100     0.071 1.09 -3.07 -0.61   0.13 
+    s     vals       0      100 100     0.74  1.01 -0.48  0.053  0.43 
+    k     vals       0      100 100 1e-04     0.79 -2.17 -0.49  -0.069
+   mm     vals       0      100 100    -0.06  0.99 -1.63 -1     -0.031
+  p75 p100     hist
+ 0.9  2.83 ▁▂▃▆▇▆▃▁
+ 1.12 4.49 ▇▇▅▂▁▁▁▁
+ 0.37 2.77 ▁▁▅▇▃▂▁▁
+ 0.86 1.49 ▃▇▅▁▁▃▇▅</code></pre>
 </div>
 <div id="histograms" class="section level1">
 <h1><span class="header-section-number">6</span> Histograms</h1>
