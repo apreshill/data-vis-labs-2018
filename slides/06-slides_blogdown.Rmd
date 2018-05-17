@@ -58,6 +58,8 @@ class: middle, center
     
     - most features of R Markdown _and_ [**bookdown**](https://bookdown.org) (technical writing)!!
 
+--
+
 - [Hugo](https://gohugo.io) <img src="https://gohugo.io/img/hugo.png" width="10%" align="right" />
 
     - free, open-source, and easy to install (a single binary)
@@ -82,6 +84,8 @@ See Chapter 2 of the **bookdown** book for additional Markdown features, such as
 ## Why not WordPress, Tumblr, Medium.com, Blogger.com, etc?<sup>*</sup>
 
 - No R Markdown support (even math support is often nonexistent or awkward)
+
+--
 
 - Huge benefits of static websites compared to dynamic websites
 
@@ -123,6 +127,20 @@ include_graphics("../images/install-cocoa-eh-theme.png")
 
 ```{r echo = FALSE}
 include_graphics("../images/hugo-initial-files.png")
+```
+
+---
+class: inverse, middle, center
+
+# ⚠️
+
+## If you have already used `blogdown`, you'll want to update your Hugo:
+
+```{r eval = FALSE}
+# force an update
+blogdown::update_hugo()
+# check your version
+blogdown::hugo_version()
 ```
 
 ---
@@ -358,6 +376,7 @@ class: inverse, middle, center
 --
 
 - Put the *copy* in the analogous project root directory: `/layouts/`
+  - It *must* be named `index.html`
 
 ---
 # Edit the `index.html` *copy*
@@ -424,8 +443,12 @@ class: inverse, middle, center
 We'll connect to GitHub and deploy to Netlify.
 
 ---
-# What is hard about `blogdown`?
+## What is hard about `blogdown`?
 
+- A lot!
 - TOML in `config` file, but YAML in posts
 - Themes vary a lot
 - Overriding versus editing directory structure
+- Related to ⬆️, you have to learn Hugo (in addition to `blogdown`)
+- For much customization, you'll also have to be comfortable with [CSS](https://bookdown.org/yihui/blogdown/css.html)
+- [File paths!](https://blogdown-demo.rbind.io/2018/02/27/r-file-paths/)
