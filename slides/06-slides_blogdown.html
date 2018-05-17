@@ -38,6 +38,68 @@ class: center, middle, inverse
 background-image: url("https://media.giphy.com/media/3o6ozfM60Gc64dN0A0/giphy.gif")
 background-size: cover
 
+---
+class: middle, center
+
+![](../images/blogdown.png)
+---
+
+## So what is blogdown?&lt;sup&gt;*&lt;/sup&gt;
+
+
+- [R Markdown](https://rmarkdown.rstudio.com) &lt;img src="https://www.rstudio.com/wp-content/uploads/2015/12/RStudio_Hex_rmarkdown.png" width="10%" align="right" /&gt;
+
+    - (relatively) simple syntax for writing documents
+    
+    - the simpler, the more portable (multiple output formats)
+    
+    - not only convenient (maintenance), but also reproducible
+    
+    - most features of R Markdown _and_ [**bookdown**](https://bookdown.org) (technical writing)!!
+
+- [Hugo](https://gohugo.io) &lt;img src="https://gohugo.io/img/hugo.png" width="10%" align="right" /&gt;
+
+    - free, open-source, and easy to install (a single binary)
+    
+    - lightning fast (generates one page in one millisecond)
+    
+    - general-purpose (not only for blogs)
+
+.footnote[
+[\*] From Yihui: https://slides.yihui.name/2017-rmarkdown-UNL-Yihui-Xie.html#35.
+]
+
+???
+
+Pandoc's Markdown: paragraphs, section headings, (un)numbered lists, blockquotes, math expressions, tables, images, footnotes, bibliography/citations, ...
+
+See Chapter 2 of the **bookdown** book for additional Markdown features, such as figure/table captions, cross-references, numbered equations, theorems, ...
+
+
+---
+
+## Why not WordPress, Tumblr, Medium.com, Blogger.com, etc?&lt;sup&gt;*&lt;/sup&gt;
+
+- No R Markdown support (even math support is often nonexistent or awkward)
+
+- Huge benefits of static websites compared to dynamic websites
+
+    - all static files, no PHP or databases, no login/password, work everywhere (even offline)
+    
+    - typically fast to visit (no computation needed on the server side), and easy to speed up via CDN
+
+.footnote[
+[\*] From Yihui: https://slides.yihui.name/2017-rmarkdown-UNL-Yihui-Xie.html#36.
+]
+
+???
+
+If all you want to write about is what you had for breakfast today, or how cute your kittens are, there is no need to use blogdown. If there is anything related to R, statistical computing, and/or graphics, blogdown will be much more convenient.
+
+---
+class:middle, center, inverse
+
+![](https://media.giphy.com/media/3ohzdPgwt1E2qUcGFa/giphy.gif)
 
 ---
 # In RStudio
@@ -65,10 +127,13 @@ https://gohugo.io/getting-started/directory-structure/
 
 ```r
 .
+├── .Rhistory 
 ├── archetypes
 ├── config.toml
 ├── content
 ├── data
+├── index.Rmd
+├── your .Rproj file
 ├── layouts
 ├── static
 └── themes
@@ -88,18 +153,66 @@ Note which folders are *empty* at the top level of your project:
 
 ```r
 .
+├── .Rhistory 
 *├── archetypes
 ├── config.toml
 ├── content
 *├── data
+├── index.Rmd
+├── your .Rproj file
 *├── layouts
 ├── static
 └── themes
 ```
 
 ---
+# Open themes
+
+Look in `/themes/cocoa-eh-hugo-theme/`. Notice now the folder structure here *mirrors* your Hugo directory structure.
+
+&lt;img src="../images/hugo-theme-directory.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Override...
+
+.pull-left[
+your theme directory...
+
+```r
+.
+*├── archetypes
+├── exampleSite
+├── images
+*├── layouts
+*└── static
+```
+]
+
+.pull-right[
+with your root project directory.
+
+```r
+.
+├── .Rhistory 
+*├── archetypes
+├── config.toml
+├── content
+├── data 
+├── index.Rmd
+├── your .Rproj file
+*├── layouts
+*├── static
+└── themes
+```
+]
+
+
+
+---
 class: middle, inverse, center
-## Editing the configuration file
+
+# 🏡
+## Edit the configuration file
 
 ---
 # Open `config.toml`
@@ -128,43 +241,27 @@ pluralizelisttitles = false
 ```
 
 ---
+class: center, inverse, middle
 # Serve site!
 
-Mouse up to "Addins"
+Mouse up to "Addins" ➡️ "Serve site"
 
 ![](../images/addin-serve-site.png)
 
---
-
-&lt;img src="../images/cocoa-errorf.png" width="80%" style="display: block; margin: auto;" /&gt;
-
 
 ---
-# I can fix this!
-
-- Mouse over to "themes" folder, then click on that folder
-
-- Click through to `/layouts/partials/css/main.css`
-
-- Search for `errorf` (about line 170)
-
-- Make it look like this:
-
-```
-  text-transform: {{ .Site.Params.titlestyle }};
-      {{ end }}
-  {{ else }}
-  text-transform: uppercase;
-  {{ end }}
-```
-
-- Try serving the site again
-
----
-# Almost there!
+# Success?
 
 
 &lt;img src="../images/cocoa-in-viewer.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## Go back to your project root directory
+
+*New*: the `public` folder
+
+&lt;img src="../images/serve-site-public.png" width="75%" style="display: block; margin: auto;" /&gt;
+
 
 ---
 # Go back to `config.toml`
@@ -173,7 +270,7 @@ Mouse up to "Addins"
 
 
 ```r
-*baseurl = "/"
+baseurl = "/" 
 theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
@@ -181,11 +278,11 @@ contentdir = "content"
 languageCode = "en-US"
 layoutdir = "layouts"
 publishdir = "public"
-*author = "Joel Adams"
-*title = "Joel Adams"
+author = "Joel Adams" 
+title = "Joel Adams" 
 disqusshortname = ""
 pluralizelisttitles = false
-*ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"] 
 *enableEmoji = true
 ```
 
@@ -215,7 +312,90 @@ share = true
 ---
 # Edit content 
 
-Mouse to `content/` and edit `about.md` and `home.md`
+Mouse to `content/` and:
+
+- Edit your `about.md`
+  - Example 1: [Julia Silge](https://juliasilge.com/about/)
+  - Example 2: [Kara Woo](https://karawoo.com)
+  - Example 3 (a bit longer): [David Robinson](http://varianceexplained.org/about/)
+  - Example 4: [Emily Robinson](http://hookedondata.org/about/)
+  - Example 5: [Yihui Xie](https://yihui.name/en/about/)
+  - Example 6: [Chester Ismay](http://chester.rbind.io/about/)
+
+--
+
+- Edit your `home.md`
+  - We'll make this your new landing page, so imagine this is what people will initially see when they visit your site.
+      - Example 1: [Hadley Wickham](http://hadley.nz)
+      - Example 2: [Sam Tyner](https://sctyner.github.io)
+
+---
+class: inverse, middle, center
+
+## Take 5 minutes to edit your content
+
+![](https://media.giphy.com/media/7jMVtv69xwW0E/giphy.gif)
+---
+# Let's override the home page
+
+- Index is default landing page for Hugo
+
+--
+
+- Look in your theme's layouts directory (`/themes/cocoa-eh-hugo-theme/layouts`).
+  - Open `index.html`- this is the layout for your current home page.
+
+--
+
+- Make a *copy* of this file.
+
+--
+
+- Put the *copy* in the analogous project root directory: `/layouts/`
+
+---
+# Edit the `index.html` *copy*
+
+- Edit the version in `/layouts/`
+  - *not* `/themes/cocoa-eh-hugo-theme/layouts`
+  
+--
+
+- We'll remove the latest posts and best posts sections:
+
+--
+
+```
+{{ partial "header.html" . }}
+&lt;div class="main column"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="content"&gt;
+            {{ range where .Data.Pages "Title" "Home" }}
+                &lt;div class="markdown"&gt;
+                {{ .Content }}
+                &lt;/div&gt;
+            {{ end }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+{{ partial "footer.html" . }}
+```
+---
+# Workflow&lt;sup&gt;*&lt;/sup&gt;
+
+
+- Open your website project, click the "Serve Site" addin
+    
+- Revise old pages/posts, or click the "New Post" addin
+    
+- Write and save (take a look at the automatic preview)
+    
+- Push everything to Github
+
+.footnote[
+[\*] From Yihui: https://slides.yihui.name/2017-rmarkdown-UNL-Yihui-Xie.html#30.
+]
+
 ---
 # Theme examples
 
@@ -239,11 +419,6 @@ We'll connect to GitHub and deploy to Netlify.
 
 ---
 # What is hard about `blogdown`?
-
-Lots
-
----
-# My growing list
 
 - TOML in `config` file, but YAML in posts
 - Themes vary a lot

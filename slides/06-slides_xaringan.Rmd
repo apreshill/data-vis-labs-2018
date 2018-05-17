@@ -41,7 +41,20 @@ class: center, middle, inverse
 background-image: url("https://media.giphy.com/media/uELDhoOZdSnUk/giphy.gif")
 background-size: cover
 
+---
+# The name<sup>*</sup>
 
+The R package name `xaringan` was derived from Sharingan, a dōjutsu in the Japanese anime Naruto with two abilities:
+
+- the "Eye of Insight"
+
+- the "Eye of Hypnotism"
+
+>"I think a presentation is basically a way to communicate insights to the audience, and a great presentation may even "hypnotize" the audience."~ Yihui Xie (author)
+
+.footnote[
+[\*] From Yihui: https://slides.yihui.name/xaringan/#37.
+]
 ---
 
 # xaringan
@@ -73,9 +86,9 @@ You don't have to load it to use it.
 
 .pull-left[
 
-```yaml
+```{r eval = FALSE}
 ---
-title: "TADA!"
+title: "Tada!"
 author: "Alison Hill"
 date: "May 15, 2018"
 output: html_document
@@ -86,12 +99,12 @@ output: html_document
 --
 
 .pull-right[
-```yaml
+```{r eval = FALSE}
 ---
-title: "TADA!"
+title: "Tada!"
 author: "Alison Hill"
 date: "May 15, 2018"
-output: xaringan::moon_reader
+output: xaringan::moon_reader #<<
 ---
 ```
 ]
@@ -115,7 +128,7 @@ knitr::include_graphics("../images/knit-to-moon-reader.png")
 # Infinite moon reader
 
 - Now mouse up to "Addins" and select `xaringan`: Infinite Moon Reader. 
-    - This option does live preview of slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.)
+    - This option does live preview of slides- every time you **SAVE** the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
 
 - From here on, you won't need to knit before using Infinite Moon Reader.
 
@@ -141,6 +154,8 @@ class: center, middle, inverse
 
 - aka "R Markdown front-matter"
 
+- You can only have one YAML front-matter for each .Rmd file (multiple YAMLs will confuse moon reader!)
+
 ```yaml
 ---
 variable: "value"
@@ -150,11 +165,12 @@ variable: "value"
 ---
 # Edit the YAML
 
+I deleted the `date`.
 
-```yaml
+```{r eval = FALSE}
 ---
-title: "Lab 06: CS631"
-subtitle: "Working in the Tada!-verse"
+title: "Lab 06: CS631" #<<
+subtitle: "Working in the Tada!-verse" #<<
 author: "Alison Hill"
 output: xaringan::moon_reader
 ---
@@ -163,14 +179,15 @@ output: xaringan::moon_reader
 ---
 # Slide separators
 
+.pull-left[
 - The first slide starts right away. 
 
---
-
 - New slides are separated by three dashes in a row `---` on a line by itself (recommend keeping an empty line before)
+]
 
 --
 
+.pull-right[
 ```
 # Slide 1
 This is slide 1
@@ -179,6 +196,7 @@ This is slide 1
 # Slide 2
 This is slide 2
 ```
+]
 
 ---
 # Know your markdown 
@@ -260,7 +278,7 @@ Slide titles and text follow Markdown formatting:
 
 --
 
-Try creating a new slide that uses a built-in CSS class and has a big title!
+Try creating a new slide that uses 2 or more classes and has a big title!
 
 ```
 ---
@@ -358,8 +376,11 @@ background-size: cover
 ```
 
 ---
+class: inverse
 background-image: url("http://bit.ly/cs631-donkey")
 background-size: cover
+
+
 
 ---
 # Adding images to slides
@@ -415,11 +436,11 @@ It means you cannot use `here` within a call to `knitr::include_graphics`.
 
 2 options:
 
-- Use markdown: `![](path/to/my/image.jpg)` (no quotes!)
+- Use markdown: `![](path/to/my/image.jpg)` (no quotes, and in plain text of Rmd!)
 
 --
 
-- Or (path in quotes now!):
+- Or (path in quotes now, and within an R code chunk!):
 
 ```{r eval = FALSE}
 knitr::include_graphics("path/to/my/image.jpg")
@@ -606,11 +627,11 @@ Use `#<<`!
 
 ````
 ```{r example-plot}`r ''`
-ggplot(iris) +
-  aes(x = Sepal.Width) +
-  geom_histogram(   #<<
-    binwidth = 0.10 #<<
-  )                 #<<
+library(ggplot2)
+ggplot(mtcars) + 
+  aes(mpg, disp) + 
+  geom_point() +   #<<
+  geom_smooth()    #<<
 ```
 ````
 ]
@@ -618,11 +639,11 @@ ggplot(iris) +
 .pull-right[
 
 ```{r example-plot, eval = FALSE}
-ggplot(iris) +
-  aes(x = Sepal.Width) +
-  geom_histogram(   #<<
-    binwidth = 0.10 #<<
-  )                 #<<
+library(ggplot2)
+ggplot(mtcars) + 
+  aes(mpg, disp) + 
+  geom_point() +   #<<
+  geom_smooth()    #<<
 ```
 ]
 
