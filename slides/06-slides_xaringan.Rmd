@@ -4,7 +4,6 @@ subtitle: "Making Slides in the Tada!-verse"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
-    self-contained: true
     css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
     lib_dir: libs
     nature:
@@ -675,5 +674,12 @@ Type `p` on your keyboard to enter presentation mode- you should be able to view
 
 ???
 note to self
+
+---
+## Want more YAML? Who doesn't??
+
+```{r}
+rmarkdown::yaml_front_matter(knitr::current_input())
+```
 
 

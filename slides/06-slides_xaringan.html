@@ -728,6 +728,43 @@ Type `p` on your keyboard to enter presentation mode- you should be able to view
 
 ???
 note to self
+
+---
+## Want more YAML? Who doesn't??
+
+
+```r
+rmarkdown::yaml_front_matter(knitr::current_input())
+```
+
+```
+$title
+[1] "Lab 06: CS631"
+
+$subtitle
+[1] "Making Slides in the Tada!-verse"
+
+$author
+[1] "Alison Hill"
+
+$output
+$output$`xaringan::moon_reader`
+$output$`xaringan::moon_reader`$css
+[1] "default"            "css/ohsu.css"       "css/ohsu-fonts.css"
+
+$output$`xaringan::moon_reader`$lib_dir
+[1] "libs"
+
+$output$`xaringan::moon_reader`$nature
+$output$`xaringan::moon_reader`$nature$highlightStyle
+[1] "atelier-lakeside-light"
+
+$output$`xaringan::moon_reader`$nature$highlightLines
+[1] TRUE
+
+$output$`xaringan::moon_reader`$nature$countIncrementalSlides
+[1] FALSE
+```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
