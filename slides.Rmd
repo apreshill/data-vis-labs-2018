@@ -48,6 +48,12 @@ knitr::include_url("slides/02-slides.html")
 knitr::include_url("slides/03-slides.html")
 ```
 
+### 04: Working with Tidy Data
+
+```{r}
+knitr::include_url("slides/04-slides.html")
+```
+
 ### 06 + 07: Working with the Tada!-verse
 
 ```{r}
