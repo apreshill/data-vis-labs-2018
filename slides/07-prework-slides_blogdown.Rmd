@@ -1,0 +1,173 @@
+---
+title: "Lab 07 Pre-Work: CS631"
+subtitle: "Making a Site in the Tada!-verse <br> Part Deux: Connecting to GitHub"
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "80%", cache = FALSE)
+library(tidyverse)
+library(here)
+library(knitr)
+```
+
+
+class: center, middle, inverse
+
+# First:
+
+## Build a site with `blogdown`
+
+--
+
+# NOW!:
+
+## Push your `blogdown` site to GitHub
+
+--
+
+# Next up in Lab 07:
+
+## Making a shareable site
+
+---
+class: center, middle
+
+![](http://happygitwithr.com/img/watch-me-diff-watch-me-rebase-smaller.png)
+http://happygitwithr.com
+---
+## Pre-work
+
+This slide deck will lead you through the necessary sections of [Happy Git with R](http://happygitwithr.com) to connect RStudio with your GitHub account.
+
+We are going to assume:
+
+✅ Chapter 5: [Register a GitHub account ](http://happygitwithr.com/github-acct.html)
+
+✅ Chapter 6: [Install or upgrade R and RStudio](http://happygitwithr.com/install-r-rstudio.html)
+
+---
+## Chapter 7: [Install Git](http://happygitwithr.com/install-git.html)
+
+Key commands in terminal:
+
+```{r eval = FALSE}
+which git
+git --version
+```
+
+---
+## Chapter 8: [Introduce yourself to Git](http://happygitwithr.com/hello-git.html)
+
+Key commands in terminal:
+
+```{r eval = FALSE}
+git config --global user.name 'apreshill'
+git config --global user.email 'apresstats@gmail.com'
+git config --global --list
+```
+
+Obviously change the user name and email to your own.
+
+---
+## Skip Chapter 9
+
+---
+## Chapter 10: [Connect to GitHub](http://happygitwithr.com/push-pull-github.html)
+
+Do all of this chapter!
+
+---
+## Chapter 11: [Cache credentials for HTTPS](http://happygitwithr.com/credential-caching.html)
+
+Do all of this chapter! (make sure you get through 11.3)
+
+---
+## Chapter 12: [Set up keys for SSH](http://happygitwithr.com/ssh-keys.html)
+
+Optional.
+
+---
+## Chapter 13: [Connect RStudio to Git and GitHub](http://happygitwithr.com/rstudio-git-github.html)
+
+**REQUIRED**: Do all of this chapter!
+
+---
+## Chapter 14: [Detect Git from RStudio](http://happygitwithr.com/rstudio-see-git.html)
+
+> Note: "This often “just works”, so this page is aimed at people who have reason to suspect they have a problem."
+
+---
+class: middle, inverse, center
+
+## Hurrah!
+
+You made it this far!
+
+# 🎉🎉🎉
+
+Open up your R project file for your `blogdown` site made in Lab 06.
+
+---
+## [Existing project, GitHub last](http://happygitwithr.com/existing-github-last.html)
+
+Now read and do all of this chapter with your `blogdown` site, since we already made the project and want to now connect it to GitHub. See next slide...
+
+Generally, I don't recommend this workflow! IRL I try to do:
+
+- [New project, GitHub first](http://happygitwithr.com/new-github-first.html)
+
+---
+## 18.2: [Make or verify a Git repo](http://happygitwithr.com/existing-github-last.html#make-or-verify-a-git-repo)
+
+We'll add GitHub to our existing project, using Chapter 18 from Happy Git with R. Scroll down to (note this is now in your R console, not terminal):
+
+```{r eval = FALSE}
+install.packages("usethis")
+usethis::use_git()
+```
+
+It should say that a restart of RStudio is required, type in "absolutely"
+
+When it restarts, you should see the Git pane in RStudio. Don't forget this step in terminal from your project's working directory:
+
+```{r eval = FALSE}
+git init
+```
+
+---
+# 18.3: [Stage and commit](http://happygitwithr.com/existing-github-last.html#stage-and-commit-1)
+
+Follow instructions to stage and commit.
+
+---
+# 18.4: Skip
+
+---
+# 18.5: [Make and connect a GitHub repo](http://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2)
+
+---
+class: inverse, middle, center
+
+## Great job!
+
+![](https://media.giphy.com/media/ZUomWFktUWpFu/giphy.gif)
+
+You are done with Lab 7 pre-work!
+
+
+
+
+
+

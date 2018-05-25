@@ -192,7 +192,7 @@ Look in `/themes/cocoa-eh-hugo-theme/`. Notice now the folder structure here *mi
 &lt;img src="../images/hugo-theme-directory.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
-# Override...
+# Override files in...
 
 .pull-left[
 your theme directory...
@@ -208,7 +208,7 @@ your theme directory...
 ]
 
 .pull-right[
-with your root project directory.
+with files in your project directory.
 
 ```r
 .
@@ -236,7 +236,197 @@ class: middle, inverse, center
 ---
 # Open `config.toml`
 
-- TOML is like YAML, but not 😂
+- TOML&lt;sup&gt;*&lt;/sup&gt; is like YAML, but not 😂
+
+.pull-left[
+
+```r
++++
+title = "Lab 06: CS631"
+tags = ["toml","yaml"]
+
+type = "article"
+
+[amp]
+elements = []
+    
+[article]
+lead = "Lorem ipsum."
+category = "frontmatter"
+related = []
++++
+```
+]
+
+.pull-right[
+
+```r
+---
+title: "Lab 06: CS631"
+tags:
+- toml
+- yaml
+type: article
+amp:
+  elements: []
+article:
+  lead: Lorem ipsum.
+  category: frontmatter
+  related: []
+---
+```
+]
+
+.footnote[
+[\*] https://gohugohq.com/howto/toml-json-yaml-comparison/
+]
+
+---
+# Open `config.toml`
+
+- blocks wrapped by `+++` vs `---` &lt;sup&gt;*&lt;/sup&gt; 
+
+.pull-left[
+
+```r
+*+++
+title = "Lab 06: CS631"
+tags = ["toml","yaml"]
+
+type = "article"
+
+[amp]
+elements = []
+    
+[article]
+lead = "Lorem ipsum."
+category = "frontmatter"
+related = []
+*+++
+```
+]
+
+.pull-right[
+
+```r
+*---
+title: "Lab 06: CS631"
+tags:
+- toml
+- yaml
+type: article
+amp:
+  elements: []
+article:
+  lead: Lorem ipsum.
+  category: frontmatter
+  related: []
+*---
+```
+]
+
+.footnote[
+[\*] https://gohugohq.com/howto/toml-json-yaml-comparison/
+]
+
+---
+# Open `config.toml`
+
+- key-value pairs are separated by a `=` vs `:` &lt;sup&gt;*&lt;/sup&gt; 
+
+.pull-left[
+
+```r
++++ 
+*title = "Lab 06: CS631"
+tags = ["toml","yaml"]
+
+type = "article"
+
+[amp]
+elements = []
+    
+[article]
+lead = "Lorem ipsum."
+category = "frontmatter"
+related = []
++++ 
+```
+]
+
+.pull-right[
+
+```r
+--- 
+*title: "Lab 06: CS631"
+tags:
+- toml
+- yaml
+type: article
+amp:
+  elements: []
+article:
+  lead: Lorem ipsum.
+  category: frontmatter
+  related: []
+---
+```
+]
+
+.footnote[
+[\*] https://gohugohq.com/howto/toml-json-yaml-comparison/
+]
+
+---
+# Open `config.toml`
+
+- YAML uses indentation with one or more spaces to describe nested collections &lt;sup&gt;*&lt;/sup&gt;
+
+.pull-left[
+
+```r
++++ 
+title = "Lab 06: CS631" 
+*tags = ["toml","yaml"]
+
+type = "article"
+
+[amp]
+elements = []
+    
+[article]
+lead = "Lorem ipsum."
+category = "frontmatter"
+related = []
++++ 
+```
+]
+
+.pull-right[
+
+```r
+--- 
+title: "Lab 06: CS631" 
+*tags:
+*- toml
+*- yaml
+type: article
+amp:
+  elements: []
+article:
+  lead: Lorem ipsum.
+  category: frontmatter
+  related: []
+---
+```
+]
+
+.footnote[
+[\*] https://gohugohq.com/howto/toml-json-yaml-comparison/
+]
+
+---
+# Edit `config.toml`
 
 - Set `baseurl = "/"`
 
@@ -354,6 +544,16 @@ class: inverse, middle, center
 ## Take 5 minutes to edit your content
 
 ![](https://media.giphy.com/media/7jMVtv69xwW0E/giphy.gif)
+
+---
+class: inverse, middle, center
+
+
+
+# 🏇
+
+## Now we override!
+
 ---
 # Let's override the home page
 

@@ -1,0 +1,117 @@
+---
+title: "Lab 07: CS631"
+subtitle: "Making a Site in the Tada!-verse <br> Part Deux: Make a Shareable Site"
+author: "Alison Hill"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "80%", cache = FALSE)
+library(tidyverse)
+library(here)
+library(knitr)
+```
+
+
+class: center, middle, inverse
+
+# First:
+
+## Build a site with `blogdown`
+
+--
+
+# NOW!:
+
+## Push to GitHub
+
+--
+
+# Next up:
+
+## Deploy to Netlify!
+
+---
+class: center, middle
+
+# Your pre-work
+
+![](http://happygitwithr.com/img/watch-me-diff-watch-me-rebase-smaller.png)
+http://happygitwithr.com
+
+
+---
+# Log on to Netlify.com
+
+- Sign up
+- Pick GitHub
+- Authorize Netlify
+- Go through the quick start guide
+
+---
+# New site from Git
+
+- Under continuous deployment, pick GitHub
+- Click to authorize Netlify
+- Confirm GitHub password
+- Pick your blogdown repository
+- Leave branch to deploy as master
+
+---
+# Go back to your R project
+
+In R console type:
+```{r}
+blogdown::hugo_version()
+```
+
+---
+# Go back to Netlify in browser
+
+1. The **build command** is `hugo`
+1. The **publish directory** is `public`
+1. Click `show advanced`
+1. Create a `new variable`: 
+    - the key is `HUGO_VERSION`
+    - the value is `0.40` 
+1. Click deploy site
+
+
+---
+# In netlify
+
+Click on overview --> site settings --> general
+
+Click on change site name and try to find a unique one- it will change your domain name to `[your-new-site-name].netlify.com`
+
+---
+# Go back to your R project
+
+- Open up `config.toml` and update your `baseurl = "https://[your-new-site-name].netlify.com"`
+
+- Save
+
+- Commit
+
+- Push to github
+
+---
+class: middle, inverse, center
+# Now go to your site!
+
+![](https://media.giphy.com/media/CCJnMBqEYxxEk/giphy.gif)
+
+
+
+
+
