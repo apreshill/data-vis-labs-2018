@@ -157,6 +157,8 @@ Follow instructions to stage and commit.
 ---
 # 18.5: [Make and connect a GitHub repo](http://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2)
 
+As the local repo, use your `blogdown` R project.
+
 ---
 class: inverse, middle, center
 
