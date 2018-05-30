@@ -219,6 +219,19 @@ https://blogdown-demo.rbind.io/2017/09/06/adding-r-markdown-documents-of-other-o
 1. In that `R/` directory, create a new R script called `build.R` that contains 1 line of code that reads: `blogdown::build_dir('static')`
 1. Add and save Rmd file(s) to your blogdown project in a new `static/slides/` directory.
 1. Serve your site
+
+---
+# Git ignore
+
+
+```r
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*public/
+.DS_Store
+```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
