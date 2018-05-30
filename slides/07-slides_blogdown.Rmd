@@ -31,13 +31,13 @@ class: center, middle, inverse
 
 --
 
-# NOW!:
+# Pre-work:
 
 ## Push to GitHub
 
 --
 
-# Next up:
+# NOW!:
 
 ## Deploy to Netlify!
 
@@ -49,23 +49,93 @@ class: center, middle
 ![](http://happygitwithr.com/img/watch-me-diff-watch-me-rebase-smaller.png)
 http://happygitwithr.com
 
+---
+class: inverse, middle, center
+
+> "As we just mentioned, Netlify allows you to quickly publish a website by uploading the `public/` folder through its web interface, and you will be assigned a random subdomain `*.netlify.com`. This approach is good for those websites that are not updated frequently (or at all)."
+
+https://bookdown.org/yihui/blogdown/netlify.html
 
 ---
-# Log on to Netlify.com
+# If you didn't do the pre-work...
 
-- Sign up
-- Pick GitHub
-- Authorize Netlify
-- Go through the quick start guide
+- Drag + drop your `public/` folder.
 
+- If you did, follow me!
+
+---
+class: inverse, middle, center
+## Go to Netlify.com
+
+http://netlify.com
+
+---
+class: inverse, middle, center
+## Click on "Sign up"
+
+```{r echo = FALSE}
+include_graphics("../images/netlify-landing.png")
+```
+
+---
+class: inverse, middle, center
+## Select "GitHub"
+
+click to "Authorize Netlify"
+
+
+```{r echo = FALSE}
+include_graphics("../images/netlify-sign-up.png")
+```
+
+Recommended: go through the quick start guide
+---
+## Netlify review so far
+
+1. Sign up
+1. Pick GitHub
+1. Authorize Netlify
+1. Go through the quick start guide
+
+---
+class: inverse, middle, center
+# Two ways to make a new site
+
+```{r echo = FALSE}
+include_graphics("../images/netlify-new-site.png")
+```
+
+---
+# New site 
+
+If you did the pre-work
+- Select "New site from Git"
+- Under continuous deployment, pick GitHub
+```{r echo = FALSE}
+include_graphics("../images/netlify-new-git-site.png")
+```
 ---
 # New site from Git
 
-- Under continuous deployment, pick GitHub
 - Click to authorize Netlify
 - Confirm GitHub password
 - Pick your blogdown repository
-- Leave branch to deploy as master
+
+```{r echo = FALSE}
+include_graphics("../images/netlify-pick-git-repo.png")
+```
+
+
+---
+# Build options
+
+1. Leave branch to deploy as master
+1. The **build command** is `hugo`
+1. The **publish directory** is `public`
+
+```{r echo = FALSE, out.width='60%'}
+include_graphics("../images/netlify-basic-build.png")
+```
 
 ---
 # Go back to your R project
@@ -78,21 +148,32 @@ blogdown::hugo_version()
 ---
 # Go back to Netlify in browser
 
-1. The **build command** is `hugo`
-1. The **publish directory** is `public`
+
 1. Click `show advanced`
 1. Create a `new variable`: 
     - the key is `HUGO_VERSION`
     - the value is `0.40` 
 1. Click deploy site
-
+```{r echo = FALSE, out.width='80%'}
+include_graphics("../images/netlify-adv-build.png")
+```
 
 ---
-# In netlify
+class: inverse, middle, center
 
-Click on overview --> site settings --> general
+```{r echo = FALSE, out.width='80%'}
+include_graphics("../images/netlify-first-deploy.png")
+```
+---
+# From Netlify
 
-Click on change site name and try to find a unique one- it will change your domain name to `[your-new-site-name].netlify.com`
+- Click on Site Settings (from overview) --> general
+
+- Click on change site name and try to find a unique one- it will change your domain name to `[your-new-site-name].netlify.com`
+
+```{r echo = FALSE, out.width='80%'}
+include_graphics("../images/netlify-change-site-name.png")
+```
 
 ---
 # Go back to your R project
@@ -103,7 +184,7 @@ Click on change site name and try to find a unique one- it will change your doma
 
 - Commit
 
-- Push to github
+- Push to GitHub
 
 ---
 class: middle, inverse, center
@@ -112,6 +193,39 @@ class: middle, inverse, center
 ![](https://media.giphy.com/media/CCJnMBqEYxxEk/giphy.gif)
 
 
+---
+## Demo to override CSS
 
+Place a new CSS file in your `static` directory...then go back to the `config.toml`
 
+```{r eval = FALSE}
+[params]
+dateform = "Jan 2, 2006"
+dateformfull = "Mon Jan 2 2006 15:04:05 MST"
+description = "Example blog"
+copyright = "Copyright © 2015 Ada Lovelace"
+# copyrightUrl = "https://creativecommons.org/licenses/by-sa/4.0/"
+logofile = "img/logo.jpg"
+faviconfile = "img/logo.png"
+highlightjs = true
+progressively = true
+share = true
+extracssfiles = [ "/css/circle.css" ] #<<  
+```
 
+---
+## Override CSS
+
+How did I know to do this? A lot of googling. I finally found an example `config.toml` for the parent theme, Cocoa, here:
+
+- https://github.com/nishanths/cocoa-hugo-theme/blob/master/exampleSite/config.toml
+
+---
+## Add your `xaringan` slides
+
+https://blogdown-demo.rbind.io/2017/09/06/adding-r-markdown-documents-of-other-output-formats/
+
+1. Go to your blogdown project’s root directory and create a new folder called `R`
+1. In that `R/` directory, create a new R script called `build.R` that contains 1 line of code that reads: `blogdown::build_dir('static')`
+1. Add and save Rmd file(s) to your blogdown project in a new `static/slides/` directory.
+1. Serve your site

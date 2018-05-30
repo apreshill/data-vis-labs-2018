@@ -1,6 +1,6 @@
 ---
 title: "Lab 06: CS631"
-subtitle: "Making a Site in the Tada!-verse"
+subtitle: "Making a Site in the Tada!-verse <br> Part One: Build a Site"
 author: "Alison Hill"
 output:
   xaringan::moon_reader:
@@ -287,6 +287,7 @@ article:
 # Open `config.toml`
 
 - blocks wrapped by `+++` vs `---` <sup>*</sup> 
+- Your `config.toml` file doesn't show this explicitly but it is there!
 
 .pull-left[
 ```{r eval = FALSE}
@@ -437,8 +438,8 @@ contentdir = "content"
 languageCode = "en-US"
 layoutdir = "layouts"
 publishdir = "public"
-author = "Joel Adams" #<<
-title = "Joel Adams" #<<
+author = "Ada Lovelace" #<<
+title = "Ada Lovelace" #<<
 disqusshortname = ""
 pluralizelisttitles = false
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"] #<<
@@ -485,8 +486,8 @@ contentdir = "content"
 languageCode = "en-US"
 layoutdir = "layouts"
 publishdir = "public"
-author = "Joel Adams" 
-title = "Joel Adams" 
+author = "Ada Lovelace" 
+title = "Ada Lovelace" 
 disqusshortname = ""
 pluralizelisttitles = false
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"] 
@@ -496,7 +497,7 @@ enableEmoji = true #<<
 ---
 # Update logo
 
-Mouse over the `static/img/` and see `logo.png`? We can replace that file, or make new file.
+Mouse over the `static/img/` and see `logo.png`? We can replace that file, or make new file. I'll replace mine with [this picture](https://en.wikipedia.org/wiki/Ada_Lovelace).
 
 ```{r eval = FALSE}
 [permalinks]
@@ -506,13 +507,21 @@ blog = "blog/:slug/"
 dateform = "Jan 2, 2006"
 dateformfull = "Mon Jan 2 2006 15:04:05 MST"
 description = "Professional website" #<<
-copyright = "Copyright © 2015 Joel Adams" #<<
+copyright = "Copyright © 2015 Ada Lovelace" #<<
 copyrightUrl = "https://creativecommons.org/licenses/by-sa/4.0/" #<<
-logofile = "img/joel.jpg" #<<
+logofile = "img/ada.jpg" #<<
 faviconfile = "img/logo.png"
 highlightjs = true
 progressively = true
 share = true
+```
+
+---
+# Success?
+
+
+```{r echo = FALSE}
+include_graphics("../images/update-logo.png")
 ```
 
 ---
@@ -521,6 +530,7 @@ share = true
 Mouse to `content/` and:
 
 - Edit your `about.md`
+  - [Awesome slide deck here](https://docs.google.com/presentation/d/1pt8eXaGkFH8JTfOjcyvqt1n6DsUs5bSMuHy_NxepMfQ/edit#slide=id.p4)
   - Example 1: [Julia Silge](https://juliasilge.com/about/)
   - Example 2: [Kara Woo](https://karawoo.com)
   - Example 3 (a bit longer): [David Robinson](http://varianceexplained.org/about/)
@@ -541,6 +551,14 @@ class: inverse, middle, center
 ## Take 5 minutes to edit your content
 
 ![](https://media.giphy.com/media/7jMVtv69xwW0E/giphy.gif)
+
+---
+# Success?
+
+
+```{r echo = FALSE}
+include_graphics("../images/about-ada.png")
+```
 
 ---
 class: inverse, middle, center
@@ -597,6 +615,15 @@ class: inverse, middle, center
 </div>
 {{ partial "footer.html" . }}
 ```
+
+---
+# Success?
+
+
+```{r echo = FALSE}
+include_graphics("../images/ada-home.png")
+```
+
 ---
 # Workflow<sup>*</sup>
 
