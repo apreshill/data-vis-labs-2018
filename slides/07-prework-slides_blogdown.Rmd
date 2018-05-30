@@ -157,7 +157,17 @@ Follow instructions to stage and commit.
 ---
 # 18.5: [Make and connect a GitHub repo](http://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2)
 
-As the local repo, use your `blogdown` R project.
+As the local repo, use your `blogdown` R project. Now is a great time to edit your `.gitignore` file **before** you push your local repo to a remote. Here is my file for a blogdown site:
+
+```{r eval = FALSE}
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+blogdown
+.DS_Store # if a windows user, Thumbs.db instead
+public/ # if using Netlify
+```
 
 ---
 class: inverse, middle, center

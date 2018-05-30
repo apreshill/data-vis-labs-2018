@@ -183,9 +183,94 @@ class: middle, inverse, center
 
 
 ---
+## Add your `xaringan` slides
+
+https://blogdown-demo.rbind.io/2017/09/06/adding-r-markdown-documents-of-other-output-formats/
+
+1. Go to your blogdown project’s root directory and create a new folder called `R`
+1. In that `R/` directory, create a new R script called `build.R` that contains 1 line of code that reads: `blogdown::build_dir('static')`
+1. Add and save Rmd file(s) to your blogdown project in a new `static/slides/` directory.
+1. Serve your site
+
+---
+## Link to your slides
+
+Now that your `xaringan` slides are being rendered by `blogdown`, we have to link to them! If you placed them in `static/slides/`, then you should be able to navigate to the rendered slides at:
+
+- `[your-new-site-name].netlify.com/slides/[name_of_deck].html`
+
+But you can use **relative** links in your `blogdown` site using Markdown links:
+
+- `Here are some of my [slides](slides/slides.html)`
+
+`blogdown` assumes that relative links start in the `static/` directory.
+
+---
+## Add link to `home.md`
+
+I added a Markdown link to my `/content/home.md` using this line:
+
+- `Here are some of my [slides](slides/slides.html)`
+
+&lt;img src="../images/ada-link-to-slides.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, middle, center
+
+# ⚠️
+
+## Going further...
+
+You have gone far enough- you don't *have* to do what is next!
+
+---
+## Embed slides within an .Rmd post
+
+You can embed your `xaringan` slides within an .Rmd blog post. Steps:
+
+- Go to `content/blog/2015-07-23-r-rmarkdown.Rmd` (this is just the sample blog post)
+
+- Add an R code chunk and use `knitr::include_url`
+
+
+```r
+knitr::include_url("../../slides/slides.html")
+```
+
+- Why this particular file path? Because `knitr` uses the starting directory as where your post lives, so `content/blog/`.
+    - The second `../` gets you up one directory, to `content/`
+    - The first `../` gets you up one more directory level, to your project root directory
+
+---
+## View embedded slides
+
+&lt;img src="../images/ada-embed-slides.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+class: center, middle
 ## Demo to override CSS
 
-Place a new CSS file in your `static` directory...then go back to the `config.toml`
+&lt;img src="../images/ada-deployed-landing.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## Override CSS to make round logo
+
+1. Make a new `static/css/` directory
+1. Make a new text file in that directory, I called mine `circle.css` and put this inside
+
+
+```r
+div.header .container .logo {
+  max-width: 100px;
+  margin-left: -2em;
+* border-radius: 50%;
+}
+```
+
+---
+## Demo to override CSS
+
+Go back to the `config.toml`
 
 
 ```r
@@ -209,29 +294,6 @@ share = true
 How did I know to do this? A lot of googling. I finally found an example `config.toml` for the parent theme, Cocoa, here:
 
 - https://github.com/nishanths/cocoa-hugo-theme/blob/master/exampleSite/config.toml
-
----
-## Add your `xaringan` slides
-
-https://blogdown-demo.rbind.io/2017/09/06/adding-r-markdown-documents-of-other-output-formats/
-
-1. Go to your blogdown project’s root directory and create a new folder called `R`
-1. In that `R/` directory, create a new R script called `build.R` that contains 1 line of code that reads: `blogdown::build_dir('static')`
-1. Add and save Rmd file(s) to your blogdown project in a new `static/slides/` directory.
-1. Serve your site
-
----
-# Git ignore
-
-
-```r
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-*public/
-.DS_Store
-```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
