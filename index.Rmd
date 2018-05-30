@@ -29,5 +29,6 @@ This is the site for sharing our Data Visualization Labs for CS631 at Oregon Hea
     - [Slides on `blogdown`](slides/06-slides_blogdown.html)
 - Lab 07: Making a Shareable Site
     - [Pre-work slides](slides/07-prework-slides_blogdown.html)
+    - [In-class slides](slides/07-slides_blogdown.html)
     
 
