@@ -178,9 +178,12 @@ include_graphics("../images/netlify-change-site-name.png")
 ---
 # Go back to your R project
 
-- Open up `config.toml` and update your `baseurl = "https://[your-new-site-name].netlify.com"`
+- Open up `config.toml` and update your `baseurl = "https://[your-new-site-name].netlify.com/"`
+    - The final `/` is critical!
 
 - Save
+
+- Serve site!
 
 - Commit
 
