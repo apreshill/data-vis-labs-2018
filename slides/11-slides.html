@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 11 (?): CS631</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alison Hill" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ohsu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ohsu-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab 11 (?): CS631
+## One Dataset, Visualized 11 Ways
+### Alison Hill
+
+---
+
+
+
+
+
+class: center, middle, inverse
+
+# Inspired by:
+
+## Flowing Data:
+
+https://flowingdata.com/2017/01/24/one-dataset-visualized-25-ways/
+
+
+---
+# Packages first
+
+I'll use all of the following:
+
+
+```r
+library(tidyverse)
+library(wesanderson) # colors
+library(viridis) # colors!
+library(beyonce) # colors!!
+library(extrafont) # mess with fonts
+```
+
+---
+# Data second
+
+
+```r
+ratings &lt;- read_csv(here::here("data", "episodes.csv"),
+                           na = c("", "NA", "N/A"),
+                         col_types = cols(
+                           viewers_7day = col_number(),
+                           series = col_factor(levels = NULL)
+                         )) 
+```
+
+---
+# Glimpse
+
+
+```
+Observations: 74
+Variables: 12
+$ series                      &lt;fct&gt; 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2...
+$ episode                     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6...
+$ airdate                     &lt;chr&gt; "17 August 2010 (2010-08-17)", "24...
+$ uk_airdate                  &lt;chr&gt; "17 August 2010", "24 August 2010"...
+$ uk_premiere                 &lt;date&gt; 2010-08-17, 2010-08-24, 2010-08-3...
+$ viewers_7day                &lt;dbl&gt; 2.24, 3.00, 3.00, 2.60, 3.03, 2.75...
+$ weekly_ranking_network      &lt;dbl&gt; 7, 3, 2, 4, 1, 1, 2, 2, 1, 1, 1, 1...
+$ weekly_ranking_all_channels &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA...
+$ viewers_28day               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA...
+$ bbc_iplayer_requests        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA...
+$ us_season                   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA...
+$ us_airdate                  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA...
+```
+
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 1: Continuous Bar Chart
+
+---
+## Recipe 1: Continuous Bar Chart
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 1: Code for Bar Chart
+
+
+```r
+# some small wrangling
+ratings_bonanza1 &lt;- ratings %&gt;% 
+  mutate(ep_id = row_number(),
+         series = as.factor(series)) %&gt;% 
+  select(ep_id, viewers_7day, series)
+
+# my colors from beyonce
+mybey &lt;- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
+
+# make the plot
+ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day, 
+                             fill = series)) +
+  geom_col(alpha = .9) +
+  theme_minimal() +
+  ggtitle("Series 8 was a Big Setback in Viewers",
+          subtitle= "7-Day Viewers across All Series/Episodes") +
+  theme(legend.position = "bottom",
+        text = element_text(family = "Lato")) + 
+  scale_fill_manual(values = mybey) +
+  guides(fill = guide_legend(nrow = 1))
+```
+
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 2: Grouped Line Plot by Series
+
+---
+## Recipe 2: Grouped Line Plot by Series 
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 2: Code for Series Grouped Line Plot
+
+
+```r
+mybey &lt;- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
+
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
+                    color = fct_reorder2(series, episode, viewers_7day), 
+                    group = series)) +
+  geom_line() +
+  theme_minimal() +
+  scale_color_manual(values = mybey) +
+  labs(color = "Series", xlab = "Episode") +
+  theme(text = element_text(family = "Lato")) 
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 3: Grouped Line Plot by Episode
+
+---
+## Recipe 3: Grouped Line Plot by Episode
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 3: Code for Grouped Episode Line Plot 
+
+
+```r
+# some wrangling here
+ratings_bonanza3 &lt;- ratings %&gt;% 
+  select(series, episode, viewers_7day) %&gt;% 
+  group_by(series) %&gt;% 
+  filter(episode == 1 | episode == max(episode)) %&gt;% 
+  mutate(episode = recode(episode, `1` = "first", .default = "last"))  
+
+# code for plot
+ggplot(ratings_bonanza3, aes(x = series, y = viewers_7day, 
+                             color = fct_reorder2(episode, series, viewers_7day),
+                             group = episode)) +
+  geom_point() + 
+  geom_line() +
+  scale_color_manual(values = rev(beyonce_palette(18))) +
+  theme_minimal() +
+  ggtitle("Great British Bake Off Finales Get More Viewers than Premieres") +
+  theme(text = element_text(family = "Lato")) +
+  labs(color = "Episode")
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 4: Dumbbell Plot
+
+---
+## Recipe 4: Dumbbell Plot
+
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 4: Code for Dumbbell Plot
+
+
+
+```r
+ggplot(ratings_bonanza3, aes(x = viewers_7day, y = fct_rev(series), 
+                             color = episode, group = series)) +
+  geom_line(size = .75) +
+  geom_point(size = 2.5) +
+  scale_color_manual(values = rev(beyonce_palette(18))) +
+  theme_minimal() +
+  labs(y = "Series", x = "Viewers (millions)") +
+  ggtitle("Great British Bake Off Finales Get More Viewers than Premieres") +
+  theme(text = element_text(family = "Lato")) 
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 5: Slope Graph
+
+---
+## Recipe 5: Slope Graph 
+
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-12-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 5: Code for Slope Graph
+
+
+```r
+mybey &lt;- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
+
+ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
+                             color = fct_reorder2(series, episode, viewers_7day),
+                             group = series)) +
+  geom_point() +
+  geom_line() +
+  theme_minimal() +
+  scale_color_manual(values = mybey) +
+  labs(color = "Series") +
+  theme(text = element_text(family = "Lato")) 
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 6: Bar Chart
+
+---
+## Recipe 6: Bar Chart
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 6: Code for "Bumps" Bar Chart
+
+
+```r
+# some more serious wrangling here
+ratings_bonanza6 &lt;- ratings_bonanza3 %&gt;% 
+  spread(episode, viewers_7day) %&gt;% 
+  mutate(finale_bump = last - first) 
+
+# plot
+ggplot(ratings_bonanza6, aes(x = fct_rev(series), 
+                             y = finale_bump)) +
+  geom_col(fill = beyonce_palette(49)[1], alpha = .5) +
+  coord_flip() +
+  labs(x = "Series", y = "Difference in Viewers for Finale from Premiere (millions)") +
+  theme_minimal() +
+  ggtitle("Finale 'Bumps' were Smallest for Series 1 and 8",
+          subtitle= "Finale 7-day Viewers Relative to Premiere") +
+  theme(text = element_text(family = "Lato")) 
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 7: Bar Chart, Take 2!
+
+---
+## Recipe 7: Bar Chart
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 7: Code for Bar Chart
+
+
+```r
+# some more serious wrangling here
+ratings_bonanza7 &lt;- ratings_bonanza6 %&gt;% 
+  mutate(finale_bump_median = finale_bump - median(finale_bump),
+         bump_sign = if_else(finale_bump_median &gt; 0, 1, 0))
+
+# plot
+ggplot(ratings_bonanza7, aes(x = fct_rev(series), 
+                             y = finale_bump_median,
+                             fill = as.factor(bump_sign))) +
+  geom_col(alpha = .5) +
+  coord_flip() +
+  labs(x = "Series", y = "Difference in Millions of Viewers Compared to Median Finale Bump") +
+  scale_fill_manual(values = rev(beyonce_palette(121)), guide = FALSE) +
+  theme_minimal() +
+  ggtitle("Compared to the Median, Series 1 and 8 had the Most Disappointing Finales",
+          subtitle= "Each Series' Finale 'Bump' Calculated as Finale Minus Premiere 7-day Viewers") +
+  theme(text = element_text(family = "Lato")) 
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 8: Scatterplot
+
+---
+## Recipe 8: Scatterplot
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-18-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 8: Code for Scatterplot
+
+
+```r
+ggplot(ratings_bonanza7, aes(x = first, y = last)) +
+  geom_point() +
+  geom_smooth(se = FALSE, color = '#EBBFDD') +
+  geom_abline(slope = 1, intercept = 0, color = "gray", alpha = .5) +
+  theme_minimal() +
+  geom_text(aes(label = series), hjust = -1, family = "Lato") +
+  theme(text = element_text(family = "Lato")) +
+  labs(x = "Premiere Episode 7-day Viewers (millions)",
+       y = "Finale Episode 7-day Viewers (millions)")
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 9: Pop-Out Scatterplot
+
+---
+## Recipe 9: Pop-Out Scatterplot
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 9: Code for Pop-Out Scatterplot
+
+
+```r
+ggplot(ratings_bonanza7, aes(x = first, y = last)) +
+  geom_abline(slope = 1, intercept = 0, color = "gray", alpha = .5) +
+  geom_smooth(se = FALSE, color = "#11B2E8") +
+  geom_point(data = filter(ratings_bonanza7, series %in% c(1:7))) +
+  geom_point(data = filter(ratings_bonanza7, series == 8), 
+             colour = "#CF2154") +
+  geom_text(data = filter(ratings_bonanza7, series %in% c(1:7)),
+            aes(label = series), hjust = -1, family = "Lato") +
+  geom_text(data = filter(ratings_bonanza7, series == 8),
+            aes(label = series), hjust = -1, family = "Lato", 
+            colour = "#CF2154") +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  labs(x = "Premiere Episode 7-day Viewers (millions)",
+       y = "Finale Episode 7-day Viewers (millions)")
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 10: Redo Recipe 2 
+
+## Pop-Out Series Grouped Line Plot
+
+---
+## Recipe 10: Redo Recipe 2
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-22-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 10: Code for Redo Recipe 2
+
+
+```r
+ggplot(ratings, aes(x = episode, y = viewers_7day,
+                    group = series)) +
+  geom_line(data = filter(ratings, !series == 8), alpha = .25) +
+  geom_line(data = filter(ratings, series == 8), color = "#CF2154") +
+  theme_minimal() +
+  labs(color = "Series") +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Series 8 was a Tough One")
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 11: Redo Recipe 5 
+
+## Pop-Out Slope Graph
+
+---
+## Recipe 11: Redo Recipe 5 
+
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-24-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 11: Redo Recipe 5 
+
+
+
+```r
+ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
+                             group = series)) +
+  geom_point(data = filter(ratings_bonanza3, !series == 8), alpha = .25) +
+  geom_point(data = filter(ratings_bonanza3, series == 8), 
+             color = "#CF2154") +
+  geom_line(data = filter(ratings_bonanza3, !series == 8), alpha = .25) +
+  geom_line(data = filter(ratings_bonanza3, series == 8), 
+            color = "#CF2154") +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Series 8 was a Tough One")
+```
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

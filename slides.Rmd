@@ -74,5 +74,9 @@ knitr::include_url("slides/07-prework-slides_blogdown.html")
 knitr::include_url("slides/07-slides_blogdown.html")
 ```
 
+### 11: 11 ways
 
+```{r}
+knitr::include_url("slides/11-slides.html")
+```
 
