@@ -726,6 +726,10 @@ ggplot(ratings_bonanza9, aes(x = fct_rev(series),
 ---
 class: center, middle, inverse
 
+![](https://media.giphy.com/media/3o6ZtgKA92iX0oT2uI/source.gif)
+---
+class: center, middle, inverse
+
 # 🎂
 
 ## Recipe 11: Scatterplot
@@ -808,5 +812,8 @@ ggplot(ratings_bonanza7, aes(x = first, y = last)) +
        y = "Finale Episode 7-day Viewers (millions)")
 ```
 
+---
+class:inverse, middle, center
 
+![](https://media.giphy.com/media/d8m7wQHB3Ct5S/giphy.gif)
 
