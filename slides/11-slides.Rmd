@@ -1,7 +1,7 @@
 ---
 title: "Lab 11 (?): CS631"
 subtitle: "One Dataset, Visualized 11 Ways"
-author: "Alison Hill"
+author: "Alison Hill, Steven Bedrick, Jackie Wirz"
 output:
   xaringan::moon_reader:
     css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
