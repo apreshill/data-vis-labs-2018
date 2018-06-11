@@ -39,14 +39,15 @@ I'll use all of the following:
 
 ```r
 library(tidyverse)
-library(wesanderson) # colors
 library(viridis) # colors!
 library(beyonce) # colors!!
-library(extrafont) # mess with fonts
+library(extrafont) # fonts!
 ```
 
 ---
 # Data second
+
+Find it [here](http://bit.ly/cs631-ratings): http://bit.ly/cs631-ratings
 
 
 ```r
@@ -119,21 +120,83 @@ ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day,
   guides(fill = guide_legend(nrow = 1))
 ```
 
+---
+class: center, middle, inverse
+
+# 🎂
+
+## What is going on with Series 8?
+
+&gt; *"The eighth series of The Great British Bake Off began on 29 August 2017, with this being the first of The Great British Bake Off to be broadcast on Channel 4, after the production company Love Productions moved the show. It is the first series for new hosts Noel Fielding and Sandi Toksvig, and new judge Prue Leith." -- &lt;a href="https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_(series_8)"&gt;Wikipedia&lt;/a&gt;*
+
+---
+class: center, middle, inverse
+
+![](https://media.giphy.com/media/l0HlLycAY0hSUtiYo/source.gif)
+
+## Read: 
+
+--
+
+## No Mary Berry, no Mel, no Sue
 
 ---
 class: center, middle, inverse
 
 # 🎂
 
-## Recipe 2: Grouped Line Plot by Series
+## Recipe 2: Lollipop Plot
 
 ---
-## Recipe 2: Grouped Line Plot by Series 
+
+## Recipe 2: Lollipop Plot
 
 &lt;img src="11-slides_files/figure-html/unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 2: Code for Series Grouped Line Plot
+
+## Recipe 2: Code for Lollipop Plot
+
+
+```r
+ratings_bonanza2 &lt;- ratings %&gt;% 
+  group_by(series) %&gt;% 
+  mutate(series_avg = mean(viewers_7day, na.rm = TRUE),
+         diff_avg = viewers_7day - series_avg)%&gt;% 
+  filter(max(episode) == 10) %&gt;% 
+  mutate(episode = as.factor(episode)) %&gt;% 
+  select(episode, viewers_7day, series, diff_avg, series_avg)
+
+ggplot(ratings_bonanza2, aes(x = episode, 
+                            y = viewers_7day,
+                            color = diff_avg)) +
+  geom_hline(aes(yintercept = series_avg), alpha = .5) +
+  geom_point() +
+  geom_segment(aes(xend = episode, yend = series_avg)) +
+  facet_wrap(~series) +
+  scale_color_viridis(option="plasma", begin = 0, 
+                      end = .8, guide = FALSE) +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Great British Bake Off Finales Get the Most Viewers", subtitle="For Series with 10 Episodes")
+```
+
+
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 3: Grouped Line Plot by Series
+
+---
+## Recipe 3: Grouped Line Plot by Series 
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 3: Code for Series Grouped Line Plot
 
 
 ```r
@@ -145,36 +208,84 @@ ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
   geom_line() +
   theme_minimal() +
   scale_color_manual(values = mybey) +
-  labs(color = "Series", xlab = "Episode") +
+  labs(color = "Series", x = "Episode") +
   theme(text = element_text(family = "Lato")) 
 ```
+
 
 ---
 class: center, middle, inverse
 
 # 🎂
 
-## Recipe 3: Grouped Line Plot by Episode
+## What is going on with the Series 8 finale?
 
 ---
-## Recipe 3: Grouped Line Plot by Episode
+class: middle, center, inverse
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+## A [tweet](https://twitter.com/PrueLeith/status/925329937644564480) heard 'round the world
+
+![](../images/gbbo-spoiler-tweet.png)
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 3.1: Redo Recipe 3
+
+## Pop-Out Series Grouped Line Plot
 
 ---
-## Recipe 3: Code for Grouped Episode Line Plot 
+## Recipe 3.1: Redo Recipe 3
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 3.1: Code for Redo Recipe 3
+
+
+```r
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
+                    group = series)) +
+  geom_line(data = filter(ratings, !series == 8), alpha = .25) +
+  geom_line(data = filter(ratings, series == 8), color = "#CF2154") +
+  theme_minimal() +
+  labs(color = "Series", x = "Episode") +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Series 8 was a Tough One") +
+  geom_text(data = filter(ratings, episode == 1 &amp; series %in% c(1:7)), color = "gray",
+            aes(label = paste0("Series ", series)), vjust = -1, family = "Lato") +
+  geom_text(data = filter(ratings, episode == 10 &amp; series == 8), color = "#CF2154",
+            aes(label = paste0("Series ", series)), vjust = -1, family = "Lato")
+```
+
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 4: Grouped Line Plot by Episode
+
+---
+## Recipe 4: Grouped Line Plot by Episode
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 4: Code for Grouped Episode Line Plot 
 
 
 ```r
 # some wrangling here
-ratings_bonanza3 &lt;- ratings %&gt;% 
+ratings_bonanza4 &lt;- ratings %&gt;% 
   select(series, episode, viewers_7day) %&gt;% 
   group_by(series) %&gt;% 
   filter(episode == 1 | episode == max(episode)) %&gt;% 
   mutate(episode = recode(episode, `1` = "first", .default = "last"))  
 
 # code for plot
-ggplot(ratings_bonanza3, aes(x = series, y = viewers_7day, 
+ggplot(ratings_bonanza4, aes(x = series, y = viewers_7day, 
                              color = fct_reorder2(episode, series, viewers_7day),
                              group = episode)) +
   geom_point() + 
@@ -191,21 +302,21 @@ class: center, middle, inverse
 
 # 🎂
 
-## Recipe 4: Dumbbell Plot
+## Recipe 5: Dumbbell Plot
 
 ---
-## Recipe 4: Dumbbell Plot
+## Recipe 5: Dumbbell Plot
 
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 4: Code for Dumbbell Plot
+## Recipe 5: Code for Dumbbell Plot
 
 
 
 ```r
-ggplot(ratings_bonanza3, aes(x = viewers_7day, y = fct_rev(series), 
+ggplot(ratings_bonanza4, aes(x = viewers_7day, y = fct_rev(series), 
                              color = episode, group = series)) +
   geom_line(size = .75) +
   geom_point(size = 2.5) +
@@ -221,22 +332,22 @@ class: center, middle, inverse
 
 # 🎂
 
-## Recipe 5: Slope Graph
+## Recipe 6: Slope Graph
 
 ---
-## Recipe 5: Slope Graph 
+## Recipe 6: Slope Graph 
 
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-12-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-16-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 5: Code for Slope Graph
+## Recipe 6: Code for Slope Graph
 
 
 ```r
 mybey &lt;- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
 
-ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
+ggplot(ratings_bonanza4, aes(x = episode, y = viewers_7day,
                              color = fct_reorder2(series, episode, viewers_7day),
                              group = series)) +
   geom_point() +
@@ -247,30 +358,72 @@ ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
   theme(text = element_text(family = "Lato")) 
 ```
 
+
 ---
 class: center, middle, inverse
 
 # 🎂
 
-## Recipe 6: Bar Chart
+## Recipe 6.1: Redo Recipe 6
+
+## Pop-Out Slope Graph
 
 ---
-## Recipe 6: Bar Chart
+## Recipe 6.1: Redo Recipe 6
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-18-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 6: Code for "Bumps" Bar Chart
+## Recipe 6.1: Redo Recipe 6 
+
+
+
+```r
+ggplot(ratings_bonanza4, aes(x = episode, y = viewers_7day,
+                             group = series)) +
+  geom_point(data = filter(ratings_bonanza4, !series == 8), alpha = .25) +
+  geom_point(data = filter(ratings_bonanza4, series == 8), 
+             color = "#CF2154") +
+  geom_line(data = filter(ratings_bonanza4, !series == 8), alpha = .25) +
+  geom_line(data = filter(ratings_bonanza4, series == 8), 
+            color = "#CF2154") +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Series 8 was a Tough One") +
+  geom_text(data = filter(ratings_bonanza4, episode == "last" &amp; series %in% c(1:7)), color = "gray",
+            aes(label = series), vjust = -1, family = "Lato", hjust = .5) +
+  geom_text(data = filter(ratings_bonanza4, episode == "last" &amp; series == 8), color = "#CF2154",
+            aes(label = paste0("Series ", series)), vjust = -1, family = "Lato")
+```
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 7: Bar Chart
+
+---
+## Recipe 7: Bar Chart
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 7: Code for Bar Chart
 
 
 ```r
 # some more serious wrangling here
-ratings_bonanza6 &lt;- ratings_bonanza3 %&gt;% 
+ratings_bonanza7 &lt;- ratings %&gt;% 
+  select(series, episode, viewers_7day) %&gt;% 
+  group_by(series) %&gt;% 
+  filter(episode == 1 | episode == max(episode)) %&gt;% 
+  mutate(episode = recode(episode, `1` = "first", .default = "last")) %&gt;%  
   spread(episode, viewers_7day) %&gt;% 
-  mutate(finale_bump = last - first) 
+  mutate(finale_bump = last - first)
 
 # plot
-ggplot(ratings_bonanza6, aes(x = fct_rev(series), 
+ggplot(ratings_bonanza7, aes(x = fct_rev(series), 
                              y = finale_bump)) +
   geom_col(fill = beyonce_palette(49)[1], alpha = .5) +
   coord_flip() +
@@ -286,25 +439,32 @@ class: center, middle, inverse
 
 # 🎂
 
-## Recipe 7: Bar Chart, Take 2!
+## Recipe 8: Bar Chart, Take 2!
 
 ---
-## Recipe 7: Bar Chart
+## Recipe 8: Bar Chart, Take 2!
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 7: Code for Bar Chart
+## Recipe 8: Code for Bar Chart, Take 2!
 
 
 ```r
 # some more serious wrangling here
-ratings_bonanza7 &lt;- ratings_bonanza6 %&gt;% 
-  mutate(finale_bump_median = finale_bump - median(finale_bump),
+ratings_bonanza8 &lt;- ratings %&gt;% 
+  select(series, episode, viewers_7day) %&gt;% 
+  group_by(series) %&gt;% 
+  filter(episode == 1 | episode == max(episode)) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(episode = recode(episode, `1` = "first", .default = "last")) %&gt;%  
+  spread(episode, viewers_7day) %&gt;% 
+  mutate(finale_bump = last - first,
+         finale_bump_median = finale_bump - median(finale_bump),
          bump_sign = if_else(finale_bump_median &gt; 0, 1, 0))
 
 # plot
-ggplot(ratings_bonanza7, aes(x = fct_rev(series), 
+ggplot(ratings_bonanza8, aes(x = fct_rev(series), 
                              y = finale_bump_median,
                              fill = as.factor(bump_sign))) +
   geom_col(alpha = .5) +
@@ -322,15 +482,85 @@ class: center, middle, inverse
 
 # 🎂
 
-## Recipe 8: Scatterplot
+## Recipe 9: % Change Bar Chart
 
 ---
-## Recipe 8: Scatterplot
+## Recipe 9: % Change Bar Chart
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-18-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 8: Code for Scatterplot
+## Recipe 9: Code for % Change Bar Chart
+
+
+```r
+# wrangling to calculate percent change
+ratings_bonanza9 &lt;- ratings %&gt;% 
+  select(series, episode, viewers_7day) %&gt;% 
+  group_by(series) %&gt;% 
+  filter(episode == 1 | episode == max(episode)) %&gt;% 
+  mutate(pct_change = (viewers_7day - lag(viewers_7day)) /
+           lag(viewers_7day)) %&gt;% 
+  ungroup()
+
+# plot
+ggplot(ratings_bonanza9, aes(x = fct_rev(series), 
+                             y = pct_change)) +
+  geom_col(fill = beyonce_palette(49)[1], alpha = .5) +
+  coord_flip() +
+  labs(x = "Series", y = "Percentage Change in Viewers from First to Last Episode") +
+  theme_minimal() +
+  ggtitle("Percent Increase in Viewers was the Smallest for Series 8",
+          subtitle= "Finale 7-day Viewers Relative to Premiere, Line is the Median") +
+  theme(text = element_text(family = "Lato")) +
+  geom_hline(aes(yintercept = median(pct_change, na.rm = TRUE)), 
+             color = beyonce_palette(49)[5])
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 10: Lollipop Plot, % Change
+
+---
+## Recipe 10: Lollipop Plot, % Change
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 10: Code for Lollipop Plot, % Change
+
+
+```r
+# plot
+ggplot(ratings_bonanza9, aes(x = fct_rev(series), 
+                             y = pct_change)) +
+  geom_point(color = beyonce_palette(49)[1]) +
+  geom_segment(aes(xend = fct_rev(series), yend = 0), color = beyonce_palette(49)[1]) +
+  coord_flip() +
+  labs(x = "Series", y = "Percentage Change in Viewers from First to Last Episode") +
+  theme_minimal() +
+  ggtitle("Percent Increase in Viewers was the Smallest for Series 8",
+          subtitle= "Finale 7-day Viewers Relative to Premiere") +
+  theme(text = element_text(family = "Lato")) 
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 11: Scatterplot
+
+---
+## Recipe 11: Scatterplot
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-28-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 11: Code for Scatterplot
 
 
 ```r
@@ -350,15 +580,15 @@ class: center, middle, inverse
 
 # 🎂
 
-## Recipe 9: Pop-Out Scatterplot
+## Recipe 11.1: Pop-Out Scatterplot
 
 ---
-## Recipe 9: Pop-Out Scatterplot
+## Recipe 11.1: Pop-Out Scatterplot
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-30-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 9: Code for Pop-Out Scatterplot
+## Recipe 11.1: Code for Pop-Out Scatterplot
 
 
 ```r
@@ -377,110 +607,6 @@ ggplot(ratings_bonanza7, aes(x = first, y = last)) +
   theme(text = element_text(family = "Lato")) +
   labs(x = "Premiere Episode 7-day Viewers (millions)",
        y = "Finale Episode 7-day Viewers (millions)")
-```
-
----
-class: center, middle, inverse
-
-# 🎂
-
-## Recipe 10: Redo Recipe 2 
-
-## Pop-Out Series Grouped Line Plot
-
----
-## Recipe 10: Redo Recipe 2
-
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-22-1.png" width="60%" style="display: block; margin: auto;" /&gt;
-
----
-## Recipe 10: Code for Redo Recipe 2
-
-
-```r
-ggplot(ratings, aes(x = episode, y = viewers_7day,
-                    group = series)) +
-  geom_line(data = filter(ratings, !series == 8), alpha = .25) +
-  geom_line(data = filter(ratings, series == 8), color = "#CF2154") +
-  theme_minimal() +
-  labs(color = "Series") +
-  theme(text = element_text(family = "Lato")) +
-  ggtitle("Series 8 was a Tough One")
-```
-
----
-class: center, middle, inverse
-
-# 🎂
-
-## Recipe 11: Redo Recipe 5 
-
-## Pop-Out Slope Graph
-
----
-## Recipe 11: Redo Recipe 5 
-
-
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-24-1.png" width="65%" style="display: block; margin: auto;" /&gt;
-
----
-## Recipe 11: Redo Recipe 5 
-
-
-
-```r
-ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
-                             group = series)) +
-  geom_point(data = filter(ratings_bonanza3, !series == 8), alpha = .25) +
-  geom_point(data = filter(ratings_bonanza3, series == 8), 
-             color = "#CF2154") +
-  geom_line(data = filter(ratings_bonanza3, !series == 8), alpha = .25) +
-  geom_line(data = filter(ratings_bonanza3, series == 8), 
-            color = "#CF2154") +
-  theme_minimal() +
-  theme(text = element_text(family = "Lato")) +
-  ggtitle("Series 8 was a Tough One")
-```
-
----
-class: center, middle, inverse
-
-# 🎂
-
-## Recipe 12: Bonus Lollipop Plot
-
----
-
-## Recipe 12: Lollipop Plot
-
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Recipe 12: Code for Lollipop Plot
-
-
-```r
-ratings_bonanza12 &lt;- ratings %&gt;% 
-  group_by(series) %&gt;% 
-  mutate(series_avg = mean(viewers_7day, na.rm = TRUE),
-         diff_avg = viewers_7day - series_avg)%&gt;% 
-  filter(max(episode) == 10) %&gt;% 
-  mutate(episode = as.factor(episode)) %&gt;% 
-  select(episode, viewers_7day, series, diff_avg, series_avg)
-
-ggplot(ratings_bonanza12, aes(x = episode, 
-                            y = viewers_7day,
-                            color = diff_avg)) +
-  geom_hline(aes(yintercept = series_avg), alpha = .5) +
-  geom_point() +
-  geom_segment(aes(xend = episode, yend = series_avg)) +
-  facet_wrap(~series) +
-  scale_color_viridis(option="plasma", begin = 0, 
-                      end = .8, guide = FALSE) +
-  theme_minimal() +
-  theme(text = element_text(family = "Lato")) +
-  ggtitle("Great British Bake Off Finales Get the Most Viewers", subtitle="For Series with 10 Episodes")
 ```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
