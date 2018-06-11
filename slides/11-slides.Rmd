@@ -568,3 +568,64 @@ ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
   theme(text = element_text(family = "Lato")) +
   ggtitle("Series 8 was a Tough One")
 ```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 12: Bonus Lollipop Plot
+
+---
+
+## Recipe 12: Lollipop Plot
+
+```{r echo = FALSE}
+ratings_bonanza12 <- ratings %>% 
+  group_by(series) %>% 
+  mutate(series_avg = mean(viewers_7day, na.rm = TRUE),
+         diff_avg = viewers_7day - series_avg)%>% 
+  filter(max(episode) == 10) %>% 
+  mutate(episode = as.factor(episode)) %>% 
+  select(episode, viewers_7day, series, diff_avg, series_avg)
+
+ggplot(ratings_bonanza12, aes(x = episode, 
+                            y = viewers_7day,
+                            color = diff_avg)) +
+  geom_hline(aes(yintercept = series_avg), alpha = .5) +
+  geom_point() +
+  geom_segment(aes(xend = episode, yend = series_avg)) +
+  facet_wrap(~series) +
+  scale_color_viridis(option="plasma", begin = 0, 
+                      end = .8, guide = FALSE) +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Great British Bake Off Finales Get the Most Viewers", subtitle="For Series with 10 Episodes")
+```
+
+---
+
+## Recipe 12: Code for Lollipop Plot
+
+```{r eval = FALSE}
+ratings_bonanza12 <- ratings %>% 
+  group_by(series) %>% 
+  mutate(series_avg = mean(viewers_7day, na.rm = TRUE),
+         diff_avg = viewers_7day - series_avg)%>% 
+  filter(max(episode) == 10) %>% 
+  mutate(episode = as.factor(episode)) %>% 
+  select(episode, viewers_7day, series, diff_avg, series_avg)
+
+ggplot(ratings_bonanza12, aes(x = episode, 
+                            y = viewers_7day,
+                            color = diff_avg)) +
+  geom_hline(aes(yintercept = series_avg), alpha = .5) +
+  geom_point() +
+  geom_segment(aes(xend = episode, yend = series_avg)) +
+  facet_wrap(~series) +
+  scale_color_viridis(option="plasma", begin = 0, 
+                      end = .8, guide = FALSE) +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Great British Bake Off Finales Get the Most Viewers", subtitle="For Series with 10 Episodes")
+```

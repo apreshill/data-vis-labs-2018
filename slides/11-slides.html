@@ -441,6 +441,47 @@ ggplot(ratings_bonanza3, aes(x = episode, y = viewers_7day,
   theme(text = element_text(family = "Lato")) +
   ggtitle("Series 8 was a Tough One")
 ```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 12: Bonus Lollipop Plot
+
+---
+
+## Recipe 12: Lollipop Plot
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Recipe 12: Code for Lollipop Plot
+
+
+```r
+ratings_bonanza12 &lt;- ratings %&gt;% 
+  group_by(series) %&gt;% 
+  mutate(series_avg = mean(viewers_7day, na.rm = TRUE),
+         diff_avg = viewers_7day - series_avg)%&gt;% 
+  filter(max(episode) == 10) %&gt;% 
+  mutate(episode = as.factor(episode)) %&gt;% 
+  select(episode, viewers_7day, series, diff_avg, series_avg)
+
+ggplot(ratings_bonanza12, aes(x = episode, 
+                            y = viewers_7day,
+                            color = diff_avg)) +
+  geom_hline(aes(yintercept = series_avg), alpha = .5) +
+  geom_point() +
+  geom_segment(aes(xend = episode, yend = series_avg)) +
+  facet_wrap(~series) +
+  scale_color_viridis(option="plasma", begin = 0, 
+                      end = .8, guide = FALSE) +
+  theme_minimal() +
+  theme(text = element_text(family = "Lato")) +
+  ggtitle("Great British Bake Off Finales Get the Most Viewers", subtitle="For Series with 10 Episodes")
+```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
