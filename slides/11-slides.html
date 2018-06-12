@@ -104,7 +104,6 @@ ratings_bonanza1 &lt;- ratings %&gt;%
          series = as.factor(series)) %&gt;% 
   select(ep_id, viewers_7day, series)
 
-# my colors from beyonce
 mybey &lt;- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
 
 # make the plot
@@ -115,8 +114,12 @@ ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day,
   ggtitle("Series 8 was a Big Setback in Viewers",
           subtitle= "7-Day Viewers across All Series/Episodes") +
   theme(legend.position = "bottom",
-        text = element_text(family = "Lato")) + 
+        text = element_text(family = "Lato"),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank()) + 
   scale_fill_manual(values = mybey) +
+  scale_x_continuous(expand = c(0, 0)) +
   guides(fill = guide_legend(nrow = 1))
 ```
 
@@ -178,7 +181,8 @@ ggplot(ratings_bonanza2, aes(x = episode,
                       end = .8, guide = FALSE) +
   theme_minimal() +
   theme(text = element_text(family = "Lato")) +
-  ggtitle("Great British Bake Off Finales Get the Most Viewers", subtitle="For Series with 10 Episodes")
+  ggtitle("Great British Bake Off Finales Get the Most Viewers",
+          subtitle = "Way Higher than Series Average (for Series with 10 episodes)")
 ```
 
 
@@ -213,19 +217,7 @@ ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
 ```
 
 
----
-class: center, middle, inverse
 
-# 🎂
-
-## What is going on with the Series 8 finale?
-
----
-class: middle, center, inverse
-
-## A [tweet](https://twitter.com/PrueLeith/status/925329937644564480) heard 'round the world
-
-![](../images/gbbo-spoiler-tweet.png)
 ---
 class: center, middle, inverse
 
@@ -296,6 +288,20 @@ ggplot(ratings_bonanza4, aes(x = series, y = viewers_7day,
   theme(text = element_text(family = "Lato")) +
   labs(color = "Episode")
 ```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## What is going on with the Series 8 finale?
+
+---
+class: middle, center, inverse
+
+## A [tweet](https://twitter.com/PrueLeith/status/925329937644564480) heard 'round the world
+
+![](../images/gbbo-spoiler-tweet.png)
 
 ---
 class: center, middle, inverse
@@ -434,87 +440,93 @@ ggplot(ratings_bonanza7, aes(x = fct_rev(series),
   theme(text = element_text(family = "Lato")) 
 ```
 
+
+
 ---
 class: center, middle, inverse
 
 # 🎂
 
-## Recipe 8: Bar Chart, Take 2!
+## Recipe 8: % Change Bar Chart
 
 ---
-## Recipe 8: Bar Chart, Take 2!
+## Recipe 8: % Change Bar Chart
 
 &lt;img src="11-slides_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 8: Code for Bar Chart, Take 2!
+## Recipe 8: Code for % Bar
 
 
 ```r
-# some more serious wrangling here
+# wrangling to calculate percent change
 ratings_bonanza8 &lt;- ratings %&gt;% 
   select(series, episode, viewers_7day) %&gt;% 
   group_by(series) %&gt;% 
   filter(episode == 1 | episode == max(episode)) %&gt;% 
   ungroup() %&gt;% 
-  mutate(episode = recode(episode, `1` = "first", .default = "last")) %&gt;%  
+  mutate(episode = recode(episode, `1` = "first", .default = "last")) %&gt;% 
   spread(episode, viewers_7day) %&gt;% 
-  mutate(finale_bump = last - first,
-         finale_bump_median = finale_bump - median(finale_bump),
-         bump_sign = if_else(finale_bump_median &gt; 0, 1, 0))
+  mutate(pct_change = (last - first) / first)
 
 # plot
 ggplot(ratings_bonanza8, aes(x = fct_rev(series), 
-                             y = finale_bump_median,
-                             fill = as.factor(bump_sign))) +
-  geom_col(alpha = .5) +
-  coord_flip() +
-  labs(x = "Series", y = "Difference in Millions of Viewers Compared to Median Finale Bump") +
-  scale_fill_manual(values = rev(beyonce_palette(121)), guide = FALSE) +
+                             y = pct_change)) +
+  geom_col(fill = beyonce_palette(49)[1], alpha = .5) +
+  labs(x = "Series", y = "% Increase in Viewers from First to Last Episode") +
   theme_minimal() +
-  ggtitle("Compared to the Median, Series 1 and 8 had the Most Disappointing Finales",
-          subtitle= "Each Series' Finale 'Bump' Calculated as Finale Minus Premiere 7-day Viewers") +
-  theme(text = element_text(family = "Lato")) 
+  ggtitle("Series 8 had a 6% Increase in Viewers from Premiere to Finale",
+          subtitle= "The Lowest Across All Series (Line is the Median)") +
+  theme(text = element_text(family = "Lato")) +
+  geom_hline(aes(yintercept = median(pct_change, na.rm = TRUE)), 
+             color = beyonce_palette(49)[5]) +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() 
 ```
+
 
 ---
 class: center, middle, inverse
 
 # 🎂
 
-## Recipe 9: % Change Bar Chart
+## Recipe 9: Bars Diverging from Median
 
 ---
-## Recipe 9: % Change Bar Chart
+## Recipe 9: Bars Diverging from Median
 
 &lt;img src="11-slides_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 9: Code for % Change Bar Chart
+## Recipe 9: Bars from Median
 
 
 ```r
-# wrangling to calculate percent change
+# some more serious wrangling here
 ratings_bonanza9 &lt;- ratings %&gt;% 
   select(series, episode, viewers_7day) %&gt;% 
   group_by(series) %&gt;% 
   filter(episode == 1 | episode == max(episode)) %&gt;% 
-  mutate(pct_change = (viewers_7day - lag(viewers_7day)) /
-           lag(viewers_7day)) %&gt;% 
-  ungroup()
+  ungroup() %&gt;% 
+  mutate(episode = recode(episode, `1` = "first", .default = "last")) %&gt;% 
+  spread(episode, viewers_7day) %&gt;% 
+  mutate(finale_bump =pct_change = (last - first) / first,
+         pct_change_diff = pct_change - median(pct_change),
+         change_sign = if_else(pct_change_diff &gt; 0, 1, 0))
 
 # plot
 ggplot(ratings_bonanza9, aes(x = fct_rev(series), 
-                             y = pct_change)) +
-  geom_col(fill = beyonce_palette(49)[1], alpha = .5) +
-  coord_flip() +
-  labs(x = "Series", y = "Percentage Change in Viewers from First to Last Episode") +
+                             y = pct_change_diff,
+                             fill = as.factor(change_sign))) +
+  geom_col(alpha = .5) +
+  labs(x = "Series", 
+       y = "% Change in Viewers from First to Last Episode, Relative to Median") +
+  scale_fill_manual(values = rev(beyonce_palette(121)), guide = FALSE) +
   theme_minimal() +
-  ggtitle("Percent Increase in Viewers was the Smallest for Series 8",
-          subtitle= "Finale 7-day Viewers Relative to Premiere, Line is the Median") +
+  ggtitle("Series 8 had the Most Disappointing Finale") +
   theme(text = element_text(family = "Lato")) +
-  geom_hline(aes(yintercept = median(pct_change, na.rm = TRUE)), 
-             color = beyonce_palette(49)[5])
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip()
 ```
 
 ---
@@ -530,21 +542,24 @@ class: center, middle, inverse
 &lt;img src="11-slides_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 10: Code for Lollipop Plot, % Change
+## Recipe 10: Code for % Lollipop Plot
 
 
 ```r
 # plot
 ggplot(ratings_bonanza9, aes(x = fct_rev(series), 
                              y = pct_change)) +
-  geom_point(color = beyonce_palette(49)[1]) +
+  geom_point(color = beyonce_palette(49)[1], size = 2) +
   geom_segment(aes(xend = fct_rev(series), yend = 0), color = beyonce_palette(49)[1]) +
-  coord_flip() +
-  labs(x = "Series", y = "Percentage Change in Viewers from First to Last Episode") +
+  geom_text(aes(label = scales::percent(pct_change)), hjust = -.25,
+            family = "Lato") +
+  labs(x = "Series", y = "% Change in Viewers from First to Last Episode") +
   theme_minimal() +
   ggtitle("Percent Increase in Viewers was the Smallest for Series 8",
           subtitle= "Finale 7-day Viewers Relative to Premiere") +
-  theme(text = element_text(family = "Lato")) 
+  theme(text = element_text(family = "Lato")) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, .85)) +
+  coord_flip() 
 ```
 
 ---
