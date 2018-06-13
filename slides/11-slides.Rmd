@@ -257,7 +257,6 @@ ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
 ```
 
 
-
 ---
 class: center, middle, inverse
 
@@ -265,10 +264,55 @@ class: center, middle, inverse
 
 ## Recipe 3.1: Redo Recipe 3
 
+## Facetted Series Grouped Line Plot
+
+---
+## Recipe 3.1: Facetted Line Plot
+
+```{r echo = FALSE, out.width='70%'}
+mybey <- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
+
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
+                    color = fct_reorder2(series, episode, viewers_7day), 
+                    group = series)) +
+  geom_line(lwd = 2) +
+  theme_minimal() +
+  scale_color_manual(values = mybey) +
+  labs(color = "Series", x = "Episode") +
+  theme(text = element_text(family = "Lato")) +
+  facet_wrap(~series) +
+  guides(color = FALSE)
+```
+
+---
+## Recipe 3.1: Code for Facetted Line Plot
+
+```{r eval = FALSE}
+mybey <- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
+
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
+                    color = fct_reorder2(series, episode, viewers_7day), 
+                    group = series)) +
+  geom_line(lwd = 2) +
+  theme_minimal() +
+  scale_color_manual(values = mybey) +
+  labs(color = "Series", x = "Episode") +
+  theme(text = element_text(family = "Lato")) +
+  facet_wrap(~series) + #<<
+  guides(color = FALSE) #<<
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 3.2: Redo Recipe 3
+
 ## Pop-Out Series Grouped Line Plot
 
 ---
-## Recipe 3.1: Redo Recipe 3
+## Recipe 3.2: Redo Recipe 3
 
 ```{r echo = FALSE, out.width='60%'}
 ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
@@ -286,7 +330,7 @@ ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
 ```
 
 ---
-## Recipe 3.1: Code for Redo Recipe 3
+## Recipe 3.2: Code for Redo Recipe 3
 
 ```{r eval = FALSE}
 ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,

@@ -32,5 +32,7 @@ This is the site for sharing our Data Visualization Labs for CS631 at Oregon Hea
     - [In-class slides](slides/07-slides_blogdown.html)
 - Lab 11: One Dataset, Visualized 11 Ways
     - [Slides](slides/11-slides.html)
+- Lab 12: Wrap-up
+    - [Slides](slides/12-slides.html)
     
 

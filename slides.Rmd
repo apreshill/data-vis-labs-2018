@@ -80,3 +80,9 @@ knitr::include_url("slides/07-slides_blogdown.html")
 knitr::include_url("slides/11-slides.html")
 ```
 
+### 12: Wrap-up
+
+```{r}
+knitr::include_url("slides/12-slides.html")
+```
+

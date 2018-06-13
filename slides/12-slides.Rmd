@@ -1,0 +1,77 @@
+---
+title: "Lab 12: CS631"
+subtitle: "Wrap-up"
+author: "Alison Hill, Steven Bedrick, Jackie Wirz"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/ohsu.css", "css/ohsu-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "200%", cache = FALSE)
+library(tidyverse)
+library(here)
+library(knitr)
+```
+
+
+
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-1.png")
+```
+
+---
+
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-2.png")
+```
+
+---
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-3.png")
+```
+
+---
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-4.png")
+```
+
+---
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-5.png")
+```
+
+---
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-6.png")
+```
+
+---
+```{r echo = FALSE}
+include_graphics("../images/blogdown-lifecycle-7.png")
+```
+
+---
+# Data Cleaning in R
+
+So many great packages!
+
+- [`janitor`](https://github.com/sfirke/janitor)
+    - [Vignette 1](https://cran.r-project.org/web/packages/janitor/vignettes/janitor.html), [Vignette 2](https://cran.r-project.org/web/packages/janitor/vignettes/tabyls.html)
+    - Most used functions: `clean_names()` + `tabyl()`
+      - Don't miss the `tabyl()` adornments!
+- Importing data
+    - [`readxl`](https://readxl.tidyverse.org)
+    - [`haven`](http://haven.tidyverse.org)
+- [`visdat`](http://visdat.njtierney.com)
+- [`naniar`](http://naniar.njtierney.com)
+- [`lubridate`](https://lubridate.tidyverse.org)
+- [`stringr`](https://stringr.tidyverse.org)

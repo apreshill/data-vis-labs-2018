@@ -217,7 +217,6 @@ ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
 ```
 
 
-
 ---
 class: center, middle, inverse
 
@@ -225,15 +224,48 @@ class: center, middle, inverse
 
 ## Recipe 3.1: Redo Recipe 3
 
+## Facetted Series Grouped Line Plot
+
+---
+## Recipe 3.1: Facetted Line Plot
+
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Recipe 3.1: Code for Facetted Line Plot
+
+
+```r
+mybey &lt;- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
+
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day,
+                    color = fct_reorder2(series, episode, viewers_7day), 
+                    group = series)) +
+  geom_line(lwd = 2) +
+  theme_minimal() +
+  scale_color_manual(values = mybey) +
+  labs(color = "Series", x = "Episode") +
+  theme(text = element_text(family = "Lato")) +
+* facet_wrap(~series) +
+* guides(color = FALSE)
+```
+
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 3.2: Redo Recipe 3
+
 ## Pop-Out Series Grouped Line Plot
 
 ---
-## Recipe 3.1: Redo Recipe 3
+## Recipe 3.2: Redo Recipe 3
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Recipe 3.1: Code for Redo Recipe 3
+## Recipe 3.2: Code for Redo Recipe 3
 
 
 ```r
@@ -262,7 +294,7 @@ class: center, middle, inverse
 ---
 ## Recipe 4: Grouped Line Plot by Episode
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 4: Code for Grouped Episode Line Plot 
@@ -314,7 +346,7 @@ class: center, middle, inverse
 ## Recipe 5: Dumbbell Plot
 
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-16-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 5: Code for Dumbbell Plot
@@ -344,7 +376,7 @@ class: center, middle, inverse
 ## Recipe 6: Slope Graph 
 
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-16-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-18-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 6: Code for Slope Graph
@@ -378,7 +410,7 @@ class: center, middle, inverse
 ## Recipe 6.1: Redo Recipe 6
 
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-18-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-20-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 6.1: Redo Recipe 6 
@@ -412,7 +444,7 @@ class: center, middle, inverse
 ---
 ## Recipe 7: Bar Chart
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 7: Code for Bar Chart
@@ -452,7 +484,7 @@ class: center, middle, inverse
 ---
 ## Recipe 8: % Change Bar Chart
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 8: Code for % Bar
@@ -495,7 +527,7 @@ class: center, middle, inverse
 ---
 ## Recipe 9: Bars Diverging from Median
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 9: Bars from Median
@@ -539,7 +571,7 @@ class: center, middle, inverse
 ---
 ## Recipe 10: Lollipop Plot, % Change
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-28-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 10: Code for % Lollipop Plot
@@ -576,7 +608,7 @@ class: center, middle, inverse
 ---
 ## Recipe 11: Scatterplot
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-28-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-30-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 11: Code for Scatterplot
@@ -604,7 +636,7 @@ class: center, middle, inverse
 ---
 ## Recipe 11.1: Pop-Out Scatterplot
 
-&lt;img src="11-slides_files/figure-html/unnamed-chunk-30-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-slides_files/figure-html/unnamed-chunk-32-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Recipe 11.1: Code for Pop-Out Scatterplot
