@@ -22,42 +22,60 @@ library(here)
 library(knitr)
 ```
 
-
-
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-1.png")
-```
+class: inverse
+background-image: url("../images/blogdown-lifecycle-01.png")
+background-size: contain
 
 ---
-
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-2.png")
-```
-
----
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-3.png")
-```
+class: inverse
+background-image: url("../images/blogdown-lifecycle-02.png")
+background-size: contain
 
 ---
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-4.png")
-```
+class: inverse
+background-image: url("../images/blogdown-lifecycle-03.png")
+background-size: contain
 
 ---
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-5.png")
-```
+class: inverse
+background-image: url("../images/blogdown-lifecycle-04.png")
+background-size: contain
+
 
 ---
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-6.png")
-```
+class: inverse
+background-image: url("../images/blogdown-lifecycle-05.png")
+background-size: contain
+
 
 ---
-```{r echo = FALSE}
-include_graphics("../images/blogdown-lifecycle-7.png")
-```
+class: inverse
+background-image: url("../images/blogdown-lifecycle-06.png")
+background-size: contain
+
+
+---
+class: inverse
+background-image: url("../images/blogdown-lifecycle-07.png")
+background-size: contain
+
+
+---
+class: inverse
+background-image: url("../images/blogdown-lifecycle-08.png")
+background-size: contain
+
+
+---
+class: inverse
+background-image: url("../images/blogdown-lifecycle-09.png")
+background-size: contain
+
+
+---
+class: inverse
+background-image: url("../images/blogdown-lifecycle-10.png")
+background-size: contain
 
 ---
 # Data Cleaning in R

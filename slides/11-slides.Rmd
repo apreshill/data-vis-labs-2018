@@ -111,7 +111,7 @@ ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day,
 ratings_bonanza1 <- ratings %>% 
   mutate(ep_id = row_number(),
          series = as.factor(series)) %>% 
-  select(ep_id, viewers_7day, series)
+  select(ep_id, viewers_7day, series, episode)
 
 mybey <- beyonce_palette(66)[c(11,10,7,6,5,4,3,1)]
 
@@ -132,6 +132,65 @@ ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day,
   guides(fill = guide_legend(nrow = 1))
 ```
 
+---
+class: center, middle, inverse
+
+# 🎂
+
+## Recipe 1.2: Ribbons not Bars
+
+---
+## Recipe 1.2: Ribbons not Bars
+
+```{r echo = FALSE, out.width = '70%'}
+ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day, 
+                             fill = series, color = series)) +
+  geom_ribbon(aes(ymin = 0, ymax = viewers_7day), alpha = .75) +
+  geom_line() +
+  geom_text(data = filter(ratings_bonanza1, series %in% c(1:2) & episode == 4), aes(y = 1.5, label = series), size = 3, color="white", family = "Lato") +
+  geom_text(data = filter(ratings_bonanza1, series %in% c(3:8) & episode == 6),
+            aes(y = 1.5, label = series), 
+            size = 3, color="white", family = "Lato") + 
+  theme_minimal() +
+  ggtitle("Series 8 was a Big Setback in Viewers",
+          subtitle= "7-Day Viewers across All Series/Episodes") +
+  theme(legend.position = "bottom",
+        text = element_text(family = "Lato"),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank()) + 
+  scale_fill_manual(values = mybey) +
+  scale_color_manual(values = mybey) +
+  scale_x_continuous(expand = c(0, 0)) +
+  guides(fill = FALSE, color = FALSE)
+```
+
+
+---
+## Recipe 1.2: Code for Ribbons 
+
+```{r eval = FALSE}
+ggplot(ratings_bonanza1, aes(x = ep_id, y = viewers_7day, 
+                             fill = series, color = series)) +
+  geom_ribbon(aes(ymin = 0, ymax = viewers_7day), alpha = .75) +
+  geom_line() +
+  geom_text(data = filter(ratings_bonanza1, series %in% c(1:2) & episode == 4), aes(y = 1.5, label = series), 
+            size = 3, color="white", family = "Lato") +
+  geom_text(data = filter(ratings_bonanza1, series %in% c(3:8) & episode == 6), aes(y = 1.5, label = series), 
+            size = 3, color="white", family = "Lato") + 
+  theme_minimal() +
+  ggtitle("Series 8 was a Big Setback in Viewers",
+          subtitle= "7-Day Viewers across All Series/Episodes") +
+  theme(legend.position = "bottom",
+        text = element_text(family = "Lato"),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank()) + 
+  scale_fill_manual(values = mybey) +
+  scale_color_manual(values = mybey) +
+  scale_x_continuous(expand = c(0, 0)) +
+  guides(fill = FALSE, color = FALSE)
+```
 ---
 class: center, middle, inverse
 
