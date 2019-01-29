@@ -94,8 +94,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +117,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -131,6 +136,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,18 +194,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -327,7 +428,7 @@ library(ggridges)</code></pre>
 </div>
 <div id="make-the-data" class="section level1">
 <h1><span class="header-section-number">3</span> Make the data</h1>
-<p>Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes.</p>
+<p>Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <ol style="list-style-type: decimal">
 <li>A standard normal (<code>n</code>);</li>
 <li>A skew-right distribution (<code>s</code>, Johnson distribution with skewness 2.2 and kurtosis 13);</li>
@@ -371,21 +472,21 @@ mm &lt;- rnorm(100, rep(c(-1, 1), each = 50) * sqrt(0.9), sqrt(0.1))</code></pre
 <pre class="r"><code>glimpse(four)</code></pre>
 <pre><code>Observations: 400
 Variables: 2
-$ dist &lt;fct&gt; n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, ...
-$ vals &lt;dbl&gt; 0.91835807, -0.44302553, 2.83453800, -0.74480448, 1.44310...</code></pre>
+$ dist &lt;fct&gt; n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,…
+$ vals &lt;dbl&gt; 0.91835807, -0.44302553, 2.83453800, -0.74480448, 1.4431036…</code></pre>
 <p>Let’s see what our descriptive statistics look like:</p>
 <pre class="r"><code>skim(four)</code></pre>
 <pre><code>Skim summary statistics
  n obs: 400 
  n variables: 2 
 
-Variable type: factor 
+── Variable type:factor ───────────────────────────────────────────────────────────────────────
  variable missing complete   n n_unique                      top_counts
      dist       0      400 400        4 n: 100, s: 100, k: 100, mm: 100
  ordered
    FALSE
 
-Variable type: numeric 
+── Variable type:numeric ──────────────────────────────────────────────────────────────────────
  variable missing complete   n mean   sd    p0   p25  p50  p75 p100
      vals       0      400 400 0.19 1.02 -3.07 -0.49 0.16 0.85 4.49
      hist
@@ -398,7 +499,7 @@ Variable type: numeric
  n variables: 2 
  group variables: dist 
 
-Variable type: numeric 
+── Variable type:numeric ──────────────────────────────────────────────────────────────────────
  dist variable missing complete   n      mean   sd    p0    p25    p50
     n     vals       0      100 100     0.071 1.09 -3.07 -0.61   0.13 
     s     vals       0      100 100     0.74  1.01 -0.48  0.053  0.43 
@@ -800,6 +901,12 @@ ggplot(tg, aes(x = factor(dose), y = len, fill = supp)) +
 <p><img src="04-distributions_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 <p>More help here: <a href="http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/" class="uri">http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/</a></p>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The <a href="https://github.com/hadley/boxplots-paper/blob/master/boxplots-density.r">code for these distributions</a> comes from Hadley Wickham’s paper on <a href="http://vita.had.co.nz/papers/boxplots.html">“40 years of boxplots”</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 <p>

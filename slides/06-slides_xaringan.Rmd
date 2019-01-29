@@ -684,3 +684,106 @@ rmarkdown::yaml_front_matter(knitr::current_input())
 
 ???
 Credit: https://twitter.com/ma_salmon/status/997194865174859776
+
+---
+## Extra extra: stupid file paths for local images
+
+`xaringan` requires that all local image file paths are *relative*. 
+
+What does that mean? 
+
+It means you cannot use `here` within a call to `knitr::include_graphics`.
+- It will work locally, but not if you are pushing to GitHub for example.
+
+--
+
+2 options:
+
+- Use markdown: `![](path/to/my/image.jpg)` (no quotes, and in plain text of Rmd!)
+
+--
+
+- Or (path in quotes now, and within an R code chunk!):
+
+```{r eval = FALSE}
+knitr::include_graphics("path/to/my/image.jpg")
+```
+
+
+---
+## Local image file paths
+
+- This image now is saved in a subfolder of my *current* "slides" working directory.
+
+--
+
+- *If* I could use `here`, this is the file path: `here("slides", "images", "goat_yoga_in_slides-images.jpg")`
+
+--
+
+```{r out.width = '50%'}
+include_graphics("images/goat_yoga_in_slides-images.jpg")
+```
+
+---
+## Local image file paths- try2
+
+- This image now is saved in a subfolder, called "images", of my *current* "slides" working directory.
+
+--
+
+- *If* I could use `here`, this is the file path: `here("slides", "images", "goat_yoga_in_slides-images.jpg")`
+
+--
+
+```{r out.width = '50%'}
+include_graphics(fs::path_rel(here::here("goat_yoga_in_slides-images.jpg"), 
+                              here::here()))
+```
+
+---
+## Going up a level
+
+- Use `../` to go to a folder one level up from the current folder
+
+--
+
+- This image now is saved in a subfolder of my *current* "project" working directory, which is a level ⬆️ from my "slides" folder.
+
+--
+
+- *If* I could use `here`, this is the file path: `here("images", "goat_yoga_in_images.jpg")`
+
+--
+
+
+```{r out.width = '50%'}
+include_graphics("../images/goat_yoga_in_images.jpg")
+```
+
+---
+
+```{r}
+library(rprojroot)
+fs::path_dir(thisfile())
+# ugh this is where it needs to start!
+```
+
+---
+```{r}
+include_graphics(fs::path_rel(path = here::here("slides", 
+                                                "images",
+                                                "goat_yoga_in_slides-images.jpg"),  
+                              start = fs::path_dir(rprojroot::thisfile())))
+```
+
+
+---
+
+```{r}
+include_graphics(fs::path_rel(path = here::here("slides", 
+                                                "images",
+                                                "goat_yoga_in_slides-images.jpg"), 
+                              start = here::here("slides")))
+```
+

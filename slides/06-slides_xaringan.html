@@ -627,11 +627,13 @@ names(xaringan:::list_css())
 
 ```
  [1] "default-fonts"    "default"          "duke-blue"       
- [4] "hygge-duke"       "hygge"            "metropolis-fonts"
- [7] "metropolis"       "rladies-fonts"    "rladies"         
-[10] "robot-fonts"      "robot"            "rutgers-fonts"   
-[13] "rutgers"          "tamu-fonts"       "tamu"            
-[16] "uo-fonts"         "uo"              
+ [4] "hygge-duke"       "hygge"            "kunoichi"        
+ [7] "lucy-fonts"       "lucy"             "metropolis-fonts"
+[10] "metropolis"       "middlebury-fonts" "middlebury"      
+[13] "ninjutsu"         "rladies-fonts"    "rladies"         
+[16] "robot-fonts"      "robot"            "rutgers-fonts"   
+[19] "rutgers"          "shinobi"          "tamu-fonts"      
+[22] "tamu"             "uo-fonts"         "uo"              
 ```
 
 --
@@ -768,6 +770,132 @@ $output$`xaringan::moon_reader`$nature$countIncrementalSlides
 
 ???
 Credit: https://twitter.com/ma_salmon/status/997194865174859776
+
+---
+## Extra extra: stupid file paths for local images
+
+`xaringan` requires that all local image file paths are *relative*. 
+
+What does that mean? 
+
+It means you cannot use `here` within a call to `knitr::include_graphics`.
+- It will work locally, but not if you are pushing to GitHub for example.
+
+--
+
+2 options:
+
+- Use markdown: `![](path/to/my/image.jpg)` (no quotes, and in plain text of Rmd!)
+
+--
+
+- Or (path in quotes now, and within an R code chunk!):
+
+
+```r
+knitr::include_graphics("path/to/my/image.jpg")
+```
+
+
+---
+## Local image file paths
+
+- This image now is saved in a subfolder of my *current* "slides" working directory.
+
+--
+
+- *If* I could use `here`, this is the file path: `here("slides", "images", "goat_yoga_in_slides-images.jpg")`
+
+--
+
+
+```r
+include_graphics("images/goat_yoga_in_slides-images.jpg")
+```
+
+&lt;img src="images/goat_yoga_in_slides-images.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+## Local image file paths- try2
+
+- This image now is saved in a subfolder, called "images", of my *current* "slides" working directory.
+
+--
+
+- *If* I could use `here`, this is the file path: `here("slides", "images", "goat_yoga_in_slides-images.jpg")`
+
+--
+
+
+```r
+include_graphics(fs::path_rel(here::here("goat_yoga_in_slides-images.jpg"), 
+                              here::here()))
+```
+
+&lt;img src="goat_yoga_in_slides-images.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+## Going up a level
+
+- Use `../` to go to a folder one level up from the current folder
+
+--
+
+- This image now is saved in a subfolder of my *current* "project" working directory, which is a level ⬆️ from my "slides" folder.
+
+--
+
+- *If* I could use `here`, this is the file path: `here("images", "goat_yoga_in_images.jpg")`
+
+--
+
+
+
+```r
+include_graphics("../images/goat_yoga_in_images.jpg")
+```
+
+&lt;img src="../images/goat_yoga_in_images.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+library(rprojroot)
+fs::path_dir(thisfile())
+```
+
+```
+/Users/alison/Documents/projects/data-vis-labs-2018/slides
+```
+
+```r
+# ugh this is where it needs to start!
+```
+
+---
+
+```r
+include_graphics(fs::path_rel(path = here::here("slides", 
+                                                "images",
+                                                "goat_yoga_in_slides-images.jpg"),  
+                              start = fs::path_dir(rprojroot::thisfile())))
+```
+
+&lt;img src="images/goat_yoga_in_slides-images.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+include_graphics(fs::path_rel(path = here::here("slides", 
+                                                "images",
+                                                "goat_yoga_in_slides-images.jpg"), 
+                              start = here::here("slides")))
+```
+
+&lt;img src="images/goat_yoga_in_slides-images.jpg" width="80%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
@@ -785,19 +913,30 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);

@@ -45,7 +45,7 @@ library(ggridges)
 
 # Make the data
 
-Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes. 
+Below are simulated four distributions (n = 100 each), all with similar measures of center (mean = 0) and spread (s.d. = 1), but with distinctly different shapes.^[The [code for these distributions](https://github.com/hadley/boxplots-paper/blob/master/boxplots-density.r) comes from Hadley Wickham's paper on ["40 years of boxplots"](http://vita.had.co.nz/papers/boxplots.html)]
 
 1. A standard normal (`n`);
 2. A skew-right distribution (`s`, Johnson distribution with skewness 2.2 and kurtosis 13);
@@ -81,6 +81,8 @@ k <- rJohnson(100, findParams(0, 1, 0, 30))
 # mixture
 mm <- rnorm(100, rep(c(-1, 1), each = 50) * sqrt(0.9), sqrt(0.1))
 ```
+
+
 
 # Tidy the data
 
